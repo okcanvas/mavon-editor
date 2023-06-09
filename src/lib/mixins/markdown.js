@@ -110,16 +110,67 @@ export function initMarkdown() {
             const arg = (m) ? m[1] : null;
             if (tokens[idx].nesting === 1) {
               // opening tag
-              return '<div class="okcanvas-markdown-box" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">\n';
+              return '<div class="okcanvas-markdown-box">\n';
             } else {
               // closing tag
               return '</div>\n';
             }
           }
         })
+        .use(container, 'view', {
+          validate: function(params) {
+            //  ::: box
+            return params.trim().match(/view/);
+          },
+          render: function (tokens, idx) {
+            const m = tokens[idx].info.trim().match(/view\s+(.*)$/);
+            const arg = (m) ? m[1] : null;
+            if (tokens[idx].nesting === 1) {
+              // opening tag
+              return `
+<table style="border-collapse: collapse; width: 100%;" border="0">
+  <tbody>
+  <tr>
+    <td style="width: 33.3333%;">&nbsp;</td>
+    <td style="text-align: center;">${arg}</td>
+    <td style="width: 33.3333%;">&nbsp;</td>
+  </tr>
+  <tr style="border: 1px solid black;">
+    <td colspan="3">
+              `;
+            } else {
+              // closing tag
+              return `
+  </td>
+  </tr>
+  </tbody>
+</table>            
+              `;
+            }
+          }
+        })
 
     return markdown;
 }
+
+/*
+<table style="border-collapse: collapse; width: 100%;" border="0">
+    <tbody>
+    <tr>
+      <td style="width: 33.3333%;">&nbsp;</td>
+      <td style="text-align: center;"><보기></td>
+      <td style="width: 33.3333%;">&nbsp;</td>
+    </tr>
+    <tr style="border: 1px solid black;">
+      <td colspan="3">
+        sdfsdfsfsfdsfs
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+*/
+
 
 export default {
     data() {

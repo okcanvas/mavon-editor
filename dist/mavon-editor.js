@@ -6295,9 +6295,22 @@ function initMarkdown() {
             var m = tokens[idx].info.trim().match(/box\s+(.*)$/);
             var arg = m ? m[1] : null;
             if (tokens[idx].nesting === 1) {
-                return '<div class="okcanvas-markdown-box" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">\n';
+                return '<div class="okcanvas-markdown-box">\n';
             } else {
                 return '</div>\n';
+            }
+        }
+    }).use(container, 'view', {
+        validate: function validate(params) {
+            return params.trim().match(/view/);
+        },
+        render: function render(tokens, idx) {
+            var m = tokens[idx].info.trim().match(/view\s+(.*)$/);
+            var arg = m ? m[1] : null;
+            if (tokens[idx].nesting === 1) {
+                return '\n<table style="border-collapse: collapse; width: 100%;" border="0">\n  <tbody>\n  <tr>\n    <td style="width: 33.3333%;">&nbsp;</td>\n    <td style="text-align: center;">' + arg + '</td>\n    <td style="width: 33.3333%;">&nbsp;</td>\n  </tr>\n  <tr style="border: 1px solid black;">\n    <td colspan="3">\n              ';
+            } else {
+                return '\n  </td>\n  </tr>\n  </tbody>\n</table>            \n              ';
             }
         }
     });
