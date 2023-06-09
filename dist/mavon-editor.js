@@ -6308,7 +6308,7 @@ function initMarkdown() {
             var m = tokens[idx].info.trim().match(/view\s+(.*)$/);
             var arg = m ? m[1] : null;
             if (tokens[idx].nesting === 1) {
-                var text = arg ? '<div style="text-align: center;">' + arg + '</div>\n' : '';
+                var text = arg ? '<div style="text-align: center;">&lt; ' + arg + ' &gt;</div>\n' : '';
                 text += '<div class="okcanvas-markdown-box">\n';
                 return text;
             } else {

@@ -127,7 +127,7 @@ export function initMarkdown() {
             const arg = (m) ? m[1] : null;
             if (tokens[idx].nesting === 1) {
               // opening tag
-              var text = (arg) ? `<div style="text-align: center;">${arg}</div>\n` : '';
+              var text = (arg) ? `<div style="text-align: center;">&lt; ${arg} &gt;</div>\n` : '';
               text += '<div class="okcanvas-markdown-box">\n'; 
               return text;
             } else {
