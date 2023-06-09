@@ -26,13 +26,3 @@
     overflow: auto;
 }
 
-
-.katex {
-    font-size: 20px;
-}
-.katex-display {
-    display: block;
-    margin: 1em 0;
-    text-align: left;
-}
-  
