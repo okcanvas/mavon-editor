@@ -76,12 +76,12 @@ var config = {
 }
 
 var res = merge([base, config])
-res.plugins = res.plugins.concat([
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false
-        },
-        comments: false
-    })
-])
+//res.plugins = res.plugins.concat([
+//    new webpack.optimize.UglifyJsPlugin({
+//        compress: {
+//            warnings: false
+//        },
+//        comments: false
+//    })
+//])
 module.exports = res

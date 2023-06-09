@@ -37,6 +37,7 @@
   "homepage": "https://github.com/okcanvas/mavon-editor#readme",
   "dependencies": {
     "markdown-it-color": "^2.1.1",
+    "markdown-it-katex": "^2.0.3",
     "xss": "^1.0.10"
   },
   "devDependencies": {

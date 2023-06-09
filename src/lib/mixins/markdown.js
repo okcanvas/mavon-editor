@@ -43,7 +43,8 @@ var toc = require('markdown-it-toc')
 
 var mihe = require('markdown-it-highlightjs-external');
 // math katex
-var katex = require('markdown-it-katex-external');
+//var katex = require('markdown-it-katex-external');
+var katex = require('markdown-it-katex');
 var miip = require('markdown-it-images-preview');
 var missLangs = {};
 var needLangs = [];
