@@ -48,6 +48,10 @@
                           box-shadow-style="0 2px 12px 0 rgba(0, 0, 0, 0.1)"
                           toolbars-background="#ffffff"
                           preview-background="#fbfbfb">
+
+                          <!--
+                            :externalLink="external_link"
+                          -->
                 <!-- <template slot="left-toolbar-before">
                     左工具栏前
                 </template>
@@ -127,11 +131,21 @@
                     hljs_lang: function(lang) {
                         return '/highlightjs/languages/' + lang + '.min.js';
                     },
+                    /*
                     katex_css: function() {
                         return '/katex/katex.min.css';
                     },
                     katex_js: function() {
                         return '/katex/katex.min.js';
+                    },
+                    */
+                    katex_js: function() {
+                        return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
+                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js;'
+                    },
+                    katex_css: function() {
+                        return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
+                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css';
                     }
                 },
                 toolbar_settings: {
