@@ -3,7 +3,13 @@
 <template>
     <div class="container">
         <div id="editor">
-            <mavon-editor style="height: 100%" v-model="code" :codeStyle="codeStyle" :xssOptions="xssOptions"></mavon-editor>
+            <mavon-editor 
+                style="height: 100%; font-size: 14px;" 
+                v-model="code" 
+                :codeStyle="codeStyle" 
+                :xssOptions="xssOptions"
+            >
+            </mavon-editor>
         </div>
         <div class="switch-code-style">
             <span>code style:</span>
@@ -60,6 +66,6 @@ module.exports = {
 }
 .switch-code-style {
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 14px;
 }
 </style>

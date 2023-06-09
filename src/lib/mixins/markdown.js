@@ -127,25 +127,12 @@ export function initMarkdown() {
             const arg = (m) ? m[1] : null;
             if (tokens[idx].nesting === 1) {
               // opening tag
-              return `
-<table style="border-collapse: collapse; width: 100%;" border="0">
-  <tbody>
-  <tr>
-    <td style="width: 33.3333%;">&nbsp;</td>
-    <td style="text-align: center;">${arg}</td>
-    <td style="width: 33.3333%;">&nbsp;</td>
-  </tr>
-  <tr style="border: 1px solid black;">
-    <td colspan="3">
-              `;
+              var text = (arg) ? `<div style="text-align: center;">${arg}</div>\n` : '';
+              text += '<div class="okcanvas-markdown-box">\n'; 
+              return text;
             } else {
               // closing tag
-              return `
-  </td>
-  </tr>
-  </tbody>
-</table>            
-              `;
+              return '</div>\n';
             }
           }
         })

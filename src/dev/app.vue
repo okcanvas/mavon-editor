@@ -294,7 +294,35 @@
             }
         }
     }
+    
+/*
+::: view adadad
+dfsfsfsdfdsf
+:::
+
+mord mathrm hangul_fallback
+*/
 </script>
+
+<style>
+.markdown-body {
+    font-size: 14px;
+    background-color: rgb(255 255 255 / 50%);
+}
+.okcanvas-markdown-box {
+    background-color: bisque;
+    border: 1px solid black;
+    padding: 10px;
+    padding-bottom: 0px;
+    margin-bottom: 1.5em;
+}
+.hangul_fallback {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 1.0rem;
+}
+</style>
+
+
 
 <style lang="stylus" rel="stylesheet/stylus">
     body

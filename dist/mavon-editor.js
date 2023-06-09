@@ -6308,9 +6308,11 @@ function initMarkdown() {
             var m = tokens[idx].info.trim().match(/view\s+(.*)$/);
             var arg = m ? m[1] : null;
             if (tokens[idx].nesting === 1) {
-                return '\n<table style="border-collapse: collapse; width: 100%;" border="0">\n  <tbody>\n  <tr>\n    <td style="width: 33.3333%;">&nbsp;</td>\n    <td style="text-align: center;">' + arg + '</td>\n    <td style="width: 33.3333%;">&nbsp;</td>\n  </tr>\n  <tr style="border: 1px solid black;">\n    <td colspan="3">\n              ';
+                var text = arg ? '<div style="text-align: center;">' + arg + '</div>\n' : '';
+                text += '<div class="okcanvas-markdown-box">\n';
+                return text;
             } else {
-                return '\n  </td>\n  </tr>\n  </tbody>\n</table>            \n              ';
+                return '</div>\n';
             }
         }
     });
