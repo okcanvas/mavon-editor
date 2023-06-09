@@ -380,7 +380,7 @@ function normalizeReference(str) {
 //
 exports.lib                 = {};
 exports.lib.mdurl           = __webpack_require__(65);
-exports.lib.ucmicro         = __webpack_require__(220);
+exports.lib.ucmicro         = __webpack_require__(223);
 
 exports.assign              = assign;
 exports.isString            = isString;
@@ -832,7 +832,7 @@ module.exports = function (it) {
 /* 13 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.11' };
+var core = module.exports = { version: '2.6.12' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -2306,7 +2306,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(230)
+var listToStyles = __webpack_require__(233)
 
 /*
 type StyleObject = {
@@ -2627,7 +2627,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: __webpack_require__(15) ? 'pure' : 'global',
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -3171,7 +3171,11 @@ function Token(type, tag, nesting) {
   /**
    * Token#info -> String
    *
-   * fence infostring
+   * Additional information:
+   *
+   * - Info string for "fence" tokens
+   * - The value "auto" for autolink "link_open" and "link_close" tokens
+   * - The string value of the item marker for ordered-list "list_item_open" tokens
    **/
   this.info     = '';
 
@@ -3337,13 +3341,13 @@ module.exports = {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(229)
+  __webpack_require__(232)
 }
 var normalizeComponent = __webpack_require__(22)
 /* script */
 var __vue_script__ = __webpack_require__(74)
 /* template */
-var __vue_template__ = __webpack_require__(225)
+var __vue_template__ = __webpack_require__(228)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -3390,7 +3394,7 @@ var normalizeComponent = __webpack_require__(22)
 /* script */
 var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(222)
+var __vue_template__ = __webpack_require__(225)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -4984,7 +4988,7 @@ module.exports = {
 
 
 /*eslint quotes:0*/
-module.exports = __webpack_require__(122);
+module.exports = __webpack_require__(207);
 
 
 /***/ }),
@@ -5010,7 +5014,7 @@ var open_tag    = '<[A-Za-z][A-Za-z0-9\\-]*' + attribute + '*\\s*\\/?>';
 
 var close_tag   = '<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>';
 var comment     = '<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->';
-var processing  = '<[?].*?[?]>';
+var processing  = '<[?][\\s\\S]*?[?]>';
 var declaration = '<![A-Z]+\\s+[^>]*>';
 var cdata       = '<!\\[CDATA\\[[\\s\\S]*?\\]\\]>';
 
@@ -5057,15 +5061,6 @@ module.exports.tokenize = function emphasis(state, silent) {
       // Total length of these series of delimiters.
       //
       length: scanned.length,
-
-      // An amount of characters before this one that's equivalent to
-      // current one. In plain English: if this delimiter does not open
-      // an emphasis, neither do previous `jump` characters.
-      //
-      // Used to skip sequences like "*****" in one step, for 1st asterisk
-      // value will be 0, for 2nd it's 1 and so on.
-      //
-      jump:   i,
 
       // A position of the token this delimiter corresponds to.
       //
@@ -5120,9 +5115,11 @@ function postProcess(state, delimiters) {
     //
     isStrong = i > 0 &&
                delimiters[i - 1].end === startDelim.end + 1 &&
+               // check that first two markers match and adjacent
+               delimiters[i - 1].marker === startDelim.marker &&
                delimiters[i - 1].token === startDelim.token - 1 &&
-               delimiters[startDelim.end + 1].token === endDelim.token + 1 &&
-               delimiters[i - 1].marker === startDelim.marker;
+               // check that last two markers are adjacent (we can safely assume they match)
+               delimiters[startDelim.end + 1].token === endDelim.token + 1;
 
     ch = String.fromCharCode(startDelim.marker);
 
@@ -5205,8 +5202,7 @@ module.exports.tokenize = function strikethrough(state, silent) {
 
     state.delimiters.push({
       marker: marker,
-      length: 0, // disable "rule of 3" length checks meant for emphasis
-      jump:   i,
+      length: 0,     // disable "rule of 3" length checks meant for emphasis
       token:  state.tokens.length - 1,
       end:    -1,
       open:   scanned.can_open,
@@ -5312,10 +5308,10 @@ module.exports.postProcess = function strikethrough(state) {
 
 
 
-module.exports.encode = __webpack_require__(207);
-module.exports.decode = __webpack_require__(206);
-module.exports.format = __webpack_require__(208);
-module.exports.parse  = __webpack_require__(209);
+module.exports.encode = __webpack_require__(210);
+module.exports.decode = __webpack_require__(209);
+module.exports.format = __webpack_require__(211);
+module.exports.parse  = __webpack_require__(212);
 
 
 /***/ }),
@@ -6071,14 +6067,14 @@ exports.parseAttr = parseAttr;
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(226)
-  __webpack_require__(227)
+  __webpack_require__(229)
+  __webpack_require__(230)
 }
 var normalizeComponent = __webpack_require__(22)
 /* script */
 var __vue_script__ = __webpack_require__(76)
 /* template */
-var __vue_template__ = __webpack_require__(223)
+var __vue_template__ = __webpack_require__(226)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -6124,7 +6120,7 @@ module.exports = Component.exports
 
 
 
-var autoTextarea = __webpack_require__(221);
+var autoTextarea = __webpack_require__(224);
 
 var VueAutoTextarea = {
   autoTextarea: autoTextarea,
@@ -6489,9 +6485,9 @@ var _mdToolbarRight = __webpack_require__(43);
 
 var _mdToolbarRight2 = _interopRequireDefault(_mdToolbarRight);
 
-__webpack_require__(124);
-
 __webpack_require__(123);
+
+__webpack_require__(122);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7112,67 +7108,67 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CONFIG = undefined;
 
-var _help_zhCN = __webpack_require__(217);
+var _help_zhCN = __webpack_require__(220);
 
 var _help_zhCN2 = _interopRequireDefault(_help_zhCN);
 
-var _help_zhTW = __webpack_require__(218);
+var _help_zhTW = __webpack_require__(221);
 
 var _help_zhTW2 = _interopRequireDefault(_help_zhTW);
 
-var _help_en = __webpack_require__(212);
+var _help_en = __webpack_require__(215);
 
 var _help_en2 = _interopRequireDefault(_help_en);
 
-var _help_fr = __webpack_require__(213);
+var _help_fr = __webpack_require__(216);
 
 var _help_fr2 = _interopRequireDefault(_help_fr);
 
-var _help_ptBR = __webpack_require__(215);
+var _help_ptBR = __webpack_require__(218);
 
 var _help_ptBR2 = _interopRequireDefault(_help_ptBR);
 
-var _help_ru = __webpack_require__(216);
+var _help_ru = __webpack_require__(219);
 
 var _help_ru2 = _interopRequireDefault(_help_ru);
 
-var _help_de = __webpack_require__(211);
+var _help_de = __webpack_require__(214);
 
 var _help_de2 = _interopRequireDefault(_help_de);
 
-var _help_ja = __webpack_require__(214);
+var _help_ja = __webpack_require__(217);
 
 var _help_ja2 = _interopRequireDefault(_help_ja);
 
-var _words_zhCN = __webpack_require__(241);
+var _words_zhCN = __webpack_require__(244);
 
 var _words_zhCN2 = _interopRequireDefault(_words_zhCN);
 
-var _words_zhTW = __webpack_require__(242);
+var _words_zhTW = __webpack_require__(245);
 
 var _words_zhTW2 = _interopRequireDefault(_words_zhTW);
 
-var _words_en = __webpack_require__(236);
+var _words_en = __webpack_require__(239);
 
 var _words_en2 = _interopRequireDefault(_words_en);
 
-var _words_fr = __webpack_require__(237);
+var _words_fr = __webpack_require__(240);
 
 var _words_fr2 = _interopRequireDefault(_words_fr);
 
-var _words_ptBR = __webpack_require__(239);
+var _words_ptBR = __webpack_require__(242);
 
 var _words_ptBR2 = _interopRequireDefault(_words_ptBR);
 
-var _words_ru = __webpack_require__(240);
+var _words_ru = __webpack_require__(243);
 
 var _words_ru2 = _interopRequireDefault(_words_ru);
 
-var _words_de = __webpack_require__(235);
+var _words_de = __webpack_require__(238);
 
 var _words_de2 = _interopRequireDefault(_words_de);
 
-var _words_ja = __webpack_require__(238);
+var _words_ja = __webpack_require__(241);
 
 var _words_ja2 = _interopRequireDefault(_words_ja);
 
@@ -8009,7 +8005,7 @@ exports.default = function (md, xssOptions) {
   }
 };
 
-var _xss = __webpack_require__(233);
+var _xss = __webpack_require__(236);
 
 var xssHandler = void 0;
 
@@ -8082,9 +8078,9 @@ var sub = __webpack_require__(156);
 
 var sup = __webpack_require__(157);
 
-var deflist = __webpack_require__(130);
+var deflist = __webpack_require__(129);
 
-var abbr = __webpack_require__(127);
+var abbr = __webpack_require__(126);
 
 var footnote = __webpack_require__(137);
 
@@ -8094,9 +8090,9 @@ var mark = __webpack_require__(155);
 
 var taskLists = __webpack_require__(158);
 
-var container = __webpack_require__(129);
+var container = __webpack_require__(128);
 
-var color = __webpack_require__(128);
+var color = __webpack_require__(127);
 
 var toc = __webpack_require__(159);
 
@@ -9555,7 +9551,7 @@ module.exports = parseStyle;
 /* 122 */
 /***/ (function(module, exports) {
 
-module.exports = {"Aacute":"Á","aacute":"á","Abreve":"Ă","abreve":"ă","ac":"∾","acd":"∿","acE":"∾̳","Acirc":"Â","acirc":"â","acute":"´","Acy":"А","acy":"а","AElig":"Æ","aelig":"æ","af":"⁡","Afr":"𝔄","afr":"𝔞","Agrave":"À","agrave":"à","alefsym":"ℵ","aleph":"ℵ","Alpha":"Α","alpha":"α","Amacr":"Ā","amacr":"ā","amalg":"⨿","amp":"&","AMP":"&","andand":"⩕","And":"⩓","and":"∧","andd":"⩜","andslope":"⩘","andv":"⩚","ang":"∠","ange":"⦤","angle":"∠","angmsdaa":"⦨","angmsdab":"⦩","angmsdac":"⦪","angmsdad":"⦫","angmsdae":"⦬","angmsdaf":"⦭","angmsdag":"⦮","angmsdah":"⦯","angmsd":"∡","angrt":"∟","angrtvb":"⊾","angrtvbd":"⦝","angsph":"∢","angst":"Å","angzarr":"⍼","Aogon":"Ą","aogon":"ą","Aopf":"𝔸","aopf":"𝕒","apacir":"⩯","ap":"≈","apE":"⩰","ape":"≊","apid":"≋","apos":"'","ApplyFunction":"⁡","approx":"≈","approxeq":"≊","Aring":"Å","aring":"å","Ascr":"𝒜","ascr":"𝒶","Assign":"≔","ast":"*","asymp":"≈","asympeq":"≍","Atilde":"Ã","atilde":"ã","Auml":"Ä","auml":"ä","awconint":"∳","awint":"⨑","backcong":"≌","backepsilon":"϶","backprime":"‵","backsim":"∽","backsimeq":"⋍","Backslash":"∖","Barv":"⫧","barvee":"⊽","barwed":"⌅","Barwed":"⌆","barwedge":"⌅","bbrk":"⎵","bbrktbrk":"⎶","bcong":"≌","Bcy":"Б","bcy":"б","bdquo":"„","becaus":"∵","because":"∵","Because":"∵","bemptyv":"⦰","bepsi":"϶","bernou":"ℬ","Bernoullis":"ℬ","Beta":"Β","beta":"β","beth":"ℶ","between":"≬","Bfr":"𝔅","bfr":"𝔟","bigcap":"⋂","bigcirc":"◯","bigcup":"⋃","bigodot":"⨀","bigoplus":"⨁","bigotimes":"⨂","bigsqcup":"⨆","bigstar":"★","bigtriangledown":"▽","bigtriangleup":"△","biguplus":"⨄","bigvee":"⋁","bigwedge":"⋀","bkarow":"⤍","blacklozenge":"⧫","blacksquare":"▪","blacktriangle":"▴","blacktriangledown":"▾","blacktriangleleft":"◂","blacktriangleright":"▸","blank":"␣","blk12":"▒","blk14":"░","blk34":"▓","block":"█","bne":"=⃥","bnequiv":"≡⃥","bNot":"⫭","bnot":"⌐","Bopf":"𝔹","bopf":"𝕓","bot":"⊥","bottom":"⊥","bowtie":"⋈","boxbox":"⧉","boxdl":"┐","boxdL":"╕","boxDl":"╖","boxDL":"╗","boxdr":"┌","boxdR":"╒","boxDr":"╓","boxDR":"╔","boxh":"─","boxH":"═","boxhd":"┬","boxHd":"╤","boxhD":"╥","boxHD":"╦","boxhu":"┴","boxHu":"╧","boxhU":"╨","boxHU":"╩","boxminus":"⊟","boxplus":"⊞","boxtimes":"⊠","boxul":"┘","boxuL":"╛","boxUl":"╜","boxUL":"╝","boxur":"└","boxuR":"╘","boxUr":"╙","boxUR":"╚","boxv":"│","boxV":"║","boxvh":"┼","boxvH":"╪","boxVh":"╫","boxVH":"╬","boxvl":"┤","boxvL":"╡","boxVl":"╢","boxVL":"╣","boxvr":"├","boxvR":"╞","boxVr":"╟","boxVR":"╠","bprime":"‵","breve":"˘","Breve":"˘","brvbar":"¦","bscr":"𝒷","Bscr":"ℬ","bsemi":"⁏","bsim":"∽","bsime":"⋍","bsolb":"⧅","bsol":"\\","bsolhsub":"⟈","bull":"•","bullet":"•","bump":"≎","bumpE":"⪮","bumpe":"≏","Bumpeq":"≎","bumpeq":"≏","Cacute":"Ć","cacute":"ć","capand":"⩄","capbrcup":"⩉","capcap":"⩋","cap":"∩","Cap":"⋒","capcup":"⩇","capdot":"⩀","CapitalDifferentialD":"ⅅ","caps":"∩︀","caret":"⁁","caron":"ˇ","Cayleys":"ℭ","ccaps":"⩍","Ccaron":"Č","ccaron":"č","Ccedil":"Ç","ccedil":"ç","Ccirc":"Ĉ","ccirc":"ĉ","Cconint":"∰","ccups":"⩌","ccupssm":"⩐","Cdot":"Ċ","cdot":"ċ","cedil":"¸","Cedilla":"¸","cemptyv":"⦲","cent":"¢","centerdot":"·","CenterDot":"·","cfr":"𝔠","Cfr":"ℭ","CHcy":"Ч","chcy":"ч","check":"✓","checkmark":"✓","Chi":"Χ","chi":"χ","circ":"ˆ","circeq":"≗","circlearrowleft":"↺","circlearrowright":"↻","circledast":"⊛","circledcirc":"⊚","circleddash":"⊝","CircleDot":"⊙","circledR":"®","circledS":"Ⓢ","CircleMinus":"⊖","CirclePlus":"⊕","CircleTimes":"⊗","cir":"○","cirE":"⧃","cire":"≗","cirfnint":"⨐","cirmid":"⫯","cirscir":"⧂","ClockwiseContourIntegral":"∲","CloseCurlyDoubleQuote":"”","CloseCurlyQuote":"’","clubs":"♣","clubsuit":"♣","colon":":","Colon":"∷","Colone":"⩴","colone":"≔","coloneq":"≔","comma":",","commat":"@","comp":"∁","compfn":"∘","complement":"∁","complexes":"ℂ","cong":"≅","congdot":"⩭","Congruent":"≡","conint":"∮","Conint":"∯","ContourIntegral":"∮","copf":"𝕔","Copf":"ℂ","coprod":"∐","Coproduct":"∐","copy":"©","COPY":"©","copysr":"℗","CounterClockwiseContourIntegral":"∳","crarr":"↵","cross":"✗","Cross":"⨯","Cscr":"𝒞","cscr":"𝒸","csub":"⫏","csube":"⫑","csup":"⫐","csupe":"⫒","ctdot":"⋯","cudarrl":"⤸","cudarrr":"⤵","cuepr":"⋞","cuesc":"⋟","cularr":"↶","cularrp":"⤽","cupbrcap":"⩈","cupcap":"⩆","CupCap":"≍","cup":"∪","Cup":"⋓","cupcup":"⩊","cupdot":"⊍","cupor":"⩅","cups":"∪︀","curarr":"↷","curarrm":"⤼","curlyeqprec":"⋞","curlyeqsucc":"⋟","curlyvee":"⋎","curlywedge":"⋏","curren":"¤","curvearrowleft":"↶","curvearrowright":"↷","cuvee":"⋎","cuwed":"⋏","cwconint":"∲","cwint":"∱","cylcty":"⌭","dagger":"†","Dagger":"‡","daleth":"ℸ","darr":"↓","Darr":"↡","dArr":"⇓","dash":"‐","Dashv":"⫤","dashv":"⊣","dbkarow":"⤏","dblac":"˝","Dcaron":"Ď","dcaron":"ď","Dcy":"Д","dcy":"д","ddagger":"‡","ddarr":"⇊","DD":"ⅅ","dd":"ⅆ","DDotrahd":"⤑","ddotseq":"⩷","deg":"°","Del":"∇","Delta":"Δ","delta":"δ","demptyv":"⦱","dfisht":"⥿","Dfr":"𝔇","dfr":"𝔡","dHar":"⥥","dharl":"⇃","dharr":"⇂","DiacriticalAcute":"´","DiacriticalDot":"˙","DiacriticalDoubleAcute":"˝","DiacriticalGrave":"`","DiacriticalTilde":"˜","diam":"⋄","diamond":"⋄","Diamond":"⋄","diamondsuit":"♦","diams":"♦","die":"¨","DifferentialD":"ⅆ","digamma":"ϝ","disin":"⋲","div":"÷","divide":"÷","divideontimes":"⋇","divonx":"⋇","DJcy":"Ђ","djcy":"ђ","dlcorn":"⌞","dlcrop":"⌍","dollar":"$","Dopf":"𝔻","dopf":"𝕕","Dot":"¨","dot":"˙","DotDot":"⃜","doteq":"≐","doteqdot":"≑","DotEqual":"≐","dotminus":"∸","dotplus":"∔","dotsquare":"⊡","doublebarwedge":"⌆","DoubleContourIntegral":"∯","DoubleDot":"¨","DoubleDownArrow":"⇓","DoubleLeftArrow":"⇐","DoubleLeftRightArrow":"⇔","DoubleLeftTee":"⫤","DoubleLongLeftArrow":"⟸","DoubleLongLeftRightArrow":"⟺","DoubleLongRightArrow":"⟹","DoubleRightArrow":"⇒","DoubleRightTee":"⊨","DoubleUpArrow":"⇑","DoubleUpDownArrow":"⇕","DoubleVerticalBar":"∥","DownArrowBar":"⤓","downarrow":"↓","DownArrow":"↓","Downarrow":"⇓","DownArrowUpArrow":"⇵","DownBreve":"̑","downdownarrows":"⇊","downharpoonleft":"⇃","downharpoonright":"⇂","DownLeftRightVector":"⥐","DownLeftTeeVector":"⥞","DownLeftVectorBar":"⥖","DownLeftVector":"↽","DownRightTeeVector":"⥟","DownRightVectorBar":"⥗","DownRightVector":"⇁","DownTeeArrow":"↧","DownTee":"⊤","drbkarow":"⤐","drcorn":"⌟","drcrop":"⌌","Dscr":"𝒟","dscr":"𝒹","DScy":"Ѕ","dscy":"ѕ","dsol":"⧶","Dstrok":"Đ","dstrok":"đ","dtdot":"⋱","dtri":"▿","dtrif":"▾","duarr":"⇵","duhar":"⥯","dwangle":"⦦","DZcy":"Џ","dzcy":"џ","dzigrarr":"⟿","Eacute":"É","eacute":"é","easter":"⩮","Ecaron":"Ě","ecaron":"ě","Ecirc":"Ê","ecirc":"ê","ecir":"≖","ecolon":"≕","Ecy":"Э","ecy":"э","eDDot":"⩷","Edot":"Ė","edot":"ė","eDot":"≑","ee":"ⅇ","efDot":"≒","Efr":"𝔈","efr":"𝔢","eg":"⪚","Egrave":"È","egrave":"è","egs":"⪖","egsdot":"⪘","el":"⪙","Element":"∈","elinters":"⏧","ell":"ℓ","els":"⪕","elsdot":"⪗","Emacr":"Ē","emacr":"ē","empty":"∅","emptyset":"∅","EmptySmallSquare":"◻","emptyv":"∅","EmptyVerySmallSquare":"▫","emsp13":" ","emsp14":" ","emsp":" ","ENG":"Ŋ","eng":"ŋ","ensp":" ","Eogon":"Ę","eogon":"ę","Eopf":"𝔼","eopf":"𝕖","epar":"⋕","eparsl":"⧣","eplus":"⩱","epsi":"ε","Epsilon":"Ε","epsilon":"ε","epsiv":"ϵ","eqcirc":"≖","eqcolon":"≕","eqsim":"≂","eqslantgtr":"⪖","eqslantless":"⪕","Equal":"⩵","equals":"=","EqualTilde":"≂","equest":"≟","Equilibrium":"⇌","equiv":"≡","equivDD":"⩸","eqvparsl":"⧥","erarr":"⥱","erDot":"≓","escr":"ℯ","Escr":"ℰ","esdot":"≐","Esim":"⩳","esim":"≂","Eta":"Η","eta":"η","ETH":"Ð","eth":"ð","Euml":"Ë","euml":"ë","euro":"€","excl":"!","exist":"∃","Exists":"∃","expectation":"ℰ","exponentiale":"ⅇ","ExponentialE":"ⅇ","fallingdotseq":"≒","Fcy":"Ф","fcy":"ф","female":"♀","ffilig":"ﬃ","fflig":"ﬀ","ffllig":"ﬄ","Ffr":"𝔉","ffr":"𝔣","filig":"ﬁ","FilledSmallSquare":"◼","FilledVerySmallSquare":"▪","fjlig":"fj","flat":"♭","fllig":"ﬂ","fltns":"▱","fnof":"ƒ","Fopf":"𝔽","fopf":"𝕗","forall":"∀","ForAll":"∀","fork":"⋔","forkv":"⫙","Fouriertrf":"ℱ","fpartint":"⨍","frac12":"½","frac13":"⅓","frac14":"¼","frac15":"⅕","frac16":"⅙","frac18":"⅛","frac23":"⅔","frac25":"⅖","frac34":"¾","frac35":"⅗","frac38":"⅜","frac45":"⅘","frac56":"⅚","frac58":"⅝","frac78":"⅞","frasl":"⁄","frown":"⌢","fscr":"𝒻","Fscr":"ℱ","gacute":"ǵ","Gamma":"Γ","gamma":"γ","Gammad":"Ϝ","gammad":"ϝ","gap":"⪆","Gbreve":"Ğ","gbreve":"ğ","Gcedil":"Ģ","Gcirc":"Ĝ","gcirc":"ĝ","Gcy":"Г","gcy":"г","Gdot":"Ġ","gdot":"ġ","ge":"≥","gE":"≧","gEl":"⪌","gel":"⋛","geq":"≥","geqq":"≧","geqslant":"⩾","gescc":"⪩","ges":"⩾","gesdot":"⪀","gesdoto":"⪂","gesdotol":"⪄","gesl":"⋛︀","gesles":"⪔","Gfr":"𝔊","gfr":"𝔤","gg":"≫","Gg":"⋙","ggg":"⋙","gimel":"ℷ","GJcy":"Ѓ","gjcy":"ѓ","gla":"⪥","gl":"≷","glE":"⪒","glj":"⪤","gnap":"⪊","gnapprox":"⪊","gne":"⪈","gnE":"≩","gneq":"⪈","gneqq":"≩","gnsim":"⋧","Gopf":"𝔾","gopf":"𝕘","grave":"`","GreaterEqual":"≥","GreaterEqualLess":"⋛","GreaterFullEqual":"≧","GreaterGreater":"⪢","GreaterLess":"≷","GreaterSlantEqual":"⩾","GreaterTilde":"≳","Gscr":"𝒢","gscr":"ℊ","gsim":"≳","gsime":"⪎","gsiml":"⪐","gtcc":"⪧","gtcir":"⩺","gt":">","GT":">","Gt":"≫","gtdot":"⋗","gtlPar":"⦕","gtquest":"⩼","gtrapprox":"⪆","gtrarr":"⥸","gtrdot":"⋗","gtreqless":"⋛","gtreqqless":"⪌","gtrless":"≷","gtrsim":"≳","gvertneqq":"≩︀","gvnE":"≩︀","Hacek":"ˇ","hairsp":" ","half":"½","hamilt":"ℋ","HARDcy":"Ъ","hardcy":"ъ","harrcir":"⥈","harr":"↔","hArr":"⇔","harrw":"↭","Hat":"^","hbar":"ℏ","Hcirc":"Ĥ","hcirc":"ĥ","hearts":"♥","heartsuit":"♥","hellip":"…","hercon":"⊹","hfr":"𝔥","Hfr":"ℌ","HilbertSpace":"ℋ","hksearow":"⤥","hkswarow":"⤦","hoarr":"⇿","homtht":"∻","hookleftarrow":"↩","hookrightarrow":"↪","hopf":"𝕙","Hopf":"ℍ","horbar":"―","HorizontalLine":"─","hscr":"𝒽","Hscr":"ℋ","hslash":"ℏ","Hstrok":"Ħ","hstrok":"ħ","HumpDownHump":"≎","HumpEqual":"≏","hybull":"⁃","hyphen":"‐","Iacute":"Í","iacute":"í","ic":"⁣","Icirc":"Î","icirc":"î","Icy":"И","icy":"и","Idot":"İ","IEcy":"Е","iecy":"е","iexcl":"¡","iff":"⇔","ifr":"𝔦","Ifr":"ℑ","Igrave":"Ì","igrave":"ì","ii":"ⅈ","iiiint":"⨌","iiint":"∭","iinfin":"⧜","iiota":"℩","IJlig":"Ĳ","ijlig":"ĳ","Imacr":"Ī","imacr":"ī","image":"ℑ","ImaginaryI":"ⅈ","imagline":"ℐ","imagpart":"ℑ","imath":"ı","Im":"ℑ","imof":"⊷","imped":"Ƶ","Implies":"⇒","incare":"℅","in":"∈","infin":"∞","infintie":"⧝","inodot":"ı","intcal":"⊺","int":"∫","Int":"∬","integers":"ℤ","Integral":"∫","intercal":"⊺","Intersection":"⋂","intlarhk":"⨗","intprod":"⨼","InvisibleComma":"⁣","InvisibleTimes":"⁢","IOcy":"Ё","iocy":"ё","Iogon":"Į","iogon":"į","Iopf":"𝕀","iopf":"𝕚","Iota":"Ι","iota":"ι","iprod":"⨼","iquest":"¿","iscr":"𝒾","Iscr":"ℐ","isin":"∈","isindot":"⋵","isinE":"⋹","isins":"⋴","isinsv":"⋳","isinv":"∈","it":"⁢","Itilde":"Ĩ","itilde":"ĩ","Iukcy":"І","iukcy":"і","Iuml":"Ï","iuml":"ï","Jcirc":"Ĵ","jcirc":"ĵ","Jcy":"Й","jcy":"й","Jfr":"𝔍","jfr":"𝔧","jmath":"ȷ","Jopf":"𝕁","jopf":"𝕛","Jscr":"𝒥","jscr":"𝒿","Jsercy":"Ј","jsercy":"ј","Jukcy":"Є","jukcy":"є","Kappa":"Κ","kappa":"κ","kappav":"ϰ","Kcedil":"Ķ","kcedil":"ķ","Kcy":"К","kcy":"к","Kfr":"𝔎","kfr":"𝔨","kgreen":"ĸ","KHcy":"Х","khcy":"х","KJcy":"Ќ","kjcy":"ќ","Kopf":"𝕂","kopf":"𝕜","Kscr":"𝒦","kscr":"𝓀","lAarr":"⇚","Lacute":"Ĺ","lacute":"ĺ","laemptyv":"⦴","lagran":"ℒ","Lambda":"Λ","lambda":"λ","lang":"⟨","Lang":"⟪","langd":"⦑","langle":"⟨","lap":"⪅","Laplacetrf":"ℒ","laquo":"«","larrb":"⇤","larrbfs":"⤟","larr":"←","Larr":"↞","lArr":"⇐","larrfs":"⤝","larrhk":"↩","larrlp":"↫","larrpl":"⤹","larrsim":"⥳","larrtl":"↢","latail":"⤙","lAtail":"⤛","lat":"⪫","late":"⪭","lates":"⪭︀","lbarr":"⤌","lBarr":"⤎","lbbrk":"❲","lbrace":"{","lbrack":"[","lbrke":"⦋","lbrksld":"⦏","lbrkslu":"⦍","Lcaron":"Ľ","lcaron":"ľ","Lcedil":"Ļ","lcedil":"ļ","lceil":"⌈","lcub":"{","Lcy":"Л","lcy":"л","ldca":"⤶","ldquo":"“","ldquor":"„","ldrdhar":"⥧","ldrushar":"⥋","ldsh":"↲","le":"≤","lE":"≦","LeftAngleBracket":"⟨","LeftArrowBar":"⇤","leftarrow":"←","LeftArrow":"←","Leftarrow":"⇐","LeftArrowRightArrow":"⇆","leftarrowtail":"↢","LeftCeiling":"⌈","LeftDoubleBracket":"⟦","LeftDownTeeVector":"⥡","LeftDownVectorBar":"⥙","LeftDownVector":"⇃","LeftFloor":"⌊","leftharpoondown":"↽","leftharpoonup":"↼","leftleftarrows":"⇇","leftrightarrow":"↔","LeftRightArrow":"↔","Leftrightarrow":"⇔","leftrightarrows":"⇆","leftrightharpoons":"⇋","leftrightsquigarrow":"↭","LeftRightVector":"⥎","LeftTeeArrow":"↤","LeftTee":"⊣","LeftTeeVector":"⥚","leftthreetimes":"⋋","LeftTriangleBar":"⧏","LeftTriangle":"⊲","LeftTriangleEqual":"⊴","LeftUpDownVector":"⥑","LeftUpTeeVector":"⥠","LeftUpVectorBar":"⥘","LeftUpVector":"↿","LeftVectorBar":"⥒","LeftVector":"↼","lEg":"⪋","leg":"⋚","leq":"≤","leqq":"≦","leqslant":"⩽","lescc":"⪨","les":"⩽","lesdot":"⩿","lesdoto":"⪁","lesdotor":"⪃","lesg":"⋚︀","lesges":"⪓","lessapprox":"⪅","lessdot":"⋖","lesseqgtr":"⋚","lesseqqgtr":"⪋","LessEqualGreater":"⋚","LessFullEqual":"≦","LessGreater":"≶","lessgtr":"≶","LessLess":"⪡","lesssim":"≲","LessSlantEqual":"⩽","LessTilde":"≲","lfisht":"⥼","lfloor":"⌊","Lfr":"𝔏","lfr":"𝔩","lg":"≶","lgE":"⪑","lHar":"⥢","lhard":"↽","lharu":"↼","lharul":"⥪","lhblk":"▄","LJcy":"Љ","ljcy":"љ","llarr":"⇇","ll":"≪","Ll":"⋘","llcorner":"⌞","Lleftarrow":"⇚","llhard":"⥫","lltri":"◺","Lmidot":"Ŀ","lmidot":"ŀ","lmoustache":"⎰","lmoust":"⎰","lnap":"⪉","lnapprox":"⪉","lne":"⪇","lnE":"≨","lneq":"⪇","lneqq":"≨","lnsim":"⋦","loang":"⟬","loarr":"⇽","lobrk":"⟦","longleftarrow":"⟵","LongLeftArrow":"⟵","Longleftarrow":"⟸","longleftrightarrow":"⟷","LongLeftRightArrow":"⟷","Longleftrightarrow":"⟺","longmapsto":"⟼","longrightarrow":"⟶","LongRightArrow":"⟶","Longrightarrow":"⟹","looparrowleft":"↫","looparrowright":"↬","lopar":"⦅","Lopf":"𝕃","lopf":"𝕝","loplus":"⨭","lotimes":"⨴","lowast":"∗","lowbar":"_","LowerLeftArrow":"↙","LowerRightArrow":"↘","loz":"◊","lozenge":"◊","lozf":"⧫","lpar":"(","lparlt":"⦓","lrarr":"⇆","lrcorner":"⌟","lrhar":"⇋","lrhard":"⥭","lrm":"‎","lrtri":"⊿","lsaquo":"‹","lscr":"𝓁","Lscr":"ℒ","lsh":"↰","Lsh":"↰","lsim":"≲","lsime":"⪍","lsimg":"⪏","lsqb":"[","lsquo":"‘","lsquor":"‚","Lstrok":"Ł","lstrok":"ł","ltcc":"⪦","ltcir":"⩹","lt":"<","LT":"<","Lt":"≪","ltdot":"⋖","lthree":"⋋","ltimes":"⋉","ltlarr":"⥶","ltquest":"⩻","ltri":"◃","ltrie":"⊴","ltrif":"◂","ltrPar":"⦖","lurdshar":"⥊","luruhar":"⥦","lvertneqq":"≨︀","lvnE":"≨︀","macr":"¯","male":"♂","malt":"✠","maltese":"✠","Map":"⤅","map":"↦","mapsto":"↦","mapstodown":"↧","mapstoleft":"↤","mapstoup":"↥","marker":"▮","mcomma":"⨩","Mcy":"М","mcy":"м","mdash":"—","mDDot":"∺","measuredangle":"∡","MediumSpace":" ","Mellintrf":"ℳ","Mfr":"𝔐","mfr":"𝔪","mho":"℧","micro":"µ","midast":"*","midcir":"⫰","mid":"∣","middot":"·","minusb":"⊟","minus":"−","minusd":"∸","minusdu":"⨪","MinusPlus":"∓","mlcp":"⫛","mldr":"…","mnplus":"∓","models":"⊧","Mopf":"𝕄","mopf":"𝕞","mp":"∓","mscr":"𝓂","Mscr":"ℳ","mstpos":"∾","Mu":"Μ","mu":"μ","multimap":"⊸","mumap":"⊸","nabla":"∇","Nacute":"Ń","nacute":"ń","nang":"∠⃒","nap":"≉","napE":"⩰̸","napid":"≋̸","napos":"ŉ","napprox":"≉","natural":"♮","naturals":"ℕ","natur":"♮","nbsp":" ","nbump":"≎̸","nbumpe":"≏̸","ncap":"⩃","Ncaron":"Ň","ncaron":"ň","Ncedil":"Ņ","ncedil":"ņ","ncong":"≇","ncongdot":"⩭̸","ncup":"⩂","Ncy":"Н","ncy":"н","ndash":"–","nearhk":"⤤","nearr":"↗","neArr":"⇗","nearrow":"↗","ne":"≠","nedot":"≐̸","NegativeMediumSpace":"​","NegativeThickSpace":"​","NegativeThinSpace":"​","NegativeVeryThinSpace":"​","nequiv":"≢","nesear":"⤨","nesim":"≂̸","NestedGreaterGreater":"≫","NestedLessLess":"≪","NewLine":"\n","nexist":"∄","nexists":"∄","Nfr":"𝔑","nfr":"𝔫","ngE":"≧̸","nge":"≱","ngeq":"≱","ngeqq":"≧̸","ngeqslant":"⩾̸","nges":"⩾̸","nGg":"⋙̸","ngsim":"≵","nGt":"≫⃒","ngt":"≯","ngtr":"≯","nGtv":"≫̸","nharr":"↮","nhArr":"⇎","nhpar":"⫲","ni":"∋","nis":"⋼","nisd":"⋺","niv":"∋","NJcy":"Њ","njcy":"њ","nlarr":"↚","nlArr":"⇍","nldr":"‥","nlE":"≦̸","nle":"≰","nleftarrow":"↚","nLeftarrow":"⇍","nleftrightarrow":"↮","nLeftrightarrow":"⇎","nleq":"≰","nleqq":"≦̸","nleqslant":"⩽̸","nles":"⩽̸","nless":"≮","nLl":"⋘̸","nlsim":"≴","nLt":"≪⃒","nlt":"≮","nltri":"⋪","nltrie":"⋬","nLtv":"≪̸","nmid":"∤","NoBreak":"⁠","NonBreakingSpace":" ","nopf":"𝕟","Nopf":"ℕ","Not":"⫬","not":"¬","NotCongruent":"≢","NotCupCap":"≭","NotDoubleVerticalBar":"∦","NotElement":"∉","NotEqual":"≠","NotEqualTilde":"≂̸","NotExists":"∄","NotGreater":"≯","NotGreaterEqual":"≱","NotGreaterFullEqual":"≧̸","NotGreaterGreater":"≫̸","NotGreaterLess":"≹","NotGreaterSlantEqual":"⩾̸","NotGreaterTilde":"≵","NotHumpDownHump":"≎̸","NotHumpEqual":"≏̸","notin":"∉","notindot":"⋵̸","notinE":"⋹̸","notinva":"∉","notinvb":"⋷","notinvc":"⋶","NotLeftTriangleBar":"⧏̸","NotLeftTriangle":"⋪","NotLeftTriangleEqual":"⋬","NotLess":"≮","NotLessEqual":"≰","NotLessGreater":"≸","NotLessLess":"≪̸","NotLessSlantEqual":"⩽̸","NotLessTilde":"≴","NotNestedGreaterGreater":"⪢̸","NotNestedLessLess":"⪡̸","notni":"∌","notniva":"∌","notnivb":"⋾","notnivc":"⋽","NotPrecedes":"⊀","NotPrecedesEqual":"⪯̸","NotPrecedesSlantEqual":"⋠","NotReverseElement":"∌","NotRightTriangleBar":"⧐̸","NotRightTriangle":"⋫","NotRightTriangleEqual":"⋭","NotSquareSubset":"⊏̸","NotSquareSubsetEqual":"⋢","NotSquareSuperset":"⊐̸","NotSquareSupersetEqual":"⋣","NotSubset":"⊂⃒","NotSubsetEqual":"⊈","NotSucceeds":"⊁","NotSucceedsEqual":"⪰̸","NotSucceedsSlantEqual":"⋡","NotSucceedsTilde":"≿̸","NotSuperset":"⊃⃒","NotSupersetEqual":"⊉","NotTilde":"≁","NotTildeEqual":"≄","NotTildeFullEqual":"≇","NotTildeTilde":"≉","NotVerticalBar":"∤","nparallel":"∦","npar":"∦","nparsl":"⫽⃥","npart":"∂̸","npolint":"⨔","npr":"⊀","nprcue":"⋠","nprec":"⊀","npreceq":"⪯̸","npre":"⪯̸","nrarrc":"⤳̸","nrarr":"↛","nrArr":"⇏","nrarrw":"↝̸","nrightarrow":"↛","nRightarrow":"⇏","nrtri":"⋫","nrtrie":"⋭","nsc":"⊁","nsccue":"⋡","nsce":"⪰̸","Nscr":"𝒩","nscr":"𝓃","nshortmid":"∤","nshortparallel":"∦","nsim":"≁","nsime":"≄","nsimeq":"≄","nsmid":"∤","nspar":"∦","nsqsube":"⋢","nsqsupe":"⋣","nsub":"⊄","nsubE":"⫅̸","nsube":"⊈","nsubset":"⊂⃒","nsubseteq":"⊈","nsubseteqq":"⫅̸","nsucc":"⊁","nsucceq":"⪰̸","nsup":"⊅","nsupE":"⫆̸","nsupe":"⊉","nsupset":"⊃⃒","nsupseteq":"⊉","nsupseteqq":"⫆̸","ntgl":"≹","Ntilde":"Ñ","ntilde":"ñ","ntlg":"≸","ntriangleleft":"⋪","ntrianglelefteq":"⋬","ntriangleright":"⋫","ntrianglerighteq":"⋭","Nu":"Ν","nu":"ν","num":"#","numero":"№","numsp":" ","nvap":"≍⃒","nvdash":"⊬","nvDash":"⊭","nVdash":"⊮","nVDash":"⊯","nvge":"≥⃒","nvgt":">⃒","nvHarr":"⤄","nvinfin":"⧞","nvlArr":"⤂","nvle":"≤⃒","nvlt":"<⃒","nvltrie":"⊴⃒","nvrArr":"⤃","nvrtrie":"⊵⃒","nvsim":"∼⃒","nwarhk":"⤣","nwarr":"↖","nwArr":"⇖","nwarrow":"↖","nwnear":"⤧","Oacute":"Ó","oacute":"ó","oast":"⊛","Ocirc":"Ô","ocirc":"ô","ocir":"⊚","Ocy":"О","ocy":"о","odash":"⊝","Odblac":"Ő","odblac":"ő","odiv":"⨸","odot":"⊙","odsold":"⦼","OElig":"Œ","oelig":"œ","ofcir":"⦿","Ofr":"𝔒","ofr":"𝔬","ogon":"˛","Ograve":"Ò","ograve":"ò","ogt":"⧁","ohbar":"⦵","ohm":"Ω","oint":"∮","olarr":"↺","olcir":"⦾","olcross":"⦻","oline":"‾","olt":"⧀","Omacr":"Ō","omacr":"ō","Omega":"Ω","omega":"ω","Omicron":"Ο","omicron":"ο","omid":"⦶","ominus":"⊖","Oopf":"𝕆","oopf":"𝕠","opar":"⦷","OpenCurlyDoubleQuote":"“","OpenCurlyQuote":"‘","operp":"⦹","oplus":"⊕","orarr":"↻","Or":"⩔","or":"∨","ord":"⩝","order":"ℴ","orderof":"ℴ","ordf":"ª","ordm":"º","origof":"⊶","oror":"⩖","orslope":"⩗","orv":"⩛","oS":"Ⓢ","Oscr":"𝒪","oscr":"ℴ","Oslash":"Ø","oslash":"ø","osol":"⊘","Otilde":"Õ","otilde":"õ","otimesas":"⨶","Otimes":"⨷","otimes":"⊗","Ouml":"Ö","ouml":"ö","ovbar":"⌽","OverBar":"‾","OverBrace":"⏞","OverBracket":"⎴","OverParenthesis":"⏜","para":"¶","parallel":"∥","par":"∥","parsim":"⫳","parsl":"⫽","part":"∂","PartialD":"∂","Pcy":"П","pcy":"п","percnt":"%","period":".","permil":"‰","perp":"⊥","pertenk":"‱","Pfr":"𝔓","pfr":"𝔭","Phi":"Φ","phi":"φ","phiv":"ϕ","phmmat":"ℳ","phone":"☎","Pi":"Π","pi":"π","pitchfork":"⋔","piv":"ϖ","planck":"ℏ","planckh":"ℎ","plankv":"ℏ","plusacir":"⨣","plusb":"⊞","pluscir":"⨢","plus":"+","plusdo":"∔","plusdu":"⨥","pluse":"⩲","PlusMinus":"±","plusmn":"±","plussim":"⨦","plustwo":"⨧","pm":"±","Poincareplane":"ℌ","pointint":"⨕","popf":"𝕡","Popf":"ℙ","pound":"£","prap":"⪷","Pr":"⪻","pr":"≺","prcue":"≼","precapprox":"⪷","prec":"≺","preccurlyeq":"≼","Precedes":"≺","PrecedesEqual":"⪯","PrecedesSlantEqual":"≼","PrecedesTilde":"≾","preceq":"⪯","precnapprox":"⪹","precneqq":"⪵","precnsim":"⋨","pre":"⪯","prE":"⪳","precsim":"≾","prime":"′","Prime":"″","primes":"ℙ","prnap":"⪹","prnE":"⪵","prnsim":"⋨","prod":"∏","Product":"∏","profalar":"⌮","profline":"⌒","profsurf":"⌓","prop":"∝","Proportional":"∝","Proportion":"∷","propto":"∝","prsim":"≾","prurel":"⊰","Pscr":"𝒫","pscr":"𝓅","Psi":"Ψ","psi":"ψ","puncsp":" ","Qfr":"𝔔","qfr":"𝔮","qint":"⨌","qopf":"𝕢","Qopf":"ℚ","qprime":"⁗","Qscr":"𝒬","qscr":"𝓆","quaternions":"ℍ","quatint":"⨖","quest":"?","questeq":"≟","quot":"\"","QUOT":"\"","rAarr":"⇛","race":"∽̱","Racute":"Ŕ","racute":"ŕ","radic":"√","raemptyv":"⦳","rang":"⟩","Rang":"⟫","rangd":"⦒","range":"⦥","rangle":"⟩","raquo":"»","rarrap":"⥵","rarrb":"⇥","rarrbfs":"⤠","rarrc":"⤳","rarr":"→","Rarr":"↠","rArr":"⇒","rarrfs":"⤞","rarrhk":"↪","rarrlp":"↬","rarrpl":"⥅","rarrsim":"⥴","Rarrtl":"⤖","rarrtl":"↣","rarrw":"↝","ratail":"⤚","rAtail":"⤜","ratio":"∶","rationals":"ℚ","rbarr":"⤍","rBarr":"⤏","RBarr":"⤐","rbbrk":"❳","rbrace":"}","rbrack":"]","rbrke":"⦌","rbrksld":"⦎","rbrkslu":"⦐","Rcaron":"Ř","rcaron":"ř","Rcedil":"Ŗ","rcedil":"ŗ","rceil":"⌉","rcub":"}","Rcy":"Р","rcy":"р","rdca":"⤷","rdldhar":"⥩","rdquo":"”","rdquor":"”","rdsh":"↳","real":"ℜ","realine":"ℛ","realpart":"ℜ","reals":"ℝ","Re":"ℜ","rect":"▭","reg":"®","REG":"®","ReverseElement":"∋","ReverseEquilibrium":"⇋","ReverseUpEquilibrium":"⥯","rfisht":"⥽","rfloor":"⌋","rfr":"𝔯","Rfr":"ℜ","rHar":"⥤","rhard":"⇁","rharu":"⇀","rharul":"⥬","Rho":"Ρ","rho":"ρ","rhov":"ϱ","RightAngleBracket":"⟩","RightArrowBar":"⇥","rightarrow":"→","RightArrow":"→","Rightarrow":"⇒","RightArrowLeftArrow":"⇄","rightarrowtail":"↣","RightCeiling":"⌉","RightDoubleBracket":"⟧","RightDownTeeVector":"⥝","RightDownVectorBar":"⥕","RightDownVector":"⇂","RightFloor":"⌋","rightharpoondown":"⇁","rightharpoonup":"⇀","rightleftarrows":"⇄","rightleftharpoons":"⇌","rightrightarrows":"⇉","rightsquigarrow":"↝","RightTeeArrow":"↦","RightTee":"⊢","RightTeeVector":"⥛","rightthreetimes":"⋌","RightTriangleBar":"⧐","RightTriangle":"⊳","RightTriangleEqual":"⊵","RightUpDownVector":"⥏","RightUpTeeVector":"⥜","RightUpVectorBar":"⥔","RightUpVector":"↾","RightVectorBar":"⥓","RightVector":"⇀","ring":"˚","risingdotseq":"≓","rlarr":"⇄","rlhar":"⇌","rlm":"‏","rmoustache":"⎱","rmoust":"⎱","rnmid":"⫮","roang":"⟭","roarr":"⇾","robrk":"⟧","ropar":"⦆","ropf":"𝕣","Ropf":"ℝ","roplus":"⨮","rotimes":"⨵","RoundImplies":"⥰","rpar":")","rpargt":"⦔","rppolint":"⨒","rrarr":"⇉","Rrightarrow":"⇛","rsaquo":"›","rscr":"𝓇","Rscr":"ℛ","rsh":"↱","Rsh":"↱","rsqb":"]","rsquo":"’","rsquor":"’","rthree":"⋌","rtimes":"⋊","rtri":"▹","rtrie":"⊵","rtrif":"▸","rtriltri":"⧎","RuleDelayed":"⧴","ruluhar":"⥨","rx":"℞","Sacute":"Ś","sacute":"ś","sbquo":"‚","scap":"⪸","Scaron":"Š","scaron":"š","Sc":"⪼","sc":"≻","sccue":"≽","sce":"⪰","scE":"⪴","Scedil":"Ş","scedil":"ş","Scirc":"Ŝ","scirc":"ŝ","scnap":"⪺","scnE":"⪶","scnsim":"⋩","scpolint":"⨓","scsim":"≿","Scy":"С","scy":"с","sdotb":"⊡","sdot":"⋅","sdote":"⩦","searhk":"⤥","searr":"↘","seArr":"⇘","searrow":"↘","sect":"§","semi":";","seswar":"⤩","setminus":"∖","setmn":"∖","sext":"✶","Sfr":"𝔖","sfr":"𝔰","sfrown":"⌢","sharp":"♯","SHCHcy":"Щ","shchcy":"щ","SHcy":"Ш","shcy":"ш","ShortDownArrow":"↓","ShortLeftArrow":"←","shortmid":"∣","shortparallel":"∥","ShortRightArrow":"→","ShortUpArrow":"↑","shy":"­","Sigma":"Σ","sigma":"σ","sigmaf":"ς","sigmav":"ς","sim":"∼","simdot":"⩪","sime":"≃","simeq":"≃","simg":"⪞","simgE":"⪠","siml":"⪝","simlE":"⪟","simne":"≆","simplus":"⨤","simrarr":"⥲","slarr":"←","SmallCircle":"∘","smallsetminus":"∖","smashp":"⨳","smeparsl":"⧤","smid":"∣","smile":"⌣","smt":"⪪","smte":"⪬","smtes":"⪬︀","SOFTcy":"Ь","softcy":"ь","solbar":"⌿","solb":"⧄","sol":"/","Sopf":"𝕊","sopf":"𝕤","spades":"♠","spadesuit":"♠","spar":"∥","sqcap":"⊓","sqcaps":"⊓︀","sqcup":"⊔","sqcups":"⊔︀","Sqrt":"√","sqsub":"⊏","sqsube":"⊑","sqsubset":"⊏","sqsubseteq":"⊑","sqsup":"⊐","sqsupe":"⊒","sqsupset":"⊐","sqsupseteq":"⊒","square":"□","Square":"□","SquareIntersection":"⊓","SquareSubset":"⊏","SquareSubsetEqual":"⊑","SquareSuperset":"⊐","SquareSupersetEqual":"⊒","SquareUnion":"⊔","squarf":"▪","squ":"□","squf":"▪","srarr":"→","Sscr":"𝒮","sscr":"𝓈","ssetmn":"∖","ssmile":"⌣","sstarf":"⋆","Star":"⋆","star":"☆","starf":"★","straightepsilon":"ϵ","straightphi":"ϕ","strns":"¯","sub":"⊂","Sub":"⋐","subdot":"⪽","subE":"⫅","sube":"⊆","subedot":"⫃","submult":"⫁","subnE":"⫋","subne":"⊊","subplus":"⪿","subrarr":"⥹","subset":"⊂","Subset":"⋐","subseteq":"⊆","subseteqq":"⫅","SubsetEqual":"⊆","subsetneq":"⊊","subsetneqq":"⫋","subsim":"⫇","subsub":"⫕","subsup":"⫓","succapprox":"⪸","succ":"≻","succcurlyeq":"≽","Succeeds":"≻","SucceedsEqual":"⪰","SucceedsSlantEqual":"≽","SucceedsTilde":"≿","succeq":"⪰","succnapprox":"⪺","succneqq":"⪶","succnsim":"⋩","succsim":"≿","SuchThat":"∋","sum":"∑","Sum":"∑","sung":"♪","sup1":"¹","sup2":"²","sup3":"³","sup":"⊃","Sup":"⋑","supdot":"⪾","supdsub":"⫘","supE":"⫆","supe":"⊇","supedot":"⫄","Superset":"⊃","SupersetEqual":"⊇","suphsol":"⟉","suphsub":"⫗","suplarr":"⥻","supmult":"⫂","supnE":"⫌","supne":"⊋","supplus":"⫀","supset":"⊃","Supset":"⋑","supseteq":"⊇","supseteqq":"⫆","supsetneq":"⊋","supsetneqq":"⫌","supsim":"⫈","supsub":"⫔","supsup":"⫖","swarhk":"⤦","swarr":"↙","swArr":"⇙","swarrow":"↙","swnwar":"⤪","szlig":"ß","Tab":"\t","target":"⌖","Tau":"Τ","tau":"τ","tbrk":"⎴","Tcaron":"Ť","tcaron":"ť","Tcedil":"Ţ","tcedil":"ţ","Tcy":"Т","tcy":"т","tdot":"⃛","telrec":"⌕","Tfr":"𝔗","tfr":"𝔱","there4":"∴","therefore":"∴","Therefore":"∴","Theta":"Θ","theta":"θ","thetasym":"ϑ","thetav":"ϑ","thickapprox":"≈","thicksim":"∼","ThickSpace":"  ","ThinSpace":" ","thinsp":" ","thkap":"≈","thksim":"∼","THORN":"Þ","thorn":"þ","tilde":"˜","Tilde":"∼","TildeEqual":"≃","TildeFullEqual":"≅","TildeTilde":"≈","timesbar":"⨱","timesb":"⊠","times":"×","timesd":"⨰","tint":"∭","toea":"⤨","topbot":"⌶","topcir":"⫱","top":"⊤","Topf":"𝕋","topf":"𝕥","topfork":"⫚","tosa":"⤩","tprime":"‴","trade":"™","TRADE":"™","triangle":"▵","triangledown":"▿","triangleleft":"◃","trianglelefteq":"⊴","triangleq":"≜","triangleright":"▹","trianglerighteq":"⊵","tridot":"◬","trie":"≜","triminus":"⨺","TripleDot":"⃛","triplus":"⨹","trisb":"⧍","tritime":"⨻","trpezium":"⏢","Tscr":"𝒯","tscr":"𝓉","TScy":"Ц","tscy":"ц","TSHcy":"Ћ","tshcy":"ћ","Tstrok":"Ŧ","tstrok":"ŧ","twixt":"≬","twoheadleftarrow":"↞","twoheadrightarrow":"↠","Uacute":"Ú","uacute":"ú","uarr":"↑","Uarr":"↟","uArr":"⇑","Uarrocir":"⥉","Ubrcy":"Ў","ubrcy":"ў","Ubreve":"Ŭ","ubreve":"ŭ","Ucirc":"Û","ucirc":"û","Ucy":"У","ucy":"у","udarr":"⇅","Udblac":"Ű","udblac":"ű","udhar":"⥮","ufisht":"⥾","Ufr":"𝔘","ufr":"𝔲","Ugrave":"Ù","ugrave":"ù","uHar":"⥣","uharl":"↿","uharr":"↾","uhblk":"▀","ulcorn":"⌜","ulcorner":"⌜","ulcrop":"⌏","ultri":"◸","Umacr":"Ū","umacr":"ū","uml":"¨","UnderBar":"_","UnderBrace":"⏟","UnderBracket":"⎵","UnderParenthesis":"⏝","Union":"⋃","UnionPlus":"⊎","Uogon":"Ų","uogon":"ų","Uopf":"𝕌","uopf":"𝕦","UpArrowBar":"⤒","uparrow":"↑","UpArrow":"↑","Uparrow":"⇑","UpArrowDownArrow":"⇅","updownarrow":"↕","UpDownArrow":"↕","Updownarrow":"⇕","UpEquilibrium":"⥮","upharpoonleft":"↿","upharpoonright":"↾","uplus":"⊎","UpperLeftArrow":"↖","UpperRightArrow":"↗","upsi":"υ","Upsi":"ϒ","upsih":"ϒ","Upsilon":"Υ","upsilon":"υ","UpTeeArrow":"↥","UpTee":"⊥","upuparrows":"⇈","urcorn":"⌝","urcorner":"⌝","urcrop":"⌎","Uring":"Ů","uring":"ů","urtri":"◹","Uscr":"𝒰","uscr":"𝓊","utdot":"⋰","Utilde":"Ũ","utilde":"ũ","utri":"▵","utrif":"▴","uuarr":"⇈","Uuml":"Ü","uuml":"ü","uwangle":"⦧","vangrt":"⦜","varepsilon":"ϵ","varkappa":"ϰ","varnothing":"∅","varphi":"ϕ","varpi":"ϖ","varpropto":"∝","varr":"↕","vArr":"⇕","varrho":"ϱ","varsigma":"ς","varsubsetneq":"⊊︀","varsubsetneqq":"⫋︀","varsupsetneq":"⊋︀","varsupsetneqq":"⫌︀","vartheta":"ϑ","vartriangleleft":"⊲","vartriangleright":"⊳","vBar":"⫨","Vbar":"⫫","vBarv":"⫩","Vcy":"В","vcy":"в","vdash":"⊢","vDash":"⊨","Vdash":"⊩","VDash":"⊫","Vdashl":"⫦","veebar":"⊻","vee":"∨","Vee":"⋁","veeeq":"≚","vellip":"⋮","verbar":"|","Verbar":"‖","vert":"|","Vert":"‖","VerticalBar":"∣","VerticalLine":"|","VerticalSeparator":"❘","VerticalTilde":"≀","VeryThinSpace":" ","Vfr":"𝔙","vfr":"𝔳","vltri":"⊲","vnsub":"⊂⃒","vnsup":"⊃⃒","Vopf":"𝕍","vopf":"𝕧","vprop":"∝","vrtri":"⊳","Vscr":"𝒱","vscr":"𝓋","vsubnE":"⫋︀","vsubne":"⊊︀","vsupnE":"⫌︀","vsupne":"⊋︀","Vvdash":"⊪","vzigzag":"⦚","Wcirc":"Ŵ","wcirc":"ŵ","wedbar":"⩟","wedge":"∧","Wedge":"⋀","wedgeq":"≙","weierp":"℘","Wfr":"𝔚","wfr":"𝔴","Wopf":"𝕎","wopf":"𝕨","wp":"℘","wr":"≀","wreath":"≀","Wscr":"𝒲","wscr":"𝓌","xcap":"⋂","xcirc":"◯","xcup":"⋃","xdtri":"▽","Xfr":"𝔛","xfr":"𝔵","xharr":"⟷","xhArr":"⟺","Xi":"Ξ","xi":"ξ","xlarr":"⟵","xlArr":"⟸","xmap":"⟼","xnis":"⋻","xodot":"⨀","Xopf":"𝕏","xopf":"𝕩","xoplus":"⨁","xotime":"⨂","xrarr":"⟶","xrArr":"⟹","Xscr":"𝒳","xscr":"𝓍","xsqcup":"⨆","xuplus":"⨄","xutri":"△","xvee":"⋁","xwedge":"⋀","Yacute":"Ý","yacute":"ý","YAcy":"Я","yacy":"я","Ycirc":"Ŷ","ycirc":"ŷ","Ycy":"Ы","ycy":"ы","yen":"¥","Yfr":"𝔜","yfr":"𝔶","YIcy":"Ї","yicy":"ї","Yopf":"𝕐","yopf":"𝕪","Yscr":"𝒴","yscr":"𝓎","YUcy":"Ю","yucy":"ю","yuml":"ÿ","Yuml":"Ÿ","Zacute":"Ź","zacute":"ź","Zcaron":"Ž","zcaron":"ž","Zcy":"З","zcy":"з","Zdot":"Ż","zdot":"ż","zeetrf":"ℨ","ZeroWidthSpace":"​","Zeta":"Ζ","zeta":"ζ","zfr":"𝔷","Zfr":"ℨ","ZHcy":"Ж","zhcy":"ж","zigrarr":"⇝","zopf":"𝕫","Zopf":"ℤ","Zscr":"𝒵","zscr":"𝓏","zwj":"‍","zwnj":"‌"}
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 123 */
@@ -9565,12 +9561,6 @@ module.exports = {"Aacute":"Á","aacute":"á","Abreve":"Ă","abreve":"ă","ac":"
 
 /***/ }),
 /* 124 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9726,7 +9716,7 @@ function createNormalizer() {
 function compile(self) {
 
   // Load & clone RE patterns.
-  var re = self.re = __webpack_require__(126)(self.__opts__);
+  var re = self.re = __webpack_require__(125)(self.__opts__);
 
   // Define dynamic patterns
   var tlds = self.__tlds__.slice();
@@ -9830,8 +9820,9 @@ function compile(self) {
                       .map(escapeRE)
                       .join('|');
   // (?!_) cause 1.5x slowdown
-  self.re.schema_test   = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'i');
-  self.re.schema_search = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
+  self.re.schema_test     = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'i');
+  self.re.schema_search   = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
+  self.re.schema_at_start = RegExp('^' + self.re.schema_search.source, 'i');
 
   self.re.pretest = RegExp(
     '(' + self.re.schema_test.source + ')|(' + self.re.host_fuzzy_test.source + ')|@',
@@ -10146,6 +10137,33 @@ LinkifyIt.prototype.match = function match(text) {
 };
 
 
+/**
+ * LinkifyIt#matchAtStart(text) -> Match|null
+ *
+ * Returns fully-formed (not fuzzy) link if it starts at the beginning
+ * of the string, and null otherwise.
+ **/
+LinkifyIt.prototype.matchAtStart = function matchAtStart(text) {
+  // Reset scan cache
+  this.__text_cache__ = text;
+  this.__index__      = -1;
+
+  if (!text.length) return null;
+
+  var m = this.re.schema_at_start.exec(text);
+  if (!m) return null;
+
+  var len = this.testSchemaAt(text, m[2], m[0].length);
+  if (!len) return null;
+
+  this.__schema__     = m[2];
+  this.__index__      = m.index + m[1].length;
+  this.__last_index__ = m.index + m[0].length + len;
+
+  return createMatch(this, 0);
+};
+
+
 /** chainable
  * LinkifyIt#tlds(list [, keepOld]) -> this
  * - list (Array): list of tlds
@@ -10213,7 +10231,7 @@ module.exports = LinkifyIt;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10222,6 +10240,7 @@ module.exports = LinkifyIt;
 
 module.exports = function (opts) {
   var re = {};
+  opts = opts || {};
 
   // Use direct extract instead of `regenerate` to reduse browserified size
   re.src_Any = __webpack_require__(68).source;
@@ -10261,36 +10280,39 @@ module.exports = function (opts) {
 
   re.src_host_terminator =
 
-    '(?=$|' + text_separators + '|' + re.src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
+    '(?=$|' + text_separators + '|' + re.src_ZPCc + ')' +
+    '(?!' + (opts['---'] ? '-(?!--)|' : '-|') + '_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
 
   re.src_path =
 
     '(?:' +
       '[/?#]' +
         '(?:' +
-          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-]).|' +
+          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-;]).|' +
           '\\[(?:(?!' + re.src_ZCc + '|\\]).)*\\]|' +
           '\\((?:(?!' + re.src_ZCc + '|[)]).)*\\)|' +
           '\\{(?:(?!' + re.src_ZCc + '|[}]).)*\\}|' +
           '\\"(?:(?!' + re.src_ZCc + '|["]).)+\\"|' +
           "\\'(?:(?!" + re.src_ZCc + "|[']).)+\\'|" +
-          "\\'(?=" + re.src_pseudo_letter + '|[-]).|' +  // allow `I'm_king` if no pair found
-          '\\.{2,4}[a-zA-Z0-9%/]|' + // github has ... in commit range links,
-                                     // google has .... in links (issue #66)
+          "\\'(?=" + re.src_pseudo_letter + '|[-])|' +  // allow `I'm_king` if no pair found
+          '\\.{2,}[a-zA-Z0-9%/&]|' + // google has many dots in "google search" links (#66, #81).
+                                     // github has ... in commit range links,
                                      // Restrict to
                                      // - english
                                      // - percent-encoded
                                      // - parts of file path
+                                     // - params separator
                                      // until more examples found.
-          '\\.(?!' + re.src_ZCc + '|[.]).|' +
-          (opts && opts['---'] ?
+          '\\.(?!' + re.src_ZCc + '|[.]|$)|' +
+          (opts['---'] ?
             '\\-(?!--(?:[^-]|$))(?:-*)|' // `---` => long dash, terminate
             :
             '\\-+|'
           ) +
-          '\\,(?!' + re.src_ZCc + ').|' +      // allow `,,,` in paths
-          '\\!(?!' + re.src_ZCc + '|[!]).|' +
-          '\\?(?!' + re.src_ZCc + '|[?]).' +
+          ',(?!' + re.src_ZCc + '|$)|' +       // allow `,,,` in paths
+          ';(?!' + re.src_ZCc + '|$)|' +       // allow `;` if not followed by space-like char
+          '\\!+(?!' + re.src_ZCc + '|[!]|$)|' +  // allow `!!!` in paths, but not at the end
+          '\\?(?!' + re.src_ZCc + '|[?]|$)' +
         ')+' +
       '|\\/' +
     ')?';
@@ -10399,7 +10421,7 @@ module.exports = function (opts) {
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10554,7 +10576,7 @@ module.exports = function sub_plugin(md) {
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports) {
 
 var __defProp = Object.defineProperty;
@@ -10684,7 +10706,7 @@ var src_default = colorPlugin;
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10695,18 +10717,20 @@ var src_default = colorPlugin;
 
 module.exports = function container_plugin(md, name, options) {
 
-  function validateDefault(params) {
+  // Second param may be useful if you decide
+  // to increase minimal allowed marker length
+  function validateDefault(params/*, markup*/) {
     return params.trim().split(' ', 2)[0] === name;
   }
 
-  function renderDefault(tokens, idx, _options, env, self) {
+  function renderDefault(tokens, idx, _options, env, slf) {
 
     // add a class to the opening tag
     if (tokens[idx].nesting === 1) {
-      tokens[idx].attrPush([ 'class', name ]);
+      tokens[idx].attrJoin('class', name);
     }
 
-    return self.renderToken(tokens, idx, _options, env, self);
+    return slf.renderToken(tokens, idx, _options, env, slf);
   }
 
   options = options || {};
@@ -10744,7 +10768,7 @@ module.exports = function container_plugin(md, name, options) {
 
     markup = state.src.slice(start, pos);
     params = state.src.slice(pos, max);
-    if (!validate(params)) { return false; }
+    if (!validate(params, markup)) { return false; }
 
     // Since start is found, we can report success here in validation mode
     //
@@ -10834,7 +10858,7 @@ module.exports = function container_plugin(md, name, options) {
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11064,7 +11088,39 @@ module.exports = function deflist_plugin(md) {
   }
 
 
-  md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference' ] });
+  md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference', 'blockquote' ] });
+};
+
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var emoji_html        = __webpack_require__(135);
+var emoji_replace     = __webpack_require__(136);
+var normalize_opts    = __webpack_require__(134);
+
+
+module.exports = function emoji_plugin(md, options) {
+  var defaults = {
+    defs: {},
+    shortcuts: {},
+    enabled: []
+  };
+
+  var opts = normalize_opts(md.utils.assign({}, defaults, options || {}));
+
+  md.renderer.rules.emoji = emoji_html;
+
+  md.core.ruler.after(
+    'linkify',
+    'emoji',
+    emoji_replace(md, opts.defs, opts.shortcuts, opts.scanRE, opts.replaceRE)
+  );
 };
 
 
@@ -11078,9 +11134,7 @@ module.exports = function deflist_plugin(md) {
 
 var emojies_defs      = __webpack_require__(132);
 var emojies_shortcuts = __webpack_require__(133);
-var emoji_html        = __webpack_require__(135);
-var emoji_replace     = __webpack_require__(136);
-var normalize_opts    = __webpack_require__(134);
+var bare_emoji_plugin = __webpack_require__(130);
 
 
 module.exports = function emoji_plugin(md, options) {
@@ -11090,11 +11144,9 @@ module.exports = function emoji_plugin(md, options) {
     enabled: []
   };
 
-  var opts = normalize_opts(md.utils.assign({}, defaults, options || {}));
+  var opts = md.utils.assign({}, defaults, options || {});
 
-  md.renderer.rules.emoji = emoji_html;
-
-  md.core.ruler.push('emoji', emoji_replace(md, opts.defs, opts.shortcuts, opts.scanRE, opts.replaceRE));
+  bare_emoji_plugin(md, opts);
 };
 
 
@@ -11102,7 +11154,7 @@ module.exports = function emoji_plugin(md, options) {
 /* 132 */
 /***/ (function(module, exports) {
 
-module.exports = {"100":"💯","1234":"🔢","grinning":"😀","smiley":"😃","smile":"😄","grin":"😁","laughing":"😆","satisfied":"😆","sweat_smile":"😅","joy":"😂","rofl":"🤣","relaxed":"☺️","blush":"😊","innocent":"😇","slightly_smiling_face":"🙂","upside_down_face":"🙃","wink":"😉","relieved":"😌","heart_eyes":"😍","kissing_heart":"😘","kissing":"😗","kissing_smiling_eyes":"😙","kissing_closed_eyes":"😚","yum":"😋","stuck_out_tongue_winking_eye":"😜","stuck_out_tongue_closed_eyes":"😝","stuck_out_tongue":"😛","money_mouth_face":"🤑","hugs":"🤗","nerd_face":"🤓","sunglasses":"😎","clown_face":"🤡","cowboy_hat_face":"🤠","smirk":"😏","unamused":"😒","disappointed":"😞","pensive":"😔","worried":"😟","confused":"😕","slightly_frowning_face":"🙁","frowning_face":"☹️","persevere":"😣","confounded":"😖","tired_face":"😫","weary":"😩","triumph":"😤","angry":"😠","rage":"😡","pout":"😡","no_mouth":"😶","neutral_face":"😐","expressionless":"😑","hushed":"😯","frowning":"😦","anguished":"😧","open_mouth":"😮","astonished":"😲","dizzy_face":"😵","flushed":"😳","scream":"😱","fearful":"😨","cold_sweat":"😰","cry":"😢","disappointed_relieved":"😥","drooling_face":"🤤","sob":"😭","sweat":"😓","sleepy":"😪","sleeping":"😴","roll_eyes":"🙄","thinking":"🤔","lying_face":"🤥","grimacing":"😬","zipper_mouth_face":"🤐","nauseated_face":"🤢","sneezing_face":"🤧","mask":"😷","face_with_thermometer":"🤒","face_with_head_bandage":"🤕","smiling_imp":"😈","imp":"👿","japanese_ogre":"👹","japanese_goblin":"👺","hankey":"💩","poop":"💩","shit":"💩","ghost":"👻","skull":"💀","skull_and_crossbones":"☠️","alien":"👽","space_invader":"👾","robot":"🤖","jack_o_lantern":"🎃","smiley_cat":"😺","smile_cat":"😸","joy_cat":"😹","heart_eyes_cat":"😻","smirk_cat":"😼","kissing_cat":"😽","scream_cat":"🙀","crying_cat_face":"😿","pouting_cat":"😾","open_hands":"👐","raised_hands":"🙌","clap":"👏","pray":"🙏","handshake":"🤝","+1":"👍","thumbsup":"👍","-1":"👎","thumbsdown":"👎","fist_oncoming":"👊","facepunch":"👊","punch":"👊","fist_raised":"✊","fist":"✊","fist_left":"🤛","fist_right":"🤜","crossed_fingers":"🤞","v":"✌️","metal":"🤘","ok_hand":"👌","point_left":"👈","point_right":"👉","point_up_2":"👆","point_down":"👇","point_up":"☝️","hand":"✋","raised_hand":"✋","raised_back_of_hand":"🤚","raised_hand_with_fingers_splayed":"🖐","vulcan_salute":"🖖","wave":"👋","call_me_hand":"🤙","muscle":"💪","middle_finger":"🖕","fu":"🖕","writing_hand":"✍️","selfie":"🤳","nail_care":"💅","ring":"💍","lipstick":"💄","kiss":"💋","lips":"👄","tongue":"👅","ear":"👂","nose":"👃","footprints":"👣","eye":"👁","eyes":"👀","speaking_head":"🗣","bust_in_silhouette":"👤","busts_in_silhouette":"👥","baby":"👶","boy":"👦","girl":"👧","man":"👨","woman":"👩","blonde_woman":"👱‍♀","blonde_man":"👱","person_with_blond_hair":"👱","older_man":"👴","older_woman":"👵","man_with_gua_pi_mao":"👲","woman_with_turban":"👳‍♀","man_with_turban":"👳","policewoman":"👮‍♀","policeman":"👮","cop":"👮","construction_worker_woman":"👷‍♀","construction_worker_man":"👷","construction_worker":"👷","guardswoman":"💂‍♀","guardsman":"💂","female_detective":"🕵️‍♀️","male_detective":"🕵","detective":"🕵","woman_health_worker":"👩‍⚕","man_health_worker":"👨‍⚕","woman_farmer":"👩‍🌾","man_farmer":"👨‍🌾","woman_cook":"👩‍🍳","man_cook":"👨‍🍳","woman_student":"👩‍🎓","man_student":"👨‍🎓","woman_singer":"👩‍🎤","man_singer":"👨‍🎤","woman_teacher":"👩‍🏫","man_teacher":"👨‍🏫","woman_factory_worker":"👩‍🏭","man_factory_worker":"👨‍🏭","woman_technologist":"👩‍💻","man_technologist":"👨‍💻","woman_office_worker":"👩‍💼","man_office_worker":"👨‍💼","woman_mechanic":"👩‍🔧","man_mechanic":"👨‍🔧","woman_scientist":"👩‍🔬","man_scientist":"👨‍🔬","woman_artist":"👩‍🎨","man_artist":"👨‍🎨","woman_firefighter":"👩‍🚒","man_firefighter":"👨‍🚒","woman_pilot":"👩‍✈","man_pilot":"👨‍✈","woman_astronaut":"👩‍🚀","man_astronaut":"👨‍🚀","woman_judge":"👩‍⚖","man_judge":"👨‍⚖","mrs_claus":"🤶","santa":"🎅","princess":"👸","prince":"🤴","bride_with_veil":"👰","man_in_tuxedo":"🤵","angel":"👼","pregnant_woman":"🤰","bowing_woman":"🙇‍♀","bowing_man":"🙇","bow":"🙇","tipping_hand_woman":"💁","information_desk_person":"💁","sassy_woman":"💁","tipping_hand_man":"💁‍♂","sassy_man":"💁‍♂","no_good_woman":"🙅","no_good":"🙅","ng_woman":"🙅","no_good_man":"🙅‍♂","ng_man":"🙅‍♂","ok_woman":"🙆","ok_man":"🙆‍♂","raising_hand_woman":"🙋","raising_hand":"🙋","raising_hand_man":"🙋‍♂","woman_facepalming":"🤦‍♀","man_facepalming":"🤦‍♂","woman_shrugging":"🤷‍♀","man_shrugging":"🤷‍♂","pouting_woman":"🙎","person_with_pouting_face":"🙎","pouting_man":"🙎‍♂","frowning_woman":"🙍","person_frowning":"🙍","frowning_man":"🙍‍♂","haircut_woman":"💇","haircut":"💇","haircut_man":"💇‍♂","massage_woman":"💆","massage":"💆","massage_man":"💆‍♂","business_suit_levitating":"🕴","dancer":"💃","man_dancing":"🕺","dancing_women":"👯","dancers":"👯","dancing_men":"👯‍♂","walking_woman":"🚶‍♀","walking_man":"🚶","walking":"🚶","running_woman":"🏃‍♀","running_man":"🏃","runner":"🏃","running":"🏃","couple":"👫","two_women_holding_hands":"👭","two_men_holding_hands":"👬","couple_with_heart_woman_man":"💑","couple_with_heart":"💑","couple_with_heart_woman_woman":"👩‍❤️‍👩","couple_with_heart_man_man":"👨‍❤️‍👨","couplekiss_man_woman":"💏","couplekiss_woman_woman":"👩‍❤️‍💋‍👩","couplekiss_man_man":"👨‍❤️‍💋‍👨","family_man_woman_boy":"👪","family":"👪","family_man_woman_girl":"👨‍👩‍👧","family_man_woman_girl_boy":"👨‍👩‍👧‍👦","family_man_woman_boy_boy":"👨‍👩‍👦‍👦","family_man_woman_girl_girl":"👨‍👩‍👧‍👧","family_woman_woman_boy":"👩‍👩‍👦","family_woman_woman_girl":"👩‍👩‍👧","family_woman_woman_girl_boy":"👩‍👩‍👧‍👦","family_woman_woman_boy_boy":"👩‍👩‍👦‍👦","family_woman_woman_girl_girl":"👩‍👩‍👧‍👧","family_man_man_boy":"👨‍👨‍👦","family_man_man_girl":"👨‍👨‍👧","family_man_man_girl_boy":"👨‍👨‍👧‍👦","family_man_man_boy_boy":"👨‍👨‍👦‍👦","family_man_man_girl_girl":"👨‍👨‍👧‍👧","family_woman_boy":"👩‍👦","family_woman_girl":"👩‍👧","family_woman_girl_boy":"👩‍👧‍👦","family_woman_boy_boy":"👩‍👦‍👦","family_woman_girl_girl":"👩‍👧‍👧","family_man_boy":"👨‍👦","family_man_girl":"👨‍👧","family_man_girl_boy":"👨‍👧‍👦","family_man_boy_boy":"👨‍👦‍👦","family_man_girl_girl":"👨‍👧‍👧","womans_clothes":"👚","shirt":"👕","tshirt":"👕","jeans":"👖","necktie":"👔","dress":"👗","bikini":"👙","kimono":"👘","high_heel":"👠","sandal":"👡","boot":"👢","mans_shoe":"👞","shoe":"👞","athletic_shoe":"👟","womans_hat":"👒","tophat":"🎩","mortar_board":"🎓","crown":"👑","rescue_worker_helmet":"⛑","school_satchel":"🎒","pouch":"👝","purse":"👛","handbag":"👜","briefcase":"💼","eyeglasses":"👓","dark_sunglasses":"🕶","closed_umbrella":"🌂","open_umbrella":"☂️","dog":"🐶","cat":"🐱","mouse":"🐭","hamster":"🐹","rabbit":"🐰","fox_face":"🦊","bear":"🐻","panda_face":"🐼","koala":"🐨","tiger":"🐯","lion":"🦁","cow":"🐮","pig":"🐷","pig_nose":"🐽","frog":"🐸","monkey_face":"🐵","see_no_evil":"🙈","hear_no_evil":"🙉","speak_no_evil":"🙊","monkey":"🐒","chicken":"🐔","penguin":"🐧","bird":"🐦","baby_chick":"🐤","hatching_chick":"🐣","hatched_chick":"🐥","duck":"🦆","eagle":"🦅","owl":"🦉","bat":"🦇","wolf":"🐺","boar":"🐗","horse":"🐴","unicorn":"🦄","bee":"🐝","honeybee":"🐝","bug":"🐛","butterfly":"🦋","snail":"🐌","shell":"🐚","beetle":"🐞","ant":"🐜","spider":"🕷","spider_web":"🕸","turtle":"🐢","snake":"🐍","lizard":"🦎","scorpion":"🦂","crab":"🦀","squid":"🦑","octopus":"🐙","shrimp":"🦐","tropical_fish":"🐠","fish":"🐟","blowfish":"🐡","dolphin":"🐬","flipper":"🐬","shark":"🦈","whale":"🐳","whale2":"🐋","crocodile":"🐊","leopard":"🐆","tiger2":"🐅","water_buffalo":"🐃","ox":"🐂","cow2":"🐄","deer":"🦌","dromedary_camel":"🐪","camel":"🐫","elephant":"🐘","rhinoceros":"🦏","gorilla":"🦍","racehorse":"🐎","pig2":"🐖","goat":"🐐","ram":"🐏","sheep":"🐑","dog2":"🐕","poodle":"🐩","cat2":"🐈","rooster":"🐓","turkey":"🦃","dove":"🕊","rabbit2":"🐇","mouse2":"🐁","rat":"🐀","chipmunk":"🐿","feet":"🐾","paw_prints":"🐾","dragon":"🐉","dragon_face":"🐲","cactus":"🌵","christmas_tree":"🎄","evergreen_tree":"🌲","deciduous_tree":"🌳","palm_tree":"🌴","seedling":"🌱","herb":"🌿","shamrock":"☘️","four_leaf_clover":"🍀","bamboo":"🎍","tanabata_tree":"🎋","leaves":"🍃","fallen_leaf":"🍂","maple_leaf":"🍁","mushroom":"🍄","ear_of_rice":"🌾","bouquet":"💐","tulip":"🌷","rose":"🌹","wilted_flower":"🥀","sunflower":"🌻","blossom":"🌼","cherry_blossom":"🌸","hibiscus":"🌺","earth_americas":"🌎","earth_africa":"🌍","earth_asia":"🌏","full_moon":"🌕","waning_gibbous_moon":"🌖","last_quarter_moon":"🌗","waning_crescent_moon":"🌘","new_moon":"🌑","waxing_crescent_moon":"🌒","first_quarter_moon":"🌓","moon":"🌔","waxing_gibbous_moon":"🌔","new_moon_with_face":"🌚","full_moon_with_face":"🌝","sun_with_face":"🌞","first_quarter_moon_with_face":"🌛","last_quarter_moon_with_face":"🌜","crescent_moon":"🌙","dizzy":"💫","star":"⭐️","star2":"🌟","sparkles":"✨","zap":"⚡️","fire":"🔥","boom":"💥","collision":"💥","comet":"☄","sunny":"☀️","sun_behind_small_cloud":"🌤","partly_sunny":"⛅️","sun_behind_large_cloud":"🌥","sun_behind_rain_cloud":"🌦","rainbow":"🌈","cloud":"☁️","cloud_with_rain":"🌧","cloud_with_lightning_and_rain":"⛈","cloud_with_lightning":"🌩","cloud_with_snow":"🌨","snowman_with_snow":"☃️","snowman":"⛄️","snowflake":"❄️","wind_face":"🌬","dash":"💨","tornado":"🌪","fog":"🌫","ocean":"🌊","droplet":"💧","sweat_drops":"💦","umbrella":"☔️","green_apple":"🍏","apple":"🍎","pear":"🍐","tangerine":"🍊","orange":"🍊","mandarin":"🍊","lemon":"🍋","banana":"🍌","watermelon":"🍉","grapes":"🍇","strawberry":"🍓","melon":"🍈","cherries":"🍒","peach":"🍑","pineapple":"🍍","kiwi_fruit":"🥝","avocado":"🥑","tomato":"🍅","eggplant":"🍆","cucumber":"🥒","carrot":"🥕","corn":"🌽","hot_pepper":"🌶","potato":"🥔","sweet_potato":"🍠","chestnut":"🌰","peanuts":"🥜","honey_pot":"🍯","croissant":"🥐","bread":"🍞","baguette_bread":"🥖","cheese":"🧀","egg":"🥚","fried_egg":"🍳","bacon":"🥓","pancakes":"🥞","fried_shrimp":"🍤","poultry_leg":"🍗","meat_on_bone":"🍖","pizza":"🍕","hotdog":"🌭","hamburger":"🍔","fries":"🍟","stuffed_flatbread":"🥙","taco":"🌮","burrito":"🌯","green_salad":"🥗","shallow_pan_of_food":"🥘","spaghetti":"🍝","ramen":"🍜","stew":"🍲","fish_cake":"🍥","sushi":"🍣","bento":"🍱","curry":"🍛","rice":"🍚","rice_ball":"🍙","rice_cracker":"🍘","oden":"🍢","dango":"🍡","shaved_ice":"🍧","ice_cream":"🍨","icecream":"🍦","cake":"🍰","birthday":"🎂","custard":"🍮","lollipop":"🍭","candy":"🍬","chocolate_bar":"🍫","popcorn":"🍿","doughnut":"🍩","cookie":"🍪","milk_glass":"🥛","baby_bottle":"🍼","coffee":"☕️","tea":"🍵","sake":"🍶","beer":"🍺","beers":"🍻","clinking_glasses":"🥂","wine_glass":"🍷","tumbler_glass":"🥃","cocktail":"🍸","tropical_drink":"🍹","champagne":"🍾","spoon":"🥄","fork_and_knife":"🍴","plate_with_cutlery":"🍽","soccer":"⚽️","basketball":"🏀","football":"🏈","baseball":"⚾️","tennis":"🎾","volleyball":"🏐","rugby_football":"🏉","8ball":"🎱","ping_pong":"🏓","badminton":"🏸","goal_net":"🥅","ice_hockey":"🏒","field_hockey":"🏑","cricket":"🏏","golf":"⛳️","bow_and_arrow":"🏹","fishing_pole_and_fish":"🎣","boxing_glove":"🥊","martial_arts_uniform":"🥋","ice_skate":"⛸","ski":"🎿","skier":"⛷","snowboarder":"🏂","weight_lifting_woman":"🏋️‍♀️","weight_lifting_man":"🏋","person_fencing":"🤺","women_wrestling":"🤼‍♀","men_wrestling":"🤼‍♂","woman_cartwheeling":"🤸‍♀","man_cartwheeling":"🤸‍♂","basketball_woman":"⛹️‍♀️","basketball_man":"⛹","woman_playing_handball":"🤾‍♀","man_playing_handball":"🤾‍♂","golfing_woman":"🏌️‍♀️","golfing_man":"🏌","surfing_woman":"🏄‍♀","surfing_man":"🏄","surfer":"🏄","swimming_woman":"🏊‍♀","swimming_man":"🏊","swimmer":"🏊","woman_playing_water_polo":"🤽‍♀","man_playing_water_polo":"🤽‍♂","rowing_woman":"🚣‍♀","rowing_man":"🚣","rowboat":"🚣","horse_racing":"🏇","biking_woman":"🚴‍♀","biking_man":"🚴","bicyclist":"🚴","mountain_biking_woman":"🚵‍♀","mountain_biking_man":"🚵","mountain_bicyclist":"🚵","running_shirt_with_sash":"🎽","medal_sports":"🏅","medal_military":"🎖","1st_place_medal":"🥇","2nd_place_medal":"🥈","3rd_place_medal":"🥉","trophy":"🏆","rosette":"🏵","reminder_ribbon":"🎗","ticket":"🎫","tickets":"🎟","circus_tent":"🎪","woman_juggling":"🤹‍♀","man_juggling":"🤹‍♂","performing_arts":"🎭","art":"🎨","clapper":"🎬","microphone":"🎤","headphones":"🎧","musical_score":"🎼","musical_keyboard":"🎹","drum":"🥁","saxophone":"🎷","trumpet":"🎺","guitar":"🎸","violin":"🎻","game_die":"🎲","dart":"🎯","bowling":"🎳","video_game":"🎮","slot_machine":"🎰","car":"🚗","red_car":"🚗","taxi":"🚕","blue_car":"🚙","bus":"🚌","trolleybus":"🚎","racing_car":"🏎","police_car":"🚓","ambulance":"🚑","fire_engine":"🚒","minibus":"🚐","truck":"🚚","articulated_lorry":"🚛","tractor":"🚜","kick_scooter":"🛴","bike":"🚲","motor_scooter":"🛵","motorcycle":"🏍","rotating_light":"🚨","oncoming_police_car":"🚔","oncoming_bus":"🚍","oncoming_automobile":"🚘","oncoming_taxi":"🚖","aerial_tramway":"🚡","mountain_cableway":"🚠","suspension_railway":"🚟","railway_car":"🚃","train":"🚋","mountain_railway":"🚞","monorail":"🚝","bullettrain_side":"🚄","bullettrain_front":"🚅","light_rail":"🚈","steam_locomotive":"🚂","train2":"🚆","metro":"🚇","tram":"🚊","station":"🚉","helicopter":"🚁","small_airplane":"🛩","airplane":"✈️","flight_departure":"🛫","flight_arrival":"🛬","rocket":"🚀","artificial_satellite":"🛰","seat":"💺","canoe":"🛶","boat":"⛵️","sailboat":"⛵️","motor_boat":"🛥","speedboat":"🚤","passenger_ship":"🛳","ferry":"⛴","ship":"🚢","anchor":"⚓️","construction":"🚧","fuelpump":"⛽️","busstop":"🚏","vertical_traffic_light":"🚦","traffic_light":"🚥","world_map":"🗺","moyai":"🗿","statue_of_liberty":"🗽","fountain":"⛲️","tokyo_tower":"🗼","european_castle":"🏰","japanese_castle":"🏯","stadium":"🏟","ferris_wheel":"🎡","roller_coaster":"🎢","carousel_horse":"🎠","parasol_on_ground":"⛱","beach_umbrella":"🏖","desert_island":"🏝","mountain":"⛰","mountain_snow":"🏔","mount_fuji":"🗻","volcano":"🌋","desert":"🏜","camping":"🏕","tent":"⛺️","railway_track":"🛤","motorway":"🛣","building_construction":"🏗","factory":"🏭","house":"🏠","house_with_garden":"🏡","houses":"🏘","derelict_house":"🏚","office":"🏢","department_store":"🏬","post_office":"🏣","european_post_office":"🏤","hospital":"🏥","bank":"🏦","hotel":"🏨","convenience_store":"🏪","school":"🏫","love_hotel":"🏩","wedding":"💒","classical_building":"🏛","church":"⛪️","mosque":"🕌","synagogue":"🕍","kaaba":"🕋","shinto_shrine":"⛩","japan":"🗾","rice_scene":"🎑","national_park":"🏞","sunrise":"🌅","sunrise_over_mountains":"🌄","stars":"🌠","sparkler":"🎇","fireworks":"🎆","city_sunrise":"🌇","city_sunset":"🌆","cityscape":"🏙","night_with_stars":"🌃","milky_way":"🌌","bridge_at_night":"🌉","foggy":"🌁","watch":"⌚️","iphone":"📱","calling":"📲","computer":"💻","keyboard":"⌨️","desktop_computer":"🖥","printer":"🖨","computer_mouse":"🖱","trackball":"🖲","joystick":"🕹","clamp":"🗜","minidisc":"💽","floppy_disk":"💾","cd":"💿","dvd":"📀","vhs":"📼","camera":"📷","camera_flash":"📸","video_camera":"📹","movie_camera":"🎥","film_projector":"📽","film_strip":"🎞","telephone_receiver":"📞","phone":"☎️","telephone":"☎️","pager":"📟","fax":"📠","tv":"📺","radio":"📻","studio_microphone":"🎙","level_slider":"🎚","control_knobs":"🎛","stopwatch":"⏱","timer_clock":"⏲","alarm_clock":"⏰","mantelpiece_clock":"🕰","hourglass":"⌛️","hourglass_flowing_sand":"⏳","satellite":"📡","battery":"🔋","electric_plug":"🔌","bulb":"💡","flashlight":"🔦","candle":"🕯","wastebasket":"🗑","oil_drum":"🛢","money_with_wings":"💸","dollar":"💵","yen":"💴","euro":"💶","pound":"💷","moneybag":"💰","credit_card":"💳","gem":"💎","balance_scale":"⚖️","wrench":"🔧","hammer":"🔨","hammer_and_pick":"⚒","hammer_and_wrench":"🛠","pick":"⛏","nut_and_bolt":"🔩","gear":"⚙️","chains":"⛓","gun":"🔫","bomb":"💣","hocho":"🔪","knife":"🔪","dagger":"🗡","crossed_swords":"⚔️","shield":"🛡","smoking":"🚬","coffin":"⚰️","funeral_urn":"⚱️","amphora":"🏺","crystal_ball":"🔮","prayer_beads":"📿","barber":"💈","alembic":"⚗️","telescope":"🔭","microscope":"🔬","hole":"🕳","pill":"💊","syringe":"💉","thermometer":"🌡","toilet":"🚽","potable_water":"🚰","shower":"🚿","bathtub":"🛁","bath":"🛀","bellhop_bell":"🛎","key":"🔑","old_key":"🗝","door":"🚪","couch_and_lamp":"🛋","bed":"🛏","sleeping_bed":"🛌","framed_picture":"🖼","shopping":"🛍","shopping_cart":"🛒","gift":"🎁","balloon":"🎈","flags":"🎏","ribbon":"🎀","confetti_ball":"🎊","tada":"🎉","dolls":"🎎","izakaya_lantern":"🏮","lantern":"🏮","wind_chime":"🎐","email":"✉️","envelope":"✉️","envelope_with_arrow":"📩","incoming_envelope":"📨","e-mail":"📧","love_letter":"💌","inbox_tray":"📥","outbox_tray":"📤","package":"📦","label":"🏷","mailbox_closed":"📪","mailbox":"📫","mailbox_with_mail":"📬","mailbox_with_no_mail":"📭","postbox":"📮","postal_horn":"📯","scroll":"📜","page_with_curl":"📃","page_facing_up":"📄","bookmark_tabs":"📑","bar_chart":"📊","chart_with_upwards_trend":"📈","chart_with_downwards_trend":"📉","spiral_notepad":"🗒","spiral_calendar":"🗓","calendar":"📆","date":"📅","card_index":"📇","card_file_box":"🗃","ballot_box":"🗳","file_cabinet":"🗄","clipboard":"📋","file_folder":"📁","open_file_folder":"📂","card_index_dividers":"🗂","newspaper_roll":"🗞","newspaper":"📰","notebook":"📓","notebook_with_decorative_cover":"📔","ledger":"📒","closed_book":"📕","green_book":"📗","blue_book":"📘","orange_book":"📙","books":"📚","book":"📖","open_book":"📖","bookmark":"🔖","link":"🔗","paperclip":"📎","paperclips":"🖇","triangular_ruler":"📐","straight_ruler":"📏","pushpin":"📌","round_pushpin":"📍","scissors":"✂️","pen":"🖊","fountain_pen":"🖋","black_nib":"✒️","paintbrush":"🖌","crayon":"🖍","memo":"📝","pencil":"📝","pencil2":"✏️","mag":"🔍","mag_right":"🔎","lock_with_ink_pen":"🔏","closed_lock_with_key":"🔐","lock":"🔒","unlock":"🔓","heart":"❤️","yellow_heart":"💛","green_heart":"💚","blue_heart":"💙","purple_heart":"💜","black_heart":"🖤","broken_heart":"💔","heavy_heart_exclamation":"❣️","two_hearts":"💕","revolving_hearts":"💞","heartbeat":"💓","heartpulse":"💗","sparkling_heart":"💖","cupid":"💘","gift_heart":"💝","heart_decoration":"💟","peace_symbol":"☮️","latin_cross":"✝️","star_and_crescent":"☪️","om":"🕉","wheel_of_dharma":"☸️","star_of_david":"✡️","six_pointed_star":"🔯","menorah":"🕎","yin_yang":"☯️","orthodox_cross":"☦️","place_of_worship":"🛐","ophiuchus":"⛎","aries":"♈️","taurus":"♉️","gemini":"♊️","cancer":"♋️","leo":"♌️","virgo":"♍️","libra":"♎️","scorpius":"♏️","sagittarius":"♐️","capricorn":"♑️","aquarius":"♒️","pisces":"♓️","id":"🆔","atom_symbol":"⚛️","accept":"🉑","radioactive":"☢️","biohazard":"☣️","mobile_phone_off":"📴","vibration_mode":"📳","eight_pointed_black_star":"✴️","vs":"🆚","white_flower":"💮","ideograph_advantage":"🉐","secret":"㊙️","congratulations":"㊗️","u6e80":"🈵","a":"🅰️","b":"🅱️","ab":"🆎","cl":"🆑","o2":"🅾️","sos":"🆘","x":"❌","o":"⭕️","stop_sign":"🛑","no_entry":"⛔️","name_badge":"📛","no_entry_sign":"🚫","anger":"💢","hotsprings":"♨️","no_pedestrians":"🚷","do_not_litter":"🚯","no_bicycles":"🚳","non-potable_water":"🚱","underage":"🔞","no_mobile_phones":"📵","no_smoking":"🚭","exclamation":"❗️","heavy_exclamation_mark":"❗️","grey_exclamation":"❕","question":"❓","grey_question":"❔","bangbang":"‼️","interrobang":"⁉️","low_brightness":"🔅","high_brightness":"🔆","part_alternation_mark":"〽️","warning":"⚠️","children_crossing":"🚸","trident":"🔱","fleur_de_lis":"⚜️","beginner":"🔰","recycle":"♻️","white_check_mark":"✅","chart":"💹","sparkle":"❇️","eight_spoked_asterisk":"✳️","negative_squared_cross_mark":"❎","globe_with_meridians":"🌐","diamond_shape_with_a_dot_inside":"💠","m":"Ⓜ️","cyclone":"🌀","zzz":"💤","atm":"🏧","wc":"🚾","wheelchair":"♿️","parking":"🅿️","sa":"🈂️","passport_control":"🛂","customs":"🛃","baggage_claim":"🛄","left_luggage":"🛅","mens":"🚹","womens":"🚺","baby_symbol":"🚼","restroom":"🚻","put_litter_in_its_place":"🚮","cinema":"🎦","signal_strength":"📶","koko":"🈁","symbols":"🔣","information_source":"ℹ️","abc":"🔤","abcd":"🔡","capital_abcd":"🔠","ng":"🆖","ok":"🆗","up":"🆙","cool":"🆒","new":"🆕","free":"🆓","zero":"0️⃣","one":"1️⃣","two":"2️⃣","three":"3️⃣","four":"4️⃣","five":"5️⃣","six":"6️⃣","seven":"7️⃣","eight":"8️⃣","nine":"9️⃣","keycap_ten":"🔟","hash":"#️⃣","asterisk":"*️⃣","arrow_forward":"▶️","pause_button":"⏸","play_or_pause_button":"⏯","stop_button":"⏹","record_button":"⏺","next_track_button":"⏭","previous_track_button":"⏮","fast_forward":"⏩","rewind":"⏪","arrow_double_up":"⏫","arrow_double_down":"⏬","arrow_backward":"◀️","arrow_up_small":"🔼","arrow_down_small":"🔽","arrow_right":"➡️","arrow_left":"⬅️","arrow_up":"⬆️","arrow_down":"⬇️","arrow_upper_right":"↗️","arrow_lower_right":"↘️","arrow_lower_left":"↙️","arrow_upper_left":"↖️","arrow_up_down":"↕️","left_right_arrow":"↔️","arrow_right_hook":"↪️","leftwards_arrow_with_hook":"↩️","arrow_heading_up":"⤴️","arrow_heading_down":"⤵️","twisted_rightwards_arrows":"🔀","repeat":"🔁","repeat_one":"🔂","arrows_counterclockwise":"🔄","arrows_clockwise":"🔃","musical_note":"🎵","notes":"🎶","heavy_plus_sign":"➕","heavy_minus_sign":"➖","heavy_division_sign":"➗","heavy_multiplication_x":"✖️","heavy_dollar_sign":"💲","currency_exchange":"💱","tm":"™️","copyright":"©️","registered":"®️","wavy_dash":"〰️","curly_loop":"➰","loop":"➿","end":"🔚","back":"🔙","on":"🔛","top":"🔝","soon":"🔜","heavy_check_mark":"✔️","ballot_box_with_check":"☑️","radio_button":"🔘","white_circle":"⚪️","black_circle":"⚫️","red_circle":"🔴","large_blue_circle":"🔵","small_red_triangle":"🔺","small_red_triangle_down":"🔻","small_orange_diamond":"🔸","small_blue_diamond":"🔹","large_orange_diamond":"🔶","large_blue_diamond":"🔷","white_square_button":"🔳","black_square_button":"🔲","black_small_square":"▪️","white_small_square":"▫️","black_medium_small_square":"◾️","white_medium_small_square":"◽️","black_medium_square":"◼️","white_medium_square":"◻️","black_large_square":"⬛️","white_large_square":"⬜️","speaker":"🔈","mute":"🔇","sound":"🔉","loud_sound":"🔊","bell":"🔔","no_bell":"🔕","mega":"📣","loudspeaker":"📢","eye_speech_bubble":"👁‍🗨","speech_balloon":"💬","thought_balloon":"💭","right_anger_bubble":"🗯","spades":"♠️","clubs":"♣️","hearts":"♥️","diamonds":"♦️","black_joker":"🃏","flower_playing_cards":"🎴","mahjong":"🀄️","clock1":"🕐","clock2":"🕑","clock3":"🕒","clock4":"🕓","clock5":"🕔","clock6":"🕕","clock7":"🕖","clock8":"🕗","clock9":"🕘","clock10":"🕙","clock11":"🕚","clock12":"🕛","clock130":"🕜","clock230":"🕝","clock330":"🕞","clock430":"🕟","clock530":"🕠","clock630":"🕡","clock730":"🕢","clock830":"🕣","clock930":"🕤","clock1030":"🕥","clock1130":"🕦","clock1230":"🕧","white_flag":"🏳️","black_flag":"🏴","checkered_flag":"🏁","triangular_flag_on_post":"🚩","rainbow_flag":"🏳️‍🌈","afghanistan":"🇦🇫","aland_islands":"🇦🇽","albania":"🇦🇱","algeria":"🇩🇿","american_samoa":"🇦🇸","andorra":"🇦🇩","angola":"🇦🇴","anguilla":"🇦🇮","antarctica":"🇦🇶","antigua_barbuda":"🇦🇬","argentina":"🇦🇷","armenia":"🇦🇲","aruba":"🇦🇼","australia":"🇦🇺","austria":"🇦🇹","azerbaijan":"🇦🇿","bahamas":"🇧🇸","bahrain":"🇧🇭","bangladesh":"🇧🇩","barbados":"🇧🇧","belarus":"🇧🇾","belgium":"🇧🇪","belize":"🇧🇿","benin":"🇧🇯","bermuda":"🇧🇲","bhutan":"🇧🇹","bolivia":"🇧🇴","caribbean_netherlands":"🇧🇶","bosnia_herzegovina":"🇧🇦","botswana":"🇧🇼","brazil":"🇧🇷","british_indian_ocean_territory":"🇮🇴","british_virgin_islands":"🇻🇬","brunei":"🇧🇳","bulgaria":"🇧🇬","burkina_faso":"🇧🇫","burundi":"🇧🇮","cape_verde":"🇨🇻","cambodia":"🇰🇭","cameroon":"🇨🇲","canada":"🇨🇦","canary_islands":"🇮🇨","cayman_islands":"🇰🇾","central_african_republic":"🇨🇫","chad":"🇹🇩","chile":"🇨🇱","cn":"🇨🇳","christmas_island":"🇨🇽","cocos_islands":"🇨🇨","colombia":"🇨🇴","comoros":"🇰🇲","congo_brazzaville":"🇨🇬","congo_kinshasa":"🇨🇩","cook_islands":"🇨🇰","costa_rica":"🇨🇷","cote_divoire":"🇨🇮","croatia":"🇭🇷","cuba":"🇨🇺","curacao":"🇨🇼","cyprus":"🇨🇾","czech_republic":"🇨🇿","denmark":"🇩🇰","djibouti":"🇩🇯","dominica":"🇩🇲","dominican_republic":"🇩🇴","ecuador":"🇪🇨","egypt":"🇪🇬","el_salvador":"🇸🇻","equatorial_guinea":"🇬🇶","eritrea":"🇪🇷","estonia":"🇪🇪","ethiopia":"🇪🇹","eu":"🇪🇺","european_union":"🇪🇺","falkland_islands":"🇫🇰","faroe_islands":"🇫🇴","fiji":"🇫🇯","finland":"🇫🇮","fr":"🇫🇷","french_guiana":"🇬🇫","french_polynesia":"🇵🇫","french_southern_territories":"🇹🇫","gabon":"🇬🇦","gambia":"🇬🇲","georgia":"🇬🇪","de":"🇩🇪","ghana":"🇬🇭","gibraltar":"🇬🇮","greece":"🇬🇷","greenland":"🇬🇱","grenada":"🇬🇩","guadeloupe":"🇬🇵","guam":"🇬🇺","guatemala":"🇬🇹","guernsey":"🇬🇬","guinea":"🇬🇳","guinea_bissau":"🇬🇼","guyana":"🇬🇾","haiti":"🇭🇹","honduras":"🇭🇳","hong_kong":"🇭🇰","hungary":"🇭🇺","iceland":"🇮🇸","india":"🇮🇳","indonesia":"🇮🇩","iran":"🇮🇷","iraq":"🇮🇶","ireland":"🇮🇪","isle_of_man":"🇮🇲","israel":"🇮🇱","it":"🇮🇹","jamaica":"🇯🇲","jp":"🇯🇵","crossed_flags":"🎌","jersey":"🇯🇪","jordan":"🇯🇴","kazakhstan":"🇰🇿","kenya":"🇰🇪","kiribati":"🇰🇮","kosovo":"🇽🇰","kuwait":"🇰🇼","kyrgyzstan":"🇰🇬","laos":"🇱🇦","latvia":"🇱🇻","lebanon":"🇱🇧","lesotho":"🇱🇸","liberia":"🇱🇷","libya":"🇱🇾","liechtenstein":"🇱🇮","lithuania":"🇱🇹","luxembourg":"🇱🇺","macau":"🇲🇴","macedonia":"🇲🇰","madagascar":"🇲🇬","malawi":"🇲🇼","malaysia":"🇲🇾","maldives":"🇲🇻","mali":"🇲🇱","malta":"🇲🇹","marshall_islands":"🇲🇭","martinique":"🇲🇶","mauritania":"🇲🇷","mauritius":"🇲🇺","mayotte":"🇾🇹","mexico":"🇲🇽","micronesia":"🇫🇲","moldova":"🇲🇩","monaco":"🇲🇨","mongolia":"🇲🇳","montenegro":"🇲🇪","montserrat":"🇲🇸","morocco":"🇲🇦","mozambique":"🇲🇿","myanmar":"🇲🇲","namibia":"🇳🇦","nauru":"🇳🇷","nepal":"🇳🇵","netherlands":"🇳🇱","new_caledonia":"🇳🇨","new_zealand":"🇳🇿","nicaragua":"🇳🇮","niger":"🇳🇪","nigeria":"🇳🇬","niue":"🇳🇺","norfolk_island":"🇳🇫","northern_mariana_islands":"🇲🇵","north_korea":"🇰🇵","norway":"🇳🇴","oman":"🇴🇲","pakistan":"🇵🇰","palau":"🇵🇼","palestinian_territories":"🇵🇸","panama":"🇵🇦","papua_new_guinea":"🇵🇬","paraguay":"🇵🇾","peru":"🇵🇪","philippines":"🇵🇭","pitcairn_islands":"🇵🇳","poland":"🇵🇱","portugal":"🇵🇹","puerto_rico":"🇵🇷","qatar":"🇶🇦","reunion":"🇷🇪","romania":"🇷🇴","ru":"🇷🇺","rwanda":"🇷🇼","st_barthelemy":"🇧🇱","st_helena":"🇸🇭","st_kitts_nevis":"🇰🇳","st_lucia":"🇱🇨","st_pierre_miquelon":"🇵🇲","st_vincent_grenadines":"🇻🇨","samoa":"🇼🇸","san_marino":"🇸🇲","sao_tome_principe":"🇸🇹","saudi_arabia":"🇸🇦","senegal":"🇸🇳","serbia":"🇷🇸","seychelles":"🇸🇨","sierra_leone":"🇸🇱","singapore":"🇸🇬","sint_maarten":"🇸🇽","slovakia":"🇸🇰","slovenia":"🇸🇮","solomon_islands":"🇸🇧","somalia":"🇸🇴","south_africa":"🇿🇦","south_georgia_south_sandwich_islands":"🇬🇸","kr":"🇰🇷","south_sudan":"🇸🇸","es":"🇪🇸","sri_lanka":"🇱🇰","sudan":"🇸🇩","suriname":"🇸🇷","swaziland":"🇸🇿","sweden":"🇸🇪","switzerland":"🇨🇭","syria":"🇸🇾","taiwan":"🇹🇼","tajikistan":"🇹🇯","tanzania":"🇹🇿","thailand":"🇹🇭","timor_leste":"🇹🇱","togo":"🇹🇬","tokelau":"🇹🇰","tonga":"🇹🇴","trinidad_tobago":"🇹🇹","tunisia":"🇹🇳","tr":"🇹🇷","turkmenistan":"🇹🇲","turks_caicos_islands":"🇹🇨","tuvalu":"🇹🇻","uganda":"🇺🇬","ukraine":"🇺🇦","united_arab_emirates":"🇦🇪","gb":"🇬🇧","uk":"🇬🇧","us":"🇺🇸","us_virgin_islands":"🇻🇮","uruguay":"🇺🇾","uzbekistan":"🇺🇿","vanuatu":"🇻🇺","vatican_city":"🇻🇦","venezuela":"🇻🇪","vietnam":"🇻🇳","wallis_futuna":"🇼🇫","western_sahara":"🇪🇭","yemen":"🇾🇪","zambia":"🇿🇲","zimbabwe":"🇿🇼"}
+module.exports = {"100":"💯","1234":"🔢","grinning":"😀","smiley":"😃","smile":"😄","grin":"😁","laughing":"😆","satisfied":"😆","sweat_smile":"😅","rofl":"🤣","joy":"😂","slightly_smiling_face":"🙂","upside_down_face":"🙃","wink":"😉","blush":"😊","innocent":"😇","smiling_face_with_three_hearts":"🥰","heart_eyes":"😍","star_struck":"🤩","kissing_heart":"😘","kissing":"😗","relaxed":"☺️","kissing_closed_eyes":"😚","kissing_smiling_eyes":"😙","smiling_face_with_tear":"🥲","yum":"😋","stuck_out_tongue":"😛","stuck_out_tongue_winking_eye":"😜","zany_face":"🤪","stuck_out_tongue_closed_eyes":"😝","money_mouth_face":"🤑","hugs":"🤗","hand_over_mouth":"🤭","shushing_face":"🤫","thinking":"🤔","zipper_mouth_face":"🤐","raised_eyebrow":"🤨","neutral_face":"😐","expressionless":"😑","no_mouth":"😶","smirk":"😏","unamused":"😒","roll_eyes":"🙄","grimacing":"😬","lying_face":"🤥","relieved":"😌","pensive":"😔","sleepy":"😪","drooling_face":"🤤","sleeping":"😴","mask":"😷","face_with_thermometer":"🤒","face_with_head_bandage":"🤕","nauseated_face":"🤢","vomiting_face":"🤮","sneezing_face":"🤧","hot_face":"🥵","cold_face":"🥶","woozy_face":"🥴","dizzy_face":"😵","exploding_head":"🤯","cowboy_hat_face":"🤠","partying_face":"🥳","disguised_face":"🥸","sunglasses":"😎","nerd_face":"🤓","monocle_face":"🧐","confused":"😕","worried":"😟","slightly_frowning_face":"🙁","frowning_face":"☹️","open_mouth":"😮","hushed":"😯","astonished":"😲","flushed":"😳","pleading_face":"🥺","frowning":"😦","anguished":"😧","fearful":"😨","cold_sweat":"😰","disappointed_relieved":"😥","cry":"😢","sob":"😭","scream":"😱","confounded":"😖","persevere":"😣","disappointed":"😞","sweat":"😓","weary":"😩","tired_face":"😫","yawning_face":"🥱","triumph":"😤","rage":"😡","pout":"😡","angry":"😠","cursing_face":"🤬","smiling_imp":"😈","imp":"👿","skull":"💀","skull_and_crossbones":"☠️","hankey":"💩","poop":"💩","shit":"💩","clown_face":"🤡","japanese_ogre":"👹","japanese_goblin":"👺","ghost":"👻","alien":"👽","space_invader":"👾","robot":"🤖","smiley_cat":"😺","smile_cat":"😸","joy_cat":"😹","heart_eyes_cat":"😻","smirk_cat":"😼","kissing_cat":"😽","scream_cat":"🙀","crying_cat_face":"😿","pouting_cat":"😾","see_no_evil":"🙈","hear_no_evil":"🙉","speak_no_evil":"🙊","kiss":"💋","love_letter":"💌","cupid":"💘","gift_heart":"💝","sparkling_heart":"💖","heartpulse":"💗","heartbeat":"💓","revolving_hearts":"💞","two_hearts":"💕","heart_decoration":"💟","heavy_heart_exclamation":"❣️","broken_heart":"💔","heart":"❤️","orange_heart":"🧡","yellow_heart":"💛","green_heart":"💚","blue_heart":"💙","purple_heart":"💜","brown_heart":"🤎","black_heart":"🖤","white_heart":"🤍","anger":"💢","boom":"💥","collision":"💥","dizzy":"💫","sweat_drops":"💦","dash":"💨","hole":"🕳️","bomb":"💣","speech_balloon":"💬","eye_speech_bubble":"👁️‍🗨️","left_speech_bubble":"🗨️","right_anger_bubble":"🗯️","thought_balloon":"💭","zzz":"💤","wave":"👋","raised_back_of_hand":"🤚","raised_hand_with_fingers_splayed":"🖐️","hand":"✋","raised_hand":"✋","vulcan_salute":"🖖","ok_hand":"👌","pinched_fingers":"🤌","pinching_hand":"🤏","v":"✌️","crossed_fingers":"🤞","love_you_gesture":"🤟","metal":"🤘","call_me_hand":"🤙","point_left":"👈","point_right":"👉","point_up_2":"👆","middle_finger":"🖕","fu":"🖕","point_down":"👇","point_up":"☝️","+1":"👍","thumbsup":"👍","-1":"👎","thumbsdown":"👎","fist_raised":"✊","fist":"✊","fist_oncoming":"👊","facepunch":"👊","punch":"👊","fist_left":"🤛","fist_right":"🤜","clap":"👏","raised_hands":"🙌","open_hands":"👐","palms_up_together":"🤲","handshake":"🤝","pray":"🙏","writing_hand":"✍️","nail_care":"💅","selfie":"🤳","muscle":"💪","mechanical_arm":"🦾","mechanical_leg":"🦿","leg":"🦵","foot":"🦶","ear":"👂","ear_with_hearing_aid":"🦻","nose":"👃","brain":"🧠","anatomical_heart":"🫀","lungs":"🫁","tooth":"🦷","bone":"🦴","eyes":"👀","eye":"👁️","tongue":"👅","lips":"👄","baby":"👶","child":"🧒","boy":"👦","girl":"👧","adult":"🧑","blond_haired_person":"👱","man":"👨","bearded_person":"🧔","red_haired_man":"👨‍🦰","curly_haired_man":"👨‍🦱","white_haired_man":"👨‍🦳","bald_man":"👨‍🦲","woman":"👩","red_haired_woman":"👩‍🦰","person_red_hair":"🧑‍🦰","curly_haired_woman":"👩‍🦱","person_curly_hair":"🧑‍🦱","white_haired_woman":"👩‍🦳","person_white_hair":"🧑‍🦳","bald_woman":"👩‍🦲","person_bald":"🧑‍🦲","blond_haired_woman":"👱‍♀️","blonde_woman":"👱‍♀️","blond_haired_man":"👱‍♂️","older_adult":"🧓","older_man":"👴","older_woman":"👵","frowning_person":"🙍","frowning_man":"🙍‍♂️","frowning_woman":"🙍‍♀️","pouting_face":"🙎","pouting_man":"🙎‍♂️","pouting_woman":"🙎‍♀️","no_good":"🙅","no_good_man":"🙅‍♂️","ng_man":"🙅‍♂️","no_good_woman":"🙅‍♀️","ng_woman":"🙅‍♀️","ok_person":"🙆","ok_man":"🙆‍♂️","ok_woman":"🙆‍♀️","tipping_hand_person":"💁","information_desk_person":"💁","tipping_hand_man":"💁‍♂️","sassy_man":"💁‍♂️","tipping_hand_woman":"💁‍♀️","sassy_woman":"💁‍♀️","raising_hand":"🙋","raising_hand_man":"🙋‍♂️","raising_hand_woman":"🙋‍♀️","deaf_person":"🧏","deaf_man":"🧏‍♂️","deaf_woman":"🧏‍♀️","bow":"🙇","bowing_man":"🙇‍♂️","bowing_woman":"🙇‍♀️","facepalm":"🤦","man_facepalming":"🤦‍♂️","woman_facepalming":"🤦‍♀️","shrug":"🤷","man_shrugging":"🤷‍♂️","woman_shrugging":"🤷‍♀️","health_worker":"🧑‍⚕️","man_health_worker":"👨‍⚕️","woman_health_worker":"👩‍⚕️","student":"🧑‍🎓","man_student":"👨‍🎓","woman_student":"👩‍🎓","teacher":"🧑‍🏫","man_teacher":"👨‍🏫","woman_teacher":"👩‍🏫","judge":"🧑‍⚖️","man_judge":"👨‍⚖️","woman_judge":"👩‍⚖️","farmer":"🧑‍🌾","man_farmer":"👨‍🌾","woman_farmer":"👩‍🌾","cook":"🧑‍🍳","man_cook":"👨‍🍳","woman_cook":"👩‍🍳","mechanic":"🧑‍🔧","man_mechanic":"👨‍🔧","woman_mechanic":"👩‍🔧","factory_worker":"🧑‍🏭","man_factory_worker":"👨‍🏭","woman_factory_worker":"👩‍🏭","office_worker":"🧑‍💼","man_office_worker":"👨‍💼","woman_office_worker":"👩‍💼","scientist":"🧑‍🔬","man_scientist":"👨‍🔬","woman_scientist":"👩‍🔬","technologist":"🧑‍💻","man_technologist":"👨‍💻","woman_technologist":"👩‍💻","singer":"🧑‍🎤","man_singer":"👨‍🎤","woman_singer":"👩‍🎤","artist":"🧑‍🎨","man_artist":"👨‍🎨","woman_artist":"👩‍🎨","pilot":"🧑‍✈️","man_pilot":"👨‍✈️","woman_pilot":"👩‍✈️","astronaut":"🧑‍🚀","man_astronaut":"👨‍🚀","woman_astronaut":"👩‍🚀","firefighter":"🧑‍🚒","man_firefighter":"👨‍🚒","woman_firefighter":"👩‍🚒","police_officer":"👮","cop":"👮","policeman":"👮‍♂️","policewoman":"👮‍♀️","detective":"🕵️","male_detective":"🕵️‍♂️","female_detective":"🕵️‍♀️","guard":"💂","guardsman":"💂‍♂️","guardswoman":"💂‍♀️","ninja":"🥷","construction_worker":"👷","construction_worker_man":"👷‍♂️","construction_worker_woman":"👷‍♀️","prince":"🤴","princess":"👸","person_with_turban":"👳","man_with_turban":"👳‍♂️","woman_with_turban":"👳‍♀️","man_with_gua_pi_mao":"👲","woman_with_headscarf":"🧕","person_in_tuxedo":"🤵","man_in_tuxedo":"🤵‍♂️","woman_in_tuxedo":"🤵‍♀️","person_with_veil":"👰","man_with_veil":"👰‍♂️","woman_with_veil":"👰‍♀️","bride_with_veil":"👰‍♀️","pregnant_woman":"🤰","breast_feeding":"🤱","woman_feeding_baby":"👩‍🍼","man_feeding_baby":"👨‍🍼","person_feeding_baby":"🧑‍🍼","angel":"👼","santa":"🎅","mrs_claus":"🤶","mx_claus":"🧑‍🎄","superhero":"🦸","superhero_man":"🦸‍♂️","superhero_woman":"🦸‍♀️","supervillain":"🦹","supervillain_man":"🦹‍♂️","supervillain_woman":"🦹‍♀️","mage":"🧙","mage_man":"🧙‍♂️","mage_woman":"🧙‍♀️","fairy":"🧚","fairy_man":"🧚‍♂️","fairy_woman":"🧚‍♀️","vampire":"🧛","vampire_man":"🧛‍♂️","vampire_woman":"🧛‍♀️","merperson":"🧜","merman":"🧜‍♂️","mermaid":"🧜‍♀️","elf":"🧝","elf_man":"🧝‍♂️","elf_woman":"🧝‍♀️","genie":"🧞","genie_man":"🧞‍♂️","genie_woman":"🧞‍♀️","zombie":"🧟","zombie_man":"🧟‍♂️","zombie_woman":"🧟‍♀️","massage":"💆","massage_man":"💆‍♂️","massage_woman":"💆‍♀️","haircut":"💇","haircut_man":"💇‍♂️","haircut_woman":"💇‍♀️","walking":"🚶","walking_man":"🚶‍♂️","walking_woman":"🚶‍♀️","standing_person":"🧍","standing_man":"🧍‍♂️","standing_woman":"🧍‍♀️","kneeling_person":"🧎","kneeling_man":"🧎‍♂️","kneeling_woman":"🧎‍♀️","person_with_probing_cane":"🧑‍🦯","man_with_probing_cane":"👨‍🦯","woman_with_probing_cane":"👩‍🦯","person_in_motorized_wheelchair":"🧑‍🦼","man_in_motorized_wheelchair":"👨‍🦼","woman_in_motorized_wheelchair":"👩‍🦼","person_in_manual_wheelchair":"🧑‍🦽","man_in_manual_wheelchair":"👨‍🦽","woman_in_manual_wheelchair":"👩‍🦽","runner":"🏃","running":"🏃","running_man":"🏃‍♂️","running_woman":"🏃‍♀️","woman_dancing":"💃","dancer":"💃","man_dancing":"🕺","business_suit_levitating":"🕴️","dancers":"👯","dancing_men":"👯‍♂️","dancing_women":"👯‍♀️","sauna_person":"🧖","sauna_man":"🧖‍♂️","sauna_woman":"🧖‍♀️","climbing":"🧗","climbing_man":"🧗‍♂️","climbing_woman":"🧗‍♀️","person_fencing":"🤺","horse_racing":"🏇","skier":"⛷️","snowboarder":"🏂","golfing":"🏌️","golfing_man":"🏌️‍♂️","golfing_woman":"🏌️‍♀️","surfer":"🏄","surfing_man":"🏄‍♂️","surfing_woman":"🏄‍♀️","rowboat":"🚣","rowing_man":"🚣‍♂️","rowing_woman":"🚣‍♀️","swimmer":"🏊","swimming_man":"🏊‍♂️","swimming_woman":"🏊‍♀️","bouncing_ball_person":"⛹️","bouncing_ball_man":"⛹️‍♂️","basketball_man":"⛹️‍♂️","bouncing_ball_woman":"⛹️‍♀️","basketball_woman":"⛹️‍♀️","weight_lifting":"🏋️","weight_lifting_man":"🏋️‍♂️","weight_lifting_woman":"🏋️‍♀️","bicyclist":"🚴","biking_man":"🚴‍♂️","biking_woman":"🚴‍♀️","mountain_bicyclist":"🚵","mountain_biking_man":"🚵‍♂️","mountain_biking_woman":"🚵‍♀️","cartwheeling":"🤸","man_cartwheeling":"🤸‍♂️","woman_cartwheeling":"🤸‍♀️","wrestling":"🤼","men_wrestling":"🤼‍♂️","women_wrestling":"🤼‍♀️","water_polo":"🤽","man_playing_water_polo":"🤽‍♂️","woman_playing_water_polo":"🤽‍♀️","handball_person":"🤾","man_playing_handball":"🤾‍♂️","woman_playing_handball":"🤾‍♀️","juggling_person":"🤹","man_juggling":"🤹‍♂️","woman_juggling":"🤹‍♀️","lotus_position":"🧘","lotus_position_man":"🧘‍♂️","lotus_position_woman":"🧘‍♀️","bath":"🛀","sleeping_bed":"🛌","people_holding_hands":"🧑‍🤝‍🧑","two_women_holding_hands":"👭","couple":"👫","two_men_holding_hands":"👬","couplekiss":"💏","couplekiss_man_woman":"👩‍❤️‍💋‍👨","couplekiss_man_man":"👨‍❤️‍💋‍👨","couplekiss_woman_woman":"👩‍❤️‍💋‍👩","couple_with_heart":"💑","couple_with_heart_woman_man":"👩‍❤️‍👨","couple_with_heart_man_man":"👨‍❤️‍👨","couple_with_heart_woman_woman":"👩‍❤️‍👩","family":"👪","family_man_woman_boy":"👨‍👩‍👦","family_man_woman_girl":"👨‍👩‍👧","family_man_woman_girl_boy":"👨‍👩‍👧‍👦","family_man_woman_boy_boy":"👨‍👩‍👦‍👦","family_man_woman_girl_girl":"👨‍👩‍👧‍👧","family_man_man_boy":"👨‍👨‍👦","family_man_man_girl":"👨‍👨‍👧","family_man_man_girl_boy":"👨‍👨‍👧‍👦","family_man_man_boy_boy":"👨‍👨‍👦‍👦","family_man_man_girl_girl":"👨‍👨‍👧‍👧","family_woman_woman_boy":"👩‍👩‍👦","family_woman_woman_girl":"👩‍👩‍👧","family_woman_woman_girl_boy":"👩‍👩‍👧‍👦","family_woman_woman_boy_boy":"👩‍👩‍👦‍👦","family_woman_woman_girl_girl":"👩‍👩‍👧‍👧","family_man_boy":"👨‍👦","family_man_boy_boy":"👨‍👦‍👦","family_man_girl":"👨‍👧","family_man_girl_boy":"👨‍👧‍👦","family_man_girl_girl":"👨‍👧‍👧","family_woman_boy":"👩‍👦","family_woman_boy_boy":"👩‍👦‍👦","family_woman_girl":"👩‍👧","family_woman_girl_boy":"👩‍👧‍👦","family_woman_girl_girl":"👩‍👧‍👧","speaking_head":"🗣️","bust_in_silhouette":"👤","busts_in_silhouette":"👥","people_hugging":"🫂","footprints":"👣","monkey_face":"🐵","monkey":"🐒","gorilla":"🦍","orangutan":"🦧","dog":"🐶","dog2":"🐕","guide_dog":"🦮","service_dog":"🐕‍🦺","poodle":"🐩","wolf":"🐺","fox_face":"🦊","raccoon":"🦝","cat":"🐱","cat2":"🐈","black_cat":"🐈‍⬛","lion":"🦁","tiger":"🐯","tiger2":"🐅","leopard":"🐆","horse":"🐴","racehorse":"🐎","unicorn":"🦄","zebra":"🦓","deer":"🦌","bison":"🦬","cow":"🐮","ox":"🐂","water_buffalo":"🐃","cow2":"🐄","pig":"🐷","pig2":"🐖","boar":"🐗","pig_nose":"🐽","ram":"🐏","sheep":"🐑","goat":"🐐","dromedary_camel":"🐪","camel":"🐫","llama":"🦙","giraffe":"🦒","elephant":"🐘","mammoth":"🦣","rhinoceros":"🦏","hippopotamus":"🦛","mouse":"🐭","mouse2":"🐁","rat":"🐀","hamster":"🐹","rabbit":"🐰","rabbit2":"🐇","chipmunk":"🐿️","beaver":"🦫","hedgehog":"🦔","bat":"🦇","bear":"🐻","polar_bear":"🐻‍❄️","koala":"🐨","panda_face":"🐼","sloth":"🦥","otter":"🦦","skunk":"🦨","kangaroo":"🦘","badger":"🦡","feet":"🐾","paw_prints":"🐾","turkey":"🦃","chicken":"🐔","rooster":"🐓","hatching_chick":"🐣","baby_chick":"🐤","hatched_chick":"🐥","bird":"🐦","penguin":"🐧","dove":"🕊️","eagle":"🦅","duck":"🦆","swan":"🦢","owl":"🦉","dodo":"🦤","feather":"🪶","flamingo":"🦩","peacock":"🦚","parrot":"🦜","frog":"🐸","crocodile":"🐊","turtle":"🐢","lizard":"🦎","snake":"🐍","dragon_face":"🐲","dragon":"🐉","sauropod":"🦕","t-rex":"🦖","whale":"🐳","whale2":"🐋","dolphin":"🐬","flipper":"🐬","seal":"🦭","fish":"🐟","tropical_fish":"🐠","blowfish":"🐡","shark":"🦈","octopus":"🐙","shell":"🐚","snail":"🐌","butterfly":"🦋","bug":"🐛","ant":"🐜","bee":"🐝","honeybee":"🐝","beetle":"🪲","lady_beetle":"🐞","cricket":"🦗","cockroach":"🪳","spider":"🕷️","spider_web":"🕸️","scorpion":"🦂","mosquito":"🦟","fly":"🪰","worm":"🪱","microbe":"🦠","bouquet":"💐","cherry_blossom":"🌸","white_flower":"💮","rosette":"🏵️","rose":"🌹","wilted_flower":"🥀","hibiscus":"🌺","sunflower":"🌻","blossom":"🌼","tulip":"🌷","seedling":"🌱","potted_plant":"🪴","evergreen_tree":"🌲","deciduous_tree":"🌳","palm_tree":"🌴","cactus":"🌵","ear_of_rice":"🌾","herb":"🌿","shamrock":"☘️","four_leaf_clover":"🍀","maple_leaf":"🍁","fallen_leaf":"🍂","leaves":"🍃","grapes":"🍇","melon":"🍈","watermelon":"🍉","tangerine":"🍊","orange":"🍊","mandarin":"🍊","lemon":"🍋","banana":"🍌","pineapple":"🍍","mango":"🥭","apple":"🍎","green_apple":"🍏","pear":"🍐","peach":"🍑","cherries":"🍒","strawberry":"🍓","blueberries":"🫐","kiwi_fruit":"🥝","tomato":"🍅","olive":"🫒","coconut":"🥥","avocado":"🥑","eggplant":"🍆","potato":"🥔","carrot":"🥕","corn":"🌽","hot_pepper":"🌶️","bell_pepper":"🫑","cucumber":"🥒","leafy_green":"🥬","broccoli":"🥦","garlic":"🧄","onion":"🧅","mushroom":"🍄","peanuts":"🥜","chestnut":"🌰","bread":"🍞","croissant":"🥐","baguette_bread":"🥖","flatbread":"🫓","pretzel":"🥨","bagel":"🥯","pancakes":"🥞","waffle":"🧇","cheese":"🧀","meat_on_bone":"🍖","poultry_leg":"🍗","cut_of_meat":"🥩","bacon":"🥓","hamburger":"🍔","fries":"🍟","pizza":"🍕","hotdog":"🌭","sandwich":"🥪","taco":"🌮","burrito":"🌯","tamale":"🫔","stuffed_flatbread":"🥙","falafel":"🧆","egg":"🥚","fried_egg":"🍳","shallow_pan_of_food":"🥘","stew":"🍲","fondue":"🫕","bowl_with_spoon":"🥣","green_salad":"🥗","popcorn":"🍿","butter":"🧈","salt":"🧂","canned_food":"🥫","bento":"🍱","rice_cracker":"🍘","rice_ball":"🍙","rice":"🍚","curry":"🍛","ramen":"🍜","spaghetti":"🍝","sweet_potato":"🍠","oden":"🍢","sushi":"🍣","fried_shrimp":"🍤","fish_cake":"🍥","moon_cake":"🥮","dango":"🍡","dumpling":"🥟","fortune_cookie":"🥠","takeout_box":"🥡","crab":"🦀","lobster":"🦞","shrimp":"🦐","squid":"🦑","oyster":"🦪","icecream":"🍦","shaved_ice":"🍧","ice_cream":"🍨","doughnut":"🍩","cookie":"🍪","birthday":"🎂","cake":"🍰","cupcake":"🧁","pie":"🥧","chocolate_bar":"🍫","candy":"🍬","lollipop":"🍭","custard":"🍮","honey_pot":"🍯","baby_bottle":"🍼","milk_glass":"🥛","coffee":"☕","teapot":"🫖","tea":"🍵","sake":"🍶","champagne":"🍾","wine_glass":"🍷","cocktail":"🍸","tropical_drink":"🍹","beer":"🍺","beers":"🍻","clinking_glasses":"🥂","tumbler_glass":"🥃","cup_with_straw":"🥤","bubble_tea":"🧋","beverage_box":"🧃","mate":"🧉","ice_cube":"🧊","chopsticks":"🥢","plate_with_cutlery":"🍽️","fork_and_knife":"🍴","spoon":"🥄","hocho":"🔪","knife":"🔪","amphora":"🏺","earth_africa":"🌍","earth_americas":"🌎","earth_asia":"🌏","globe_with_meridians":"🌐","world_map":"🗺️","japan":"🗾","compass":"🧭","mountain_snow":"🏔️","mountain":"⛰️","volcano":"🌋","mount_fuji":"🗻","camping":"🏕️","beach_umbrella":"🏖️","desert":"🏜️","desert_island":"🏝️","national_park":"🏞️","stadium":"🏟️","classical_building":"🏛️","building_construction":"🏗️","bricks":"🧱","rock":"🪨","wood":"🪵","hut":"🛖","houses":"🏘️","derelict_house":"🏚️","house":"🏠","house_with_garden":"🏡","office":"🏢","post_office":"🏣","european_post_office":"🏤","hospital":"🏥","bank":"🏦","hotel":"🏨","love_hotel":"🏩","convenience_store":"🏪","school":"🏫","department_store":"🏬","factory":"🏭","japanese_castle":"🏯","european_castle":"🏰","wedding":"💒","tokyo_tower":"🗼","statue_of_liberty":"🗽","church":"⛪","mosque":"🕌","hindu_temple":"🛕","synagogue":"🕍","shinto_shrine":"⛩️","kaaba":"🕋","fountain":"⛲","tent":"⛺","foggy":"🌁","night_with_stars":"🌃","cityscape":"🏙️","sunrise_over_mountains":"🌄","sunrise":"🌅","city_sunset":"🌆","city_sunrise":"🌇","bridge_at_night":"🌉","hotsprings":"♨️","carousel_horse":"🎠","ferris_wheel":"🎡","roller_coaster":"🎢","barber":"💈","circus_tent":"🎪","steam_locomotive":"🚂","railway_car":"🚃","bullettrain_side":"🚄","bullettrain_front":"🚅","train2":"🚆","metro":"🚇","light_rail":"🚈","station":"🚉","tram":"🚊","monorail":"🚝","mountain_railway":"🚞","train":"🚋","bus":"🚌","oncoming_bus":"🚍","trolleybus":"🚎","minibus":"🚐","ambulance":"🚑","fire_engine":"🚒","police_car":"🚓","oncoming_police_car":"🚔","taxi":"🚕","oncoming_taxi":"🚖","car":"🚗","red_car":"🚗","oncoming_automobile":"🚘","blue_car":"🚙","pickup_truck":"🛻","truck":"🚚","articulated_lorry":"🚛","tractor":"🚜","racing_car":"🏎️","motorcycle":"🏍️","motor_scooter":"🛵","manual_wheelchair":"🦽","motorized_wheelchair":"🦼","auto_rickshaw":"🛺","bike":"🚲","kick_scooter":"🛴","skateboard":"🛹","roller_skate":"🛼","busstop":"🚏","motorway":"🛣️","railway_track":"🛤️","oil_drum":"🛢️","fuelpump":"⛽","rotating_light":"🚨","traffic_light":"🚥","vertical_traffic_light":"🚦","stop_sign":"🛑","construction":"🚧","anchor":"⚓","boat":"⛵","sailboat":"⛵","canoe":"🛶","speedboat":"🚤","passenger_ship":"🛳️","ferry":"⛴️","motor_boat":"🛥️","ship":"🚢","airplane":"✈️","small_airplane":"🛩️","flight_departure":"🛫","flight_arrival":"🛬","parachute":"🪂","seat":"💺","helicopter":"🚁","suspension_railway":"🚟","mountain_cableway":"🚠","aerial_tramway":"🚡","artificial_satellite":"🛰️","rocket":"🚀","flying_saucer":"🛸","bellhop_bell":"🛎️","luggage":"🧳","hourglass":"⌛","hourglass_flowing_sand":"⏳","watch":"⌚","alarm_clock":"⏰","stopwatch":"⏱️","timer_clock":"⏲️","mantelpiece_clock":"🕰️","clock12":"🕛","clock1230":"🕧","clock1":"🕐","clock130":"🕜","clock2":"🕑","clock230":"🕝","clock3":"🕒","clock330":"🕞","clock4":"🕓","clock430":"🕟","clock5":"🕔","clock530":"🕠","clock6":"🕕","clock630":"🕡","clock7":"🕖","clock730":"🕢","clock8":"🕗","clock830":"🕣","clock9":"🕘","clock930":"🕤","clock10":"🕙","clock1030":"🕥","clock11":"🕚","clock1130":"🕦","new_moon":"🌑","waxing_crescent_moon":"🌒","first_quarter_moon":"🌓","moon":"🌔","waxing_gibbous_moon":"🌔","full_moon":"🌕","waning_gibbous_moon":"🌖","last_quarter_moon":"🌗","waning_crescent_moon":"🌘","crescent_moon":"🌙","new_moon_with_face":"🌚","first_quarter_moon_with_face":"🌛","last_quarter_moon_with_face":"🌜","thermometer":"🌡️","sunny":"☀️","full_moon_with_face":"🌝","sun_with_face":"🌞","ringed_planet":"🪐","star":"⭐","star2":"🌟","stars":"🌠","milky_way":"🌌","cloud":"☁️","partly_sunny":"⛅","cloud_with_lightning_and_rain":"⛈️","sun_behind_small_cloud":"🌤️","sun_behind_large_cloud":"🌥️","sun_behind_rain_cloud":"🌦️","cloud_with_rain":"🌧️","cloud_with_snow":"🌨️","cloud_with_lightning":"🌩️","tornado":"🌪️","fog":"🌫️","wind_face":"🌬️","cyclone":"🌀","rainbow":"🌈","closed_umbrella":"🌂","open_umbrella":"☂️","umbrella":"☔","parasol_on_ground":"⛱️","zap":"⚡","snowflake":"❄️","snowman_with_snow":"☃️","snowman":"⛄","comet":"☄️","fire":"🔥","droplet":"💧","ocean":"🌊","jack_o_lantern":"🎃","christmas_tree":"🎄","fireworks":"🎆","sparkler":"🎇","firecracker":"🧨","sparkles":"✨","balloon":"🎈","tada":"🎉","confetti_ball":"🎊","tanabata_tree":"🎋","bamboo":"🎍","dolls":"🎎","flags":"🎏","wind_chime":"🎐","rice_scene":"🎑","red_envelope":"🧧","ribbon":"🎀","gift":"🎁","reminder_ribbon":"🎗️","tickets":"🎟️","ticket":"🎫","medal_military":"🎖️","trophy":"🏆","medal_sports":"🏅","1st_place_medal":"🥇","2nd_place_medal":"🥈","3rd_place_medal":"🥉","soccer":"⚽","baseball":"⚾","softball":"🥎","basketball":"🏀","volleyball":"🏐","football":"🏈","rugby_football":"🏉","tennis":"🎾","flying_disc":"🥏","bowling":"🎳","cricket_game":"🏏","field_hockey":"🏑","ice_hockey":"🏒","lacrosse":"🥍","ping_pong":"🏓","badminton":"🏸","boxing_glove":"🥊","martial_arts_uniform":"🥋","goal_net":"🥅","golf":"⛳","ice_skate":"⛸️","fishing_pole_and_fish":"🎣","diving_mask":"🤿","running_shirt_with_sash":"🎽","ski":"🎿","sled":"🛷","curling_stone":"🥌","dart":"🎯","yo_yo":"🪀","kite":"🪁","8ball":"🎱","crystal_ball":"🔮","magic_wand":"🪄","nazar_amulet":"🧿","video_game":"🎮","joystick":"🕹️","slot_machine":"🎰","game_die":"🎲","jigsaw":"🧩","teddy_bear":"🧸","pinata":"🪅","nesting_dolls":"🪆","spades":"♠️","hearts":"♥️","diamonds":"♦️","clubs":"♣️","chess_pawn":"♟️","black_joker":"🃏","mahjong":"🀄","flower_playing_cards":"🎴","performing_arts":"🎭","framed_picture":"🖼️","art":"🎨","thread":"🧵","sewing_needle":"🪡","yarn":"🧶","knot":"🪢","eyeglasses":"👓","dark_sunglasses":"🕶️","goggles":"🥽","lab_coat":"🥼","safety_vest":"🦺","necktie":"👔","shirt":"👕","tshirt":"👕","jeans":"👖","scarf":"🧣","gloves":"🧤","coat":"🧥","socks":"🧦","dress":"👗","kimono":"👘","sari":"🥻","one_piece_swimsuit":"🩱","swim_brief":"🩲","shorts":"🩳","bikini":"👙","womans_clothes":"👚","purse":"👛","handbag":"👜","pouch":"👝","shopping":"🛍️","school_satchel":"🎒","thong_sandal":"🩴","mans_shoe":"👞","shoe":"👞","athletic_shoe":"👟","hiking_boot":"🥾","flat_shoe":"🥿","high_heel":"👠","sandal":"👡","ballet_shoes":"🩰","boot":"👢","crown":"👑","womans_hat":"👒","tophat":"🎩","mortar_board":"🎓","billed_cap":"🧢","military_helmet":"🪖","rescue_worker_helmet":"⛑️","prayer_beads":"📿","lipstick":"💄","ring":"💍","gem":"💎","mute":"🔇","speaker":"🔈","sound":"🔉","loud_sound":"🔊","loudspeaker":"📢","mega":"📣","postal_horn":"📯","bell":"🔔","no_bell":"🔕","musical_score":"🎼","musical_note":"🎵","notes":"🎶","studio_microphone":"🎙️","level_slider":"🎚️","control_knobs":"🎛️","microphone":"🎤","headphones":"🎧","radio":"📻","saxophone":"🎷","accordion":"🪗","guitar":"🎸","musical_keyboard":"🎹","trumpet":"🎺","violin":"🎻","banjo":"🪕","drum":"🥁","long_drum":"🪘","iphone":"📱","calling":"📲","phone":"☎️","telephone":"☎️","telephone_receiver":"📞","pager":"📟","fax":"📠","battery":"🔋","electric_plug":"🔌","computer":"💻","desktop_computer":"🖥️","printer":"🖨️","keyboard":"⌨️","computer_mouse":"🖱️","trackball":"🖲️","minidisc":"💽","floppy_disk":"💾","cd":"💿","dvd":"📀","abacus":"🧮","movie_camera":"🎥","film_strip":"🎞️","film_projector":"📽️","clapper":"🎬","tv":"📺","camera":"📷","camera_flash":"📸","video_camera":"📹","vhs":"📼","mag":"🔍","mag_right":"🔎","candle":"🕯️","bulb":"💡","flashlight":"🔦","izakaya_lantern":"🏮","lantern":"🏮","diya_lamp":"🪔","notebook_with_decorative_cover":"📔","closed_book":"📕","book":"📖","open_book":"📖","green_book":"📗","blue_book":"📘","orange_book":"📙","books":"📚","notebook":"📓","ledger":"📒","page_with_curl":"📃","scroll":"📜","page_facing_up":"📄","newspaper":"📰","newspaper_roll":"🗞️","bookmark_tabs":"📑","bookmark":"🔖","label":"🏷️","moneybag":"💰","coin":"🪙","yen":"💴","dollar":"💵","euro":"💶","pound":"💷","money_with_wings":"💸","credit_card":"💳","receipt":"🧾","chart":"💹","envelope":"✉️","email":"📧","e-mail":"📧","incoming_envelope":"📨","envelope_with_arrow":"📩","outbox_tray":"📤","inbox_tray":"📥","package":"📦","mailbox":"📫","mailbox_closed":"📪","mailbox_with_mail":"📬","mailbox_with_no_mail":"📭","postbox":"📮","ballot_box":"🗳️","pencil2":"✏️","black_nib":"✒️","fountain_pen":"🖋️","pen":"🖊️","paintbrush":"🖌️","crayon":"🖍️","memo":"📝","pencil":"📝","briefcase":"💼","file_folder":"📁","open_file_folder":"📂","card_index_dividers":"🗂️","date":"📅","calendar":"📆","spiral_notepad":"🗒️","spiral_calendar":"🗓️","card_index":"📇","chart_with_upwards_trend":"📈","chart_with_downwards_trend":"📉","bar_chart":"📊","clipboard":"📋","pushpin":"📌","round_pushpin":"📍","paperclip":"📎","paperclips":"🖇️","straight_ruler":"📏","triangular_ruler":"📐","scissors":"✂️","card_file_box":"🗃️","file_cabinet":"🗄️","wastebasket":"🗑️","lock":"🔒","unlock":"🔓","lock_with_ink_pen":"🔏","closed_lock_with_key":"🔐","key":"🔑","old_key":"🗝️","hammer":"🔨","axe":"🪓","pick":"⛏️","hammer_and_pick":"⚒️","hammer_and_wrench":"🛠️","dagger":"🗡️","crossed_swords":"⚔️","gun":"🔫","boomerang":"🪃","bow_and_arrow":"🏹","shield":"🛡️","carpentry_saw":"🪚","wrench":"🔧","screwdriver":"🪛","nut_and_bolt":"🔩","gear":"⚙️","clamp":"🗜️","balance_scale":"⚖️","probing_cane":"🦯","link":"🔗","chains":"⛓️","hook":"🪝","toolbox":"🧰","magnet":"🧲","ladder":"🪜","alembic":"⚗️","test_tube":"🧪","petri_dish":"🧫","dna":"🧬","microscope":"🔬","telescope":"🔭","satellite":"📡","syringe":"💉","drop_of_blood":"🩸","pill":"💊","adhesive_bandage":"🩹","stethoscope":"🩺","door":"🚪","elevator":"🛗","mirror":"🪞","window":"🪟","bed":"🛏️","couch_and_lamp":"🛋️","chair":"🪑","toilet":"🚽","plunger":"🪠","shower":"🚿","bathtub":"🛁","mouse_trap":"🪤","razor":"🪒","lotion_bottle":"🧴","safety_pin":"🧷","broom":"🧹","basket":"🧺","roll_of_paper":"🧻","bucket":"🪣","soap":"🧼","toothbrush":"🪥","sponge":"🧽","fire_extinguisher":"🧯","shopping_cart":"🛒","smoking":"🚬","coffin":"⚰️","headstone":"🪦","funeral_urn":"⚱️","moyai":"🗿","placard":"🪧","atm":"🏧","put_litter_in_its_place":"🚮","potable_water":"🚰","wheelchair":"♿","mens":"🚹","womens":"🚺","restroom":"🚻","baby_symbol":"🚼","wc":"🚾","passport_control":"🛂","customs":"🛃","baggage_claim":"🛄","left_luggage":"🛅","warning":"⚠️","children_crossing":"🚸","no_entry":"⛔","no_entry_sign":"🚫","no_bicycles":"🚳","no_smoking":"🚭","do_not_litter":"🚯","non-potable_water":"🚱","no_pedestrians":"🚷","no_mobile_phones":"📵","underage":"🔞","radioactive":"☢️","biohazard":"☣️","arrow_up":"⬆️","arrow_upper_right":"↗️","arrow_right":"➡️","arrow_lower_right":"↘️","arrow_down":"⬇️","arrow_lower_left":"↙️","arrow_left":"⬅️","arrow_upper_left":"↖️","arrow_up_down":"↕️","left_right_arrow":"↔️","leftwards_arrow_with_hook":"↩️","arrow_right_hook":"↪️","arrow_heading_up":"⤴️","arrow_heading_down":"⤵️","arrows_clockwise":"🔃","arrows_counterclockwise":"🔄","back":"🔙","end":"🔚","on":"🔛","soon":"🔜","top":"🔝","place_of_worship":"🛐","atom_symbol":"⚛️","om":"🕉️","star_of_david":"✡️","wheel_of_dharma":"☸️","yin_yang":"☯️","latin_cross":"✝️","orthodox_cross":"☦️","star_and_crescent":"☪️","peace_symbol":"☮️","menorah":"🕎","six_pointed_star":"🔯","aries":"♈","taurus":"♉","gemini":"♊","cancer":"♋","leo":"♌","virgo":"♍","libra":"♎","scorpius":"♏","sagittarius":"♐","capricorn":"♑","aquarius":"♒","pisces":"♓","ophiuchus":"⛎","twisted_rightwards_arrows":"🔀","repeat":"🔁","repeat_one":"🔂","arrow_forward":"▶️","fast_forward":"⏩","next_track_button":"⏭️","play_or_pause_button":"⏯️","arrow_backward":"◀️","rewind":"⏪","previous_track_button":"⏮️","arrow_up_small":"🔼","arrow_double_up":"⏫","arrow_down_small":"🔽","arrow_double_down":"⏬","pause_button":"⏸️","stop_button":"⏹️","record_button":"⏺️","eject_button":"⏏️","cinema":"🎦","low_brightness":"🔅","high_brightness":"🔆","signal_strength":"📶","vibration_mode":"📳","mobile_phone_off":"📴","female_sign":"♀️","male_sign":"♂️","transgender_symbol":"⚧️","heavy_multiplication_x":"✖️","heavy_plus_sign":"➕","heavy_minus_sign":"➖","heavy_division_sign":"➗","infinity":"♾️","bangbang":"‼️","interrobang":"⁉️","question":"❓","grey_question":"❔","grey_exclamation":"❕","exclamation":"❗","heavy_exclamation_mark":"❗","wavy_dash":"〰️","currency_exchange":"💱","heavy_dollar_sign":"💲","medical_symbol":"⚕️","recycle":"♻️","fleur_de_lis":"⚜️","trident":"🔱","name_badge":"📛","beginner":"🔰","o":"⭕","white_check_mark":"✅","ballot_box_with_check":"☑️","heavy_check_mark":"✔️","x":"❌","negative_squared_cross_mark":"❎","curly_loop":"➰","loop":"➿","part_alternation_mark":"〽️","eight_spoked_asterisk":"✳️","eight_pointed_black_star":"✴️","sparkle":"❇️","copyright":"©️","registered":"®️","tm":"™️","hash":"#️⃣","asterisk":"*️⃣","zero":"0️⃣","one":"1️⃣","two":"2️⃣","three":"3️⃣","four":"4️⃣","five":"5️⃣","six":"6️⃣","seven":"7️⃣","eight":"8️⃣","nine":"9️⃣","keycap_ten":"🔟","capital_abcd":"🔠","abcd":"🔡","symbols":"🔣","abc":"🔤","a":"🅰️","ab":"🆎","b":"🅱️","cl":"🆑","cool":"🆒","free":"🆓","information_source":"ℹ️","id":"🆔","m":"Ⓜ️","new":"🆕","ng":"🆖","o2":"🅾️","ok":"🆗","parking":"🅿️","sos":"🆘","up":"🆙","vs":"🆚","koko":"🈁","sa":"🈂️","ideograph_advantage":"🉐","accept":"🉑","congratulations":"㊗️","secret":"㊙️","u6e80":"🈵","red_circle":"🔴","orange_circle":"🟠","yellow_circle":"🟡","green_circle":"🟢","large_blue_circle":"🔵","purple_circle":"🟣","brown_circle":"🟤","black_circle":"⚫","white_circle":"⚪","red_square":"🟥","orange_square":"🟧","yellow_square":"🟨","green_square":"🟩","blue_square":"🟦","purple_square":"🟪","brown_square":"🟫","black_large_square":"⬛","white_large_square":"⬜","black_medium_square":"◼️","white_medium_square":"◻️","black_medium_small_square":"◾","white_medium_small_square":"◽","black_small_square":"▪️","white_small_square":"▫️","large_orange_diamond":"🔶","large_blue_diamond":"🔷","small_orange_diamond":"🔸","small_blue_diamond":"🔹","small_red_triangle":"🔺","small_red_triangle_down":"🔻","diamond_shape_with_a_dot_inside":"💠","radio_button":"🔘","white_square_button":"🔳","black_square_button":"🔲","checkered_flag":"🏁","triangular_flag_on_post":"🚩","crossed_flags":"🎌","black_flag":"🏴","white_flag":"🏳️","rainbow_flag":"🏳️‍🌈","transgender_flag":"🏳️‍⚧️","pirate_flag":"🏴‍☠️","ascension_island":"🇦🇨","andorra":"🇦🇩","united_arab_emirates":"🇦🇪","afghanistan":"🇦🇫","antigua_barbuda":"🇦🇬","anguilla":"🇦🇮","albania":"🇦🇱","armenia":"🇦🇲","angola":"🇦🇴","antarctica":"🇦🇶","argentina":"🇦🇷","american_samoa":"🇦🇸","austria":"🇦🇹","australia":"🇦🇺","aruba":"🇦🇼","aland_islands":"🇦🇽","azerbaijan":"🇦🇿","bosnia_herzegovina":"🇧🇦","barbados":"🇧🇧","bangladesh":"🇧🇩","belgium":"🇧🇪","burkina_faso":"🇧🇫","bulgaria":"🇧🇬","bahrain":"🇧🇭","burundi":"🇧🇮","benin":"🇧🇯","st_barthelemy":"🇧🇱","bermuda":"🇧🇲","brunei":"🇧🇳","bolivia":"🇧🇴","caribbean_netherlands":"🇧🇶","brazil":"🇧🇷","bahamas":"🇧🇸","bhutan":"🇧🇹","bouvet_island":"🇧🇻","botswana":"🇧🇼","belarus":"🇧🇾","belize":"🇧🇿","canada":"🇨🇦","cocos_islands":"🇨🇨","congo_kinshasa":"🇨🇩","central_african_republic":"🇨🇫","congo_brazzaville":"🇨🇬","switzerland":"🇨🇭","cote_divoire":"🇨🇮","cook_islands":"🇨🇰","chile":"🇨🇱","cameroon":"🇨🇲","cn":"🇨🇳","colombia":"🇨🇴","clipperton_island":"🇨🇵","costa_rica":"🇨🇷","cuba":"🇨🇺","cape_verde":"🇨🇻","curacao":"🇨🇼","christmas_island":"🇨🇽","cyprus":"🇨🇾","czech_republic":"🇨🇿","de":"🇩🇪","diego_garcia":"🇩🇬","djibouti":"🇩🇯","denmark":"🇩🇰","dominica":"🇩🇲","dominican_republic":"🇩🇴","algeria":"🇩🇿","ceuta_melilla":"🇪🇦","ecuador":"🇪🇨","estonia":"🇪🇪","egypt":"🇪🇬","western_sahara":"🇪🇭","eritrea":"🇪🇷","es":"🇪🇸","ethiopia":"🇪🇹","eu":"🇪🇺","european_union":"🇪🇺","finland":"🇫🇮","fiji":"🇫🇯","falkland_islands":"🇫🇰","micronesia":"🇫🇲","faroe_islands":"🇫🇴","fr":"🇫🇷","gabon":"🇬🇦","gb":"🇬🇧","uk":"🇬🇧","grenada":"🇬🇩","georgia":"🇬🇪","french_guiana":"🇬🇫","guernsey":"🇬🇬","ghana":"🇬🇭","gibraltar":"🇬🇮","greenland":"🇬🇱","gambia":"🇬🇲","guinea":"🇬🇳","guadeloupe":"🇬🇵","equatorial_guinea":"🇬🇶","greece":"🇬🇷","south_georgia_south_sandwich_islands":"🇬🇸","guatemala":"🇬🇹","guam":"🇬🇺","guinea_bissau":"🇬🇼","guyana":"🇬🇾","hong_kong":"🇭🇰","heard_mcdonald_islands":"🇭🇲","honduras":"🇭🇳","croatia":"🇭🇷","haiti":"🇭🇹","hungary":"🇭🇺","canary_islands":"🇮🇨","indonesia":"🇮🇩","ireland":"🇮🇪","israel":"🇮🇱","isle_of_man":"🇮🇲","india":"🇮🇳","british_indian_ocean_territory":"🇮🇴","iraq":"🇮🇶","iran":"🇮🇷","iceland":"🇮🇸","it":"🇮🇹","jersey":"🇯🇪","jamaica":"🇯🇲","jordan":"🇯🇴","jp":"🇯🇵","kenya":"🇰🇪","kyrgyzstan":"🇰🇬","cambodia":"🇰🇭","kiribati":"🇰🇮","comoros":"🇰🇲","st_kitts_nevis":"🇰🇳","north_korea":"🇰🇵","kr":"🇰🇷","kuwait":"🇰🇼","cayman_islands":"🇰🇾","kazakhstan":"🇰🇿","laos":"🇱🇦","lebanon":"🇱🇧","st_lucia":"🇱🇨","liechtenstein":"🇱🇮","sri_lanka":"🇱🇰","liberia":"🇱🇷","lesotho":"🇱🇸","lithuania":"🇱🇹","luxembourg":"🇱🇺","latvia":"🇱🇻","libya":"🇱🇾","morocco":"🇲🇦","monaco":"🇲🇨","moldova":"🇲🇩","montenegro":"🇲🇪","st_martin":"🇲🇫","madagascar":"🇲🇬","marshall_islands":"🇲🇭","macedonia":"🇲🇰","mali":"🇲🇱","myanmar":"🇲🇲","mongolia":"🇲🇳","macau":"🇲🇴","northern_mariana_islands":"🇲🇵","martinique":"🇲🇶","mauritania":"🇲🇷","montserrat":"🇲🇸","malta":"🇲🇹","mauritius":"🇲🇺","maldives":"🇲🇻","malawi":"🇲🇼","mexico":"🇲🇽","malaysia":"🇲🇾","mozambique":"🇲🇿","namibia":"🇳🇦","new_caledonia":"🇳🇨","niger":"🇳🇪","norfolk_island":"🇳🇫","nigeria":"🇳🇬","nicaragua":"🇳🇮","netherlands":"🇳🇱","norway":"🇳🇴","nepal":"🇳🇵","nauru":"🇳🇷","niue":"🇳🇺","new_zealand":"🇳🇿","oman":"🇴🇲","panama":"🇵🇦","peru":"🇵🇪","french_polynesia":"🇵🇫","papua_new_guinea":"🇵🇬","philippines":"🇵🇭","pakistan":"🇵🇰","poland":"🇵🇱","st_pierre_miquelon":"🇵🇲","pitcairn_islands":"🇵🇳","puerto_rico":"🇵🇷","palestinian_territories":"🇵🇸","portugal":"🇵🇹","palau":"🇵🇼","paraguay":"🇵🇾","qatar":"🇶🇦","reunion":"🇷🇪","romania":"🇷🇴","serbia":"🇷🇸","ru":"🇷🇺","rwanda":"🇷🇼","saudi_arabia":"🇸🇦","solomon_islands":"🇸🇧","seychelles":"🇸🇨","sudan":"🇸🇩","sweden":"🇸🇪","singapore":"🇸🇬","st_helena":"🇸🇭","slovenia":"🇸🇮","svalbard_jan_mayen":"🇸🇯","slovakia":"🇸🇰","sierra_leone":"🇸🇱","san_marino":"🇸🇲","senegal":"🇸🇳","somalia":"🇸🇴","suriname":"🇸🇷","south_sudan":"🇸🇸","sao_tome_principe":"🇸🇹","el_salvador":"🇸🇻","sint_maarten":"🇸🇽","syria":"🇸🇾","swaziland":"🇸🇿","tristan_da_cunha":"🇹🇦","turks_caicos_islands":"🇹🇨","chad":"🇹🇩","french_southern_territories":"🇹🇫","togo":"🇹🇬","thailand":"🇹🇭","tajikistan":"🇹🇯","tokelau":"🇹🇰","timor_leste":"🇹🇱","turkmenistan":"🇹🇲","tunisia":"🇹🇳","tonga":"🇹🇴","tr":"🇹🇷","trinidad_tobago":"🇹🇹","tuvalu":"🇹🇻","taiwan":"🇹🇼","tanzania":"🇹🇿","ukraine":"🇺🇦","uganda":"🇺🇬","us_outlying_islands":"🇺🇲","united_nations":"🇺🇳","us":"🇺🇸","uruguay":"🇺🇾","uzbekistan":"🇺🇿","vatican_city":"🇻🇦","st_vincent_grenadines":"🇻🇨","venezuela":"🇻🇪","british_virgin_islands":"🇻🇬","us_virgin_islands":"🇻🇮","vietnam":"🇻🇳","vanuatu":"🇻🇺","wallis_futuna":"🇼🇫","samoa":"🇼🇸","kosovo":"🇽🇰","yemen":"🇾🇪","mayotte":"🇾🇹","south_africa":"🇿🇦","zambia":"🇿🇲","zimbabwe":"🇿🇼","england":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","wales":"🏴󠁧󠁢󠁷󠁬󠁳󠁿"}
 
 /***/ }),
 /* 133 */
@@ -11198,14 +11250,22 @@ module.exports = function normalize_opts(options) {
     return acc;
   }, {});
 
-  // Compile regexp
-  var names = Object.keys(emojies)
-                .map(function (name) { return ':' + name + ':'; })
-                .concat(Object.keys(shortcuts))
-                .sort()
-                .reverse()
-                .map(function (name) { return quoteRE(name); })
-                .join('|');
+  var keys = Object.keys(emojies),
+      names;
+
+  // If no definitions are given, return empty regex to avoid replacements with 'undefined'.
+  if (keys.length === 0) {
+    names = '^$';
+  } else {
+    // Compile regexp
+    names = keys
+      .map(function (name) { return ':' + name + ':'; })
+      .concat(Object.keys(shortcuts))
+      .sort()
+      .reverse()
+      .map(function (name) { return quoteRE(name); })
+      .join('|');
+  }
   var scanRE = RegExp(names);
   var replaceRE = RegExp(names, 'g');
 
@@ -11667,7 +11727,7 @@ module.exports = function footnote_plugin(md) {
         tokens = refTokens[':' + list[i].label];
       }
 
-      state.tokens = state.tokens.concat(tokens);
+      if (tokens) state.tokens = state.tokens.concat(tokens);
       if (state.tokens[state.tokens.length - 1].type === 'paragraph_close') {
         lastParagraph = state.tokens.pop();
       } else {
@@ -11823,11 +11883,13 @@ module.exports = function ins_plugin(md) {
       token         = state.push('text', '', 0);
       token.content = ch + ch;
 
+      if (!scanned.can_open && !scanned.can_close) { continue; }
+
       state.delimiters.push({
         marker: marker,
-        jump:   i,
+        length: 0,     // disable "rule of 3" length checks meant for emphasis
+        jump:   i / 2, // 1 delimiter = 2 characters
         token:  state.tokens.length - 1,
-        level:  state.level,
         end:    -1,
         open:   scanned.can_open,
         close:  scanned.can_close
@@ -11842,14 +11904,13 @@ module.exports = function ins_plugin(md) {
 
   // Walk through delimiter list and replace text tokens with tags
   //
-  function postProcess(state) {
+  function postProcess(state, delimiters) {
     var i, j,
         startDelim,
         endDelim,
         token,
         loneMarkers = [],
-        delimiters = state.delimiters,
-        max = state.delimiters.length;
+        max = delimiters.length;
 
     for (i = 0; i < max; i++) {
       startDelim = delimiters[i];
@@ -11910,7 +11971,19 @@ module.exports = function ins_plugin(md) {
   }
 
   md.inline.ruler.before('emphasis', 'ins', tokenize);
-  md.inline.ruler2.before('emphasis', 'ins', postProcess);
+  md.inline.ruler2.before('emphasis', 'ins', function (state) {
+    var curr,
+        tokens_meta = state.tokens_meta,
+        max = (state.tokens_meta || []).length;
+
+    postProcess(state, state.delimiters);
+
+    for (curr = 0; curr < max; curr++) {
+      if (tokens_meta[curr] && tokens_meta[curr].delimiters) {
+        postProcess(state, tokens_meta[curr].delimiters);
+      }
+    }
+  });
 };
 
 
@@ -12215,7 +12288,7 @@ module.exports = {
  * kinds.
  */
 
-var matchAt = __webpack_require__(205);
+var matchAt = __webpack_require__(208);
 
 var ParseError = __webpack_require__(3);
 
@@ -18583,11 +18656,13 @@ module.exports = function ins_plugin(md) {
       token         = state.push('text', '', 0);
       token.content = ch + ch;
 
+      if (!scanned.can_open && !scanned.can_close) { continue; }
+
       state.delimiters.push({
         marker: marker,
-        jump:   i,
+        length: 0,     // disable "rule of 3" length checks meant for emphasis
+        jump:   i / 2, // 1 delimiter = 2 characters
         token:  state.tokens.length - 1,
-        level:  state.level,
         end:    -1,
         open:   scanned.can_open,
         close:  scanned.can_close
@@ -18602,14 +18677,13 @@ module.exports = function ins_plugin(md) {
 
   // Walk through delimiter list and replace text tokens with tags
   //
-  function postProcess(state) {
+  function postProcess(state, delimiters) {
     var i, j,
         startDelim,
         endDelim,
         token,
         loneMarkers = [],
-        delimiters = state.delimiters,
-        max = state.delimiters.length;
+        max = delimiters.length;
 
     for (i = 0; i < max; i++) {
       startDelim = delimiters[i];
@@ -18670,7 +18744,19 @@ module.exports = function ins_plugin(md) {
   }
 
   md.inline.ruler.before('emphasis', 'mark', tokenize);
-  md.inline.ruler2.before('emphasis', 'mark', postProcess);
+  md.inline.ruler2.before('emphasis', 'mark', function (state) {
+    var curr,
+        tokens_meta = state.tokens_meta,
+        max = (state.tokens_meta || []).length;
+
+    postProcess(state, state.delimiters);
+
+    for (curr = 0; curr < max; curr++) {
+      if (tokens_meta[curr] && tokens_meta[curr].delimiters) {
+        postProcess(state, tokens_meta[curr].delimiters);
+      }
+    }
+  });
 };
 
 
@@ -19149,7 +19235,6 @@ module.exports = [
   'main',
   'menu',
   'menuitem',
-  'meta',
   'nav',
   'noframes',
   'ol',
@@ -19216,6 +19301,7 @@ module.exports = function parseLinkDestination(str, pos, max) {
     while (pos < max) {
       code = str.charCodeAt(pos);
       if (code === 0x0A /* \n */) { return result; }
+      if (code === 0x3C /* < */) { return result; }
       if (code === 0x3E /* > */) {
         result.pos = pos + 1;
         result.str = unescapeAll(str.slice(start + 1, pos));
@@ -19246,12 +19332,14 @@ module.exports = function parseLinkDestination(str, pos, max) {
     if (code < 0x20 || code === 0x7F) { break; }
 
     if (code === 0x5C /* \ */ && pos + 1 < max) {
+      if (str.charCodeAt(pos + 1) === 0x20) { break; }
       pos += 2;
       continue;
     }
 
     if (code === 0x28 /* ( */) {
       level++;
+      if (level > 32) { return result; }
     }
 
     if (code === 0x29 /* ) */) {
@@ -19372,6 +19460,8 @@ module.exports = function parseLinkTitle(str, pos, max) {
       result.str = unescapeAll(str.slice(start + 1, pos));
       result.ok = true;
       return result;
+    } else if (code === 0x28 /* ( */ && marker === 0x29 /* ) */) {
+      return result;
     } else if (code === 0x0A) {
       lines++;
     } else if (code === 0x5C /* \ */ && pos + 1 < max) {
@@ -19404,13 +19494,13 @@ var Renderer     = __webpack_require__(173);
 var ParserCore   = __webpack_require__(168);
 var ParserBlock  = __webpack_require__(167);
 var ParserInline = __webpack_require__(169);
-var LinkifyIt    = __webpack_require__(125);
+var LinkifyIt    = __webpack_require__(124);
 var mdurl        = __webpack_require__(65);
-var punycode     = __webpack_require__(210);
+var punycode     = __webpack_require__(213);
 
 
 var config = {
-  'default': __webpack_require__(171),
+  default: __webpack_require__(171),
   zero: __webpack_require__(172),
   commonmark: __webpack_require__(170)
 };
@@ -19476,7 +19566,8 @@ function normalizeLinkText(url) {
     }
   }
 
-  return mdurl.decode(mdurl.format(parsed));
+  // add '%' to exclude list because of https://github.com/markdown-it/markdown-it/issues/720
+  return mdurl.decode(mdurl.format(parsed), mdurl.decode.defaultChars + '%');
 }
 
 
@@ -19582,7 +19673,7 @@ function normalizeLinkText(url) {
  *   highlight: function (str, lang) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
- *         return hljs.highlight(lang, str, true).value;
+ *         return hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
  *       } catch (__) {}
  *     }
  *
@@ -19602,7 +19693,7 @@ function normalizeLinkText(url) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
  *         return '<pre class="hljs"><code>' +
- *                hljs.highlight(lang, str, true).value +
+ *                hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
  *                '</code></pre>';
  *       } catch (__) {}
  *     }
@@ -19772,7 +19863,7 @@ MarkdownIt.prototype.set = function (options) {
  * MarkdownIt.configure(presets)
  *
  * Batch load of all options and compenent settings. This is internal method,
- * and you probably will not need it. But if you with - see available presets
+ * and you probably will not need it. But if you will - see available presets
  * and data structure [here](https://github.com/markdown-it/markdown-it/tree/master/lib/presets)
  *
  * We strongly recommend to use presets instead of direct config loads. That
@@ -19898,7 +19989,7 @@ MarkdownIt.prototype.use = function (plugin /*, params, ... */) {
  * - src (String): source string
  * - env (Object): environment sandbox
  *
- * Parse input string and returns list of block tokens (special token type
+ * Parse input string and return list of block tokens (special token type
  * "inline" will contain list of inline tokens). You should not call this
  * method directly, until you write custom renderer (for example, to produce
  * AST).
@@ -20002,9 +20093,9 @@ var _rules = [
   [ 'hr',         __webpack_require__(178),         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
   [ 'list',       __webpack_require__(181),       [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'reference',  __webpack_require__(183) ],
+  [ 'html_block', __webpack_require__(179), [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'heading',    __webpack_require__(177),    [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'lheading',   __webpack_require__(180) ],
-  [ 'html_block', __webpack_require__(179), [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'paragraph',  __webpack_require__(182) ]
 ];
 
@@ -20128,7 +20219,10 @@ var _rules = [
   [ 'inline',         __webpack_require__(187)         ],
   [ 'linkify',        __webpack_require__(188)        ],
   [ 'replacements',   __webpack_require__(190)   ],
-  [ 'smartquotes',    __webpack_require__(191)    ]
+  [ 'smartquotes',    __webpack_require__(191)    ],
+  // `text_join` finds `text_special` tokens (for escape sequences)
+  // and joins them with the rest of the text
+  [ 'text_join',      __webpack_require__(193)      ]
 ];
 
 
@@ -20190,24 +20284,32 @@ var Ruler           = __webpack_require__(38);
 // Parser rules
 
 var _rules = [
-  [ 'text',            __webpack_require__(203) ],
-  [ 'newline',         __webpack_require__(201) ],
-  [ 'escape',          __webpack_require__(197) ],
-  [ 'backticks',       __webpack_require__(194) ],
+  [ 'text',            __webpack_require__(206) ],
+  [ 'linkify',         __webpack_require__(203) ],
+  [ 'newline',         __webpack_require__(204) ],
+  [ 'escape',          __webpack_require__(198) ],
+  [ 'backticks',       __webpack_require__(195) ],
   [ 'strikethrough',   __webpack_require__(64).tokenize ],
   [ 'emphasis',        __webpack_require__(63).tokenize ],
-  [ 'link',            __webpack_require__(200) ],
-  [ 'image',           __webpack_require__(199) ],
-  [ 'autolink',        __webpack_require__(193) ],
-  [ 'html_inline',     __webpack_require__(198) ],
-  [ 'entity',          __webpack_require__(196) ]
+  [ 'link',            __webpack_require__(202) ],
+  [ 'image',           __webpack_require__(201) ],
+  [ 'autolink',        __webpack_require__(194) ],
+  [ 'html_inline',     __webpack_require__(200) ],
+  [ 'entity',          __webpack_require__(197) ]
 ];
 
+// `rule2` ruleset was created specifically for emphasis/strikethrough
+// post-processing and may be changed in the future.
+//
+// Don't use this for anything except pairs (plugins working with `balance_pairs`).
+//
 var _rules2 = [
-  [ 'balance_pairs',   __webpack_require__(195) ],
+  [ 'balance_pairs',   __webpack_require__(196) ],
   [ 'strikethrough',   __webpack_require__(64).postProcess ],
   [ 'emphasis',        __webpack_require__(63).postProcess ],
-  [ 'text_collapse',   __webpack_require__(204) ]
+  // rules for pairs separate '**' into its own text tokens, which may be left unused,
+  // rule below merges unused segments back with the rest of the text
+  [ 'fragments_join',  __webpack_require__(199) ]
 ];
 
 
@@ -20348,7 +20450,7 @@ ParserInline.prototype.parse = function (str, md, env, outTokens) {
 };
 
 
-ParserInline.prototype.State = __webpack_require__(202);
+ParserInline.prototype.State = __webpack_require__(205);
 
 
 module.exports = ParserInline;
@@ -20399,7 +20501,8 @@ module.exports = {
       rules: [
         'normalize',
         'block',
-        'inline'
+        'inline',
+        'text_join'
       ]
     },
 
@@ -20434,7 +20537,7 @@ module.exports = {
       rules2: [
         'balance_pairs',
         'emphasis',
-        'text_collapse'
+        'fragments_join'
       ]
     }
   }
@@ -20535,7 +20638,8 @@ module.exports = {
       rules: [
         'normalize',
         'block',
-        'inline'
+        'inline',
+        'text_join'
       ]
     },
 
@@ -20551,7 +20655,7 @@ module.exports = {
       ],
       rules2: [
         'balance_pairs',
-        'text_collapse'
+        'fragments_join'
       ]
     }
   }
@@ -20605,14 +20709,17 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   var token = tokens[idx],
       info = token.info ? unescapeAll(token.info).trim() : '',
       langName = '',
-      highlighted, i, tmpAttrs, tmpToken;
+      langAttrs = '',
+      highlighted, i, arr, tmpAttrs, tmpToken;
 
   if (info) {
-    langName = info.split(/\s+/g)[0];
+    arr = info.split(/(\s+)/g);
+    langName = arr[0];
+    langAttrs = arr.slice(2).join('');
   }
 
   if (options.highlight) {
-    highlighted = options.highlight(token.content, langName) || escapeHtml(token.content);
+    highlighted = options.highlight(token.content, langName, langAttrs) || escapeHtml(token.content);
   } else {
     highlighted = escapeHtml(token.content);
   }
@@ -20622,7 +20729,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   }
 
   // If language exists, inject class gently, without modifying original token.
-  // May be, one day we will add .clone() for token and simplify this part, but
+  // May be, one day we will add .deepClone() for token and simplify this part, but
   // now we prefer to keep things local.
   if (info) {
     i        = token.attrIndex('class');
@@ -20631,6 +20738,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
     if (i < 0) {
       tmpAttrs.push([ 'class', options.langPrefix + langName ]);
     } else {
+      tmpAttrs[i] = tmpAttrs[i].slice();
       tmpAttrs[i][1] += ' ' + options.langPrefix + langName;
     }
 
@@ -20818,7 +20926,7 @@ Renderer.prototype.renderToken = function renderToken(tokens, idx, options) {
 
 /**
  * Renderer.renderInline(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -20845,7 +20953,7 @@ Renderer.prototype.renderInline = function (tokens, options, env) {
 
 /** internal
  * Renderer.renderInlineAsText(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -20861,6 +20969,8 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
       result += tokens[i].content;
     } else if (tokens[i].type === 'image') {
       result += this.renderInlineAsText(tokens[i].children, options, env);
+    } else if (tokens[i].type === 'softbreak') {
+      result += '\n';
     }
   }
 
@@ -20870,7 +20980,7 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
 
 /**
  * Renderer.render(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -20932,7 +21042,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       terminate,
       terminatorRules,
       token,
-      wasOutdented,
+      isOutdented,
       oldLineMax = state.lineMax,
       pos = state.bMarks[startLine] + state.tShift[startLine],
       max = state.eMarks[startLine];
@@ -20947,8 +21057,8 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
   // so no point trying to find the end of it in silent mode
   if (silent) { return true; }
 
-  // skip spaces after ">" and re-calculate offset
-  initial = offset = state.sCount[startLine] + pos - (state.bMarks[startLine] + state.tShift[startLine]);
+  // set offset past spaces and ">"
+  initial = offset = state.sCount[startLine] + 1;
 
   // skip one optional space after '>'
   if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -21013,7 +21123,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
   oldParentType = state.parentType;
   state.parentType = 'blockquote';
-  wasOutdented = false;
 
   // Search the end of the block
   //
@@ -21042,7 +21151,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
     //    > current blockquote
     // 2. checking this line
     // ```
-    if (state.sCount[nextLine] < state.blkIndent) wasOutdented = true;
+    isOutdented = state.sCount[nextLine] < state.blkIndent;
 
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
@@ -21052,11 +21161,11 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !wasOutdented) {
+    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !isOutdented) {
       // This line is inside the blockquote.
 
-      // skip spaces after ">" and re-calculate offset
-      initial = offset = state.sCount[nextLine] + pos - (state.bMarks[nextLine] + state.tShift[nextLine]);
+      // set offset past spaces and ">"
+      initial = offset = state.sCount[nextLine] + 1;
 
       // skip one optional space after '>'
       if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -21226,7 +21335,7 @@ module.exports = function code(state, startLine, endLine/*, silent*/) {
   state.line = last;
 
   token         = state.push('code_block', 'code', 0);
-  token.content = state.getLines(startLine, last, 4 + state.blkIndent, true);
+  token.content = state.getLines(startLine, last, 4 + state.blkIndent, false) + '\n';
   token.map     = [ startLine, state.line ];
 
   return true;
@@ -21469,7 +21578,7 @@ var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(62).HTML_OPEN_CLOSE_TAG_RE;
 // last argument defines whether it can terminate a paragraph or not
 //
 var HTML_SEQUENCES = [
-  [ /^<(script|pre|style)(?=(\s|>|$))/i, /<\/(script|pre|style)>/i, true ],
+  [ /^<(script|pre|style|textarea)(?=(\s|>|$))/i, /<\/(script|pre|style|textarea)>/i, true ],
   [ /^<!--/,        /-->/,   true ],
   [ /^<\?/,         /\?>/,   true ],
   [ /^<![A-Z]/,     />/,     true ],
@@ -21782,7 +21891,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     // This code can fail if plugins use blkIndent as well as lists,
     // but I hope the spec gets fixed long before that happens.
     //
-    if (state.tShift[startLine] >= state.blkIndent) {
+    if (state.sCount[startLine] >= state.blkIndent) {
       isTerminatingParagraph = true;
     }
   }
@@ -21791,7 +21900,7 @@ module.exports = function list(state, startLine, endLine, silent) {
   if ((posAfterMarker = skipOrderedListMarker(state, startLine)) >= 0) {
     isOrdered = true;
     start = state.bMarks[startLine] + state.tShift[startLine];
-    markerValue = Number(state.src.substr(start, posAfterMarker - start - 1));
+    markerValue = Number(state.src.slice(start, posAfterMarker - 1));
 
     // If we're starting a new ordered list right after
     // a paragraph, it should start with 1.
@@ -21884,6 +21993,9 @@ module.exports = function list(state, startLine, endLine, silent) {
     token        = state.push('list_item_open', 'li', 1);
     token.markup = String.fromCharCode(markerCharCode);
     token.map    = itemLines = [ startLine, 0 ];
+    if (isOrdered) {
+      token.info = state.src.slice(start, posAfterMarker - 1);
+    }
 
     // change current state, then restore it after parser subcall
     oldTight = state.tight;
@@ -21960,6 +22072,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     if (isOrdered) {
       posAfterMarker = skipOrderedListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
+      start = state.bMarks[nextLine] + state.tShift[nextLine];
     } else {
       posAfterMarker = skipBulletListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
@@ -22497,7 +22610,7 @@ module.exports = StateBlock;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// GFM table, non-standard
+// GFM table, https://github.github.com/gfm/#tables-extension-
 
 
 
@@ -22505,10 +22618,10 @@ var isSpace = __webpack_require__(0).isSpace;
 
 
 function getLine(state, line) {
-  var pos = state.bMarks[line] + state.blkIndent,
+  var pos = state.bMarks[line] + state.tShift[line],
       max = state.eMarks[line];
 
-  return state.src.substr(pos, max - pos);
+  return state.src.slice(pos, max);
 }
 
 function escapedSplit(str) {
@@ -22516,56 +22629,42 @@ function escapedSplit(str) {
       pos = 0,
       max = str.length,
       ch,
-      escapes = 0,
+      isEscaped = false,
       lastPos = 0,
-      backTicked = false,
-      lastBackTick = 0;
+      current = '';
 
   ch  = str.charCodeAt(pos);
 
   while (pos < max) {
-    if (ch === 0x60/* ` */) {
-      if (backTicked) {
-        // make \` close code sequence, but not open it;
-        // the reason is: `\` is correct code block
-        backTicked = false;
-        lastBackTick = pos;
-      } else if (escapes % 2 === 0) {
-        backTicked = true;
-        lastBackTick = pos;
+    if (ch === 0x7c/* | */) {
+      if (!isEscaped) {
+        // pipe separating cells, '|'
+        result.push(current + str.substring(lastPos, pos));
+        current = '';
+        lastPos = pos + 1;
+      } else {
+        // escaped pipe, '\|'
+        current += str.substring(lastPos, pos - 1);
+        lastPos = pos;
       }
-    } else if (ch === 0x7c/* | */ && (escapes % 2 === 0) && !backTicked) {
-      result.push(str.substring(lastPos, pos));
-      lastPos = pos + 1;
     }
 
-    if (ch === 0x5c/* \ */) {
-      escapes++;
-    } else {
-      escapes = 0;
-    }
-
+    isEscaped = (ch === 0x5c/* \ */);
     pos++;
-
-    // If there was an un-closed backtick, go back to just after
-    // the last backtick, but as if it was a normal character
-    if (pos === max && backTicked) {
-      backTicked = false;
-      pos = lastBackTick + 1;
-    }
 
     ch = str.charCodeAt(pos);
   }
 
-  result.push(str.substring(lastPos));
+  result.push(current + str.substring(lastPos));
 
   return result;
 }
 
 
 module.exports = function table(state, startLine, endLine, silent) {
-  var ch, lineText, pos, i, nextLine, columns, columnCount, token,
-      aligns, t, tableLines, tbodyLines;
+  var ch, lineText, pos, i, l, nextLine, columns, columnCount, token,
+      aligns, t, tableLines, tbodyLines, oldParentType, terminate,
+      terminatorRules, firstCh, secondCh;
 
   // should have at least two lines
   if (startLine + 2 > endLine) { return false; }
@@ -22584,8 +22683,19 @@ module.exports = function table(state, startLine, endLine, silent) {
   pos = state.bMarks[nextLine] + state.tShift[nextLine];
   if (pos >= state.eMarks[nextLine]) { return false; }
 
-  ch = state.src.charCodeAt(pos++);
-  if (ch !== 0x7C/* | */ && ch !== 0x2D/* - */ && ch !== 0x3A/* : */) { return false; }
+  firstCh = state.src.charCodeAt(pos++);
+  if (firstCh !== 0x7C/* | */ && firstCh !== 0x2D/* - */ && firstCh !== 0x3A/* : */) { return false; }
+
+  if (pos >= state.eMarks[nextLine]) { return false; }
+
+  secondCh = state.src.charCodeAt(pos++);
+  if (secondCh !== 0x7C/* | */ && secondCh !== 0x2D/* - */ && secondCh !== 0x3A/* : */ && !isSpace(secondCh)) {
+    return false;
+  }
+
+  // if first character is '-', then second character must not be a space
+  // (due to parsing ambiguity with list)
+  if (firstCh === 0x2D/* - */ && isSpace(secondCh)) { return false; }
 
   while (pos < state.eMarks[nextLine]) {
     ch = state.src.charCodeAt(pos);
@@ -22624,14 +22734,23 @@ module.exports = function table(state, startLine, endLine, silent) {
   lineText = getLine(state, startLine).trim();
   if (lineText.indexOf('|') === -1) { return false; }
   if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-  columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+  columns = escapedSplit(lineText);
+  if (columns.length && columns[0] === '') columns.shift();
+  if (columns.length && columns[columns.length - 1] === '') columns.pop();
 
   // header row will define an amount of columns in the entire table,
-  // and align row shouldn't be smaller than that (the rest of the rows can)
+  // and align row should be exactly the same (the rest of the rows can differ)
   columnCount = columns.length;
-  if (columnCount > aligns.length) { return false; }
+  if (columnCount === 0 || columnCount !== aligns.length) { return false; }
 
   if (silent) { return true; }
+
+  oldParentType = state.parentType;
+  state.parentType = 'table';
+
+  // use 'blockquote' lists for termination because it's
+  // the most similar to tables
+  terminatorRules = state.md.block.ruler.getRules('blockquote');
 
   token     = state.push('table_open', 'table', 1);
   token.map = tableLines = [ startLine, 0 ];
@@ -22644,14 +22763,12 @@ module.exports = function table(state, startLine, endLine, silent) {
 
   for (i = 0; i < columns.length; i++) {
     token          = state.push('th_open', 'th', 1);
-    token.map      = [ startLine, startLine + 1 ];
     if (aligns[i]) {
       token.attrs  = [ [ 'style', 'text-align:' + aligns[i] ] ];
     }
 
     token          = state.push('inline', '', 0);
     token.content  = columns[i].trim();
-    token.map      = [ startLine, startLine + 1 ];
     token.children = [];
 
     token          = state.push('th_close', 'th', -1);
@@ -22660,18 +22777,33 @@ module.exports = function table(state, startLine, endLine, silent) {
   token     = state.push('tr_close', 'tr', -1);
   token     = state.push('thead_close', 'thead', -1);
 
-  token     = state.push('tbody_open', 'tbody', 1);
-  token.map = tbodyLines = [ startLine + 2, 0 ];
-
   for (nextLine = startLine + 2; nextLine < endLine; nextLine++) {
     if (state.sCount[nextLine] < state.blkIndent) { break; }
 
-    lineText = getLine(state, nextLine).trim();
-    if (lineText.indexOf('|') === -1) { break; }
-    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
-    columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+    terminate = false;
+    for (i = 0, l = terminatorRules.length; i < l; i++) {
+      if (terminatorRules[i](state, nextLine, endLine, true)) {
+        terminate = true;
+        break;
+      }
+    }
 
-    token = state.push('tr_open', 'tr', 1);
+    if (terminate) { break; }
+    lineText = getLine(state, nextLine).trim();
+    if (!lineText) { break; }
+    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
+    columns = escapedSplit(lineText);
+    if (columns.length && columns[0] === '') columns.shift();
+    if (columns.length && columns[columns.length - 1] === '') columns.pop();
+
+    if (nextLine === startLine + 2) {
+      token     = state.push('tbody_open', 'tbody', 1);
+      token.map = tbodyLines = [ startLine + 2, 0 ];
+    }
+
+    token     = state.push('tr_open', 'tr', 1);
+    token.map = [ nextLine, nextLine + 1 ];
+
     for (i = 0; i < columnCount; i++) {
       token          = state.push('td_open', 'td', 1);
       if (aligns[i]) {
@@ -22686,10 +22818,16 @@ module.exports = function table(state, startLine, endLine, silent) {
     }
     token = state.push('tr_close', 'tr', -1);
   }
-  token = state.push('tbody_close', 'tbody', -1);
-  token = state.push('table_close', 'table', -1);
 
-  tableLines[1] = tbodyLines[1] = nextLine;
+  if (tbodyLines) {
+    token = state.push('tbody_close', 'tbody', -1);
+    tbodyLines[1] = nextLine;
+  }
+
+  token = state.push('table_close', 'table', -1);
+  tableLines[1] = nextLine;
+
+  state.parentType = oldParentType;
   state.line = nextLine;
   return true;
 };
@@ -22814,8 +22952,17 @@ module.exports = function linkify(state) {
         level = currentToken.level;
         lastPos = 0;
 
-        for (ln = 0; ln < links.length; ln++) {
+        // forbid escape sequence at the start of the string,
+        // this avoids http\://example.com/ from being linkified as
+        // http:<a href="//example.com/">//example.com/</a>
+        if (links.length > 0 &&
+            links[0].index === 0 &&
+            i > 0 &&
+            tokens[i - 1].type === 'text_special') {
+          links = links.slice(1);
+        }
 
+        for (ln = 0; ln < links.length; ln++) {
           url = links[ln].url;
           fullUrl = state.md.normalizeLink(url);
           if (!state.md.validateLink(fullUrl)) { continue; }
@@ -22926,19 +23073,18 @@ module.exports = function normalize(state) {
 
 // TODO:
 // - fractionals 1/2, 1/4, 3/4 -> ½, ¼, ¾
-// - miltiplication 2 x 4 -> 2 × 4
+// - multiplications 2 x 4 -> 2 × 4
 
 var RARE_RE = /\+-|\.\.|\?\?\?\?|!!!!|,,|--/;
 
 // Workaround for phantomjs - need regex without /g flag,
 // or root check will fail every second time
-var SCOPED_ABBR_TEST_RE = /\((c|tm|r|p)\)/i;
+var SCOPED_ABBR_TEST_RE = /\((c|tm|r)\)/i;
 
-var SCOPED_ABBR_RE = /\((c|tm|r|p)\)/ig;
+var SCOPED_ABBR_RE = /\((c|tm|r)\)/ig;
 var SCOPED_ABBR = {
   c: '©',
   r: '®',
-  p: '§',
   tm: '™'
 };
 
@@ -22981,10 +23127,10 @@ function replace_rare(inlineTokens) {
           .replace(/\.{2,}/g, '…').replace(/([?!])…/g, '$1..')
           .replace(/([?!]){4,}/g, '$1$1$1').replace(/,{2,}/g, ',')
           // em-dash
-          .replace(/(^|[^-])---([^-]|$)/mg, '$1\u2014$2')
+          .replace(/(^|[^-])---(?=[^-]|$)/mg, '$1\u2014')
           // en-dash
-          .replace(/(^|\s)--(\s|$)/mg, '$1\u2013$2')
-          .replace(/(^|[^-\s])--([^-\s]|$)/mg, '$1\u2013$2');
+          .replace(/(^|\s)--(?=\s|$)/mg, '$1\u2013')
+          .replace(/(^|[^-\s])--(?=[^-\s]|$)/mg, '$1\u2013');
       }
     }
 
@@ -23040,7 +23186,7 @@ var APOSTROPHE = '\u2019'; /* ’ */
 
 
 function replaceAt(str, index, ch) {
-  return str.substr(0, index) + ch + str.substr(index + 1);
+  return str.slice(0, index) + ch + str.slice(index + 1);
 }
 
 function process_inlines(tokens, state) {
@@ -23087,7 +23233,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i - 1; j >= 0; j--) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // lastChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           lastChar = tokens[j].content.charCodeAt(tokens[j].content.length - 1);
           break;
@@ -23104,7 +23250,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i + 1; j < tokens.length; j++) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // nextChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           nextChar = tokens[j].content.charCodeAt(0);
           break;
@@ -23141,8 +23287,14 @@ function process_inlines(tokens, state) {
       }
 
       if (canOpen && canClose) {
-        // treat this as the middle of the word
-        canOpen = false;
+        // Replace quotes in the middle of punctuation sequence, but not
+        // in the middle of the words, i.e.:
+        //
+        // 1. foo " bar " baz - not replaced
+        // 2. foo-"-bar-"-baz - replaced
+        // 3. foo"bar"baz     - not replaced
+        //
+        canOpen = isLastPunctChar;
         canClose = isNextPunctChar;
       }
 
@@ -23254,30 +23406,89 @@ module.exports = StateCore;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Join raw text tokens with the rest of the text
+//
+// This is set as a separate rule to provide an opportunity for plugins
+// to run text replacements after text join, but before escape join.
+//
+// For example, `\:)` shouldn't be replaced with an emoji.
+//
+
+
+
+module.exports = function text_join(state) {
+  var j, l, tokens, curr, max, last,
+      blockTokens = state.tokens;
+
+  for (j = 0, l = blockTokens.length; j < l; j++) {
+    if (blockTokens[j].type !== 'inline') continue;
+
+    tokens = blockTokens[j].children;
+    max = tokens.length;
+
+    for (curr = 0; curr < max; curr++) {
+      if (tokens[curr].type === 'text_special') {
+        tokens[curr].type = 'text';
+      }
+    }
+
+    for (curr = last = 0; curr < max; curr++) {
+      if (tokens[curr].type === 'text' &&
+          curr + 1 < max &&
+          tokens[curr + 1].type === 'text') {
+
+        // collapse two adjacent text nodes
+        tokens[curr + 1].content = tokens[curr].content + tokens[curr + 1].content;
+      } else {
+        if (curr !== last) { tokens[last] = tokens[curr]; }
+
+        last++;
+      }
+    }
+
+    if (curr !== last) {
+      tokens.length = last;
+    }
+  }
+};
+
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 // Process autolinks '<protocol:...>'
 
 
 
 
 /*eslint max-len:0*/
-var EMAIL_RE    = /^<([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>/;
-var AUTOLINK_RE = /^<([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)>/;
+var EMAIL_RE    = /^([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/;
+var AUTOLINK_RE = /^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$/;
 
 
 module.exports = function autolink(state, silent) {
-  var tail, linkMatch, emailMatch, url, fullUrl, token,
+  var url, fullUrl, token, ch, start, max,
       pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
 
-  tail = state.src.slice(pos);
+  start = state.pos;
+  max = state.posMax;
 
-  if (tail.indexOf('>') < 0) { return false; }
+  for (;;) {
+    if (++pos >= max) return false;
 
-  if (AUTOLINK_RE.test(tail)) {
-    linkMatch = tail.match(AUTOLINK_RE);
+    ch = state.src.charCodeAt(pos);
 
-    url = linkMatch[0].slice(1, -1);
+    if (ch === 0x3C /* < */) return false;
+    if (ch === 0x3E /* > */) break;
+  }
+
+  url = state.src.slice(start + 1, pos);
+
+  if (AUTOLINK_RE.test(url)) {
     fullUrl = state.md.normalizeLink(url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -23295,14 +23506,11 @@ module.exports = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += linkMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
-  if (EMAIL_RE.test(tail)) {
-    emailMatch = tail.match(EMAIL_RE);
-
-    url = emailMatch[0].slice(1, -1);
+  if (EMAIL_RE.test(url)) {
     fullUrl = state.md.normalizeLink('mailto:' + url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -23320,7 +23528,7 @@ module.exports = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += emailMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
@@ -23329,7 +23537,7 @@ module.exports = function autolink(state, silent) {
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23337,8 +23545,9 @@ module.exports = function autolink(state, silent) {
 
 
 
+
 module.exports = function backtick(state, silent) {
-  var start, max, marker, matchStart, matchEnd, token,
+  var start, max, marker, token, matchStart, matchEnd, openerLength, closerLength,
       pos = state.pos,
       ch = state.src.charCodeAt(pos);
 
@@ -23348,20 +23557,33 @@ module.exports = function backtick(state, silent) {
   pos++;
   max = state.posMax;
 
+  // scan marker length
   while (pos < max && state.src.charCodeAt(pos) === 0x60/* ` */) { pos++; }
 
   marker = state.src.slice(start, pos);
+  openerLength = marker.length;
+
+  if (state.backticksScanned && (state.backticks[openerLength] || 0) <= start) {
+    if (!silent) state.pending += marker;
+    state.pos += openerLength;
+    return true;
+  }
 
   matchStart = matchEnd = pos;
 
+  // Nothing found in the cache, scan until the end of the line (or until marker is found)
   while ((matchStart = state.src.indexOf('`', matchEnd)) !== -1) {
     matchEnd = matchStart + 1;
 
+    // scan marker length
     while (matchEnd < max && state.src.charCodeAt(matchEnd) === 0x60/* ` */) { matchEnd++; }
 
-    if (matchEnd - matchStart === marker.length) {
+    closerLength = matchEnd - matchStart;
+
+    if (closerLength === openerLength) {
+      // Found matching closer length.
       if (!silent) {
-        token         = state.push('code_inline', 'code', 0);
+        token     = state.push('code_inline', 'code', 0);
         token.markup  = marker;
         token.content = state.src.slice(pos, matchStart)
           .replace(/\n/g, ' ')
@@ -23370,16 +23592,22 @@ module.exports = function backtick(state, silent) {
       state.pos = matchEnd;
       return true;
     }
+
+    // Some different length found, put it in cache as upper limit of where closer can be found
+    state.backticks[closerLength] = matchStart;
   }
 
-  if (!silent) { state.pending += marker; }
-  state.pos += marker.length;
+  // Scanned through the end, didn't find anything
+  state.backticksScanned = true;
+
+  if (!silent) state.pending += marker;
+  state.pos += openerLength;
   return true;
 };
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23394,8 +23622,27 @@ function processDelimiters(state, delimiters) {
       openersBottom = {},
       max = delimiters.length;
 
+  if (!max) return;
+
+  // headerIdx is the first delimiter of the current (where closer is) delimiter run
+  var headerIdx = 0;
+  var lastTokenIdx = -2; // needs any value lower than -1
+  var jumps = [];
+
   for (closerIdx = 0; closerIdx < max; closerIdx++) {
     closer = delimiters[closerIdx];
+
+    jumps.push(0);
+
+    // markers belong to same delimiter run if:
+    //  - they have adjacent tokens
+    //  - AND markers are the same
+    //
+    if (delimiters[headerIdx].marker !== closer.marker || lastTokenIdx !== closer.token - 1) {
+      headerIdx = closerIdx;
+    }
+
+    lastTokenIdx = closer.token;
 
     // Length is only used for emphasis-specific "rule of 3",
     // if it's not defined (in strikethrough or 3rd party plugins),
@@ -23406,26 +23653,25 @@ function processDelimiters(state, delimiters) {
     if (!closer.close) continue;
 
     // Previously calculated lower bounds (previous fails)
-    // for each marker and each delimiter length modulo 3.
+    // for each marker, each delimiter length modulo 3,
+    // and for whether this closer can be an opener;
+    // https://github.com/commonmark/cmark/commit/34250e12ccebdc6372b8b49c44fab57c72443460
     if (!openersBottom.hasOwnProperty(closer.marker)) {
-      openersBottom[closer.marker] = [ -1, -1, -1 ];
+      openersBottom[closer.marker] = [ -1, -1, -1, -1, -1, -1 ];
     }
 
-    minOpenerIdx = openersBottom[closer.marker][closer.length % 3];
-    newMinOpenerIdx = -1;
+    minOpenerIdx = openersBottom[closer.marker][(closer.open ? 3 : 0) + (closer.length % 3)];
 
-    openerIdx = closerIdx - closer.jump - 1;
+    openerIdx = headerIdx - jumps[headerIdx] - 1;
 
-    for (; openerIdx > minOpenerIdx; openerIdx -= opener.jump + 1) {
+    newMinOpenerIdx = openerIdx;
+
+    for (; openerIdx > minOpenerIdx; openerIdx -= jumps[openerIdx] + 1) {
       opener = delimiters[openerIdx];
 
       if (opener.marker !== closer.marker) continue;
 
-      if (newMinOpenerIdx === -1) newMinOpenerIdx = openerIdx;
-
-      if (opener.open &&
-          opener.end < 0 &&
-          opener.level === closer.level) {
+      if (opener.open && opener.end < 0) {
 
         isOddMatch = false;
 
@@ -23450,15 +23696,19 @@ function processDelimiters(state, delimiters) {
           // sure algorithm has linear complexity (see *_*_*_*_*_... case).
           //
           lastJump = openerIdx > 0 && !delimiters[openerIdx - 1].open ?
-            delimiters[openerIdx - 1].jump + 1 :
+            jumps[openerIdx - 1] + 1 :
             0;
 
-          closer.jump  = closerIdx - openerIdx + lastJump;
+          jumps[closerIdx] = closerIdx - openerIdx + lastJump;
+          jumps[openerIdx] = lastJump;
+
           closer.open  = false;
           opener.end   = closerIdx;
-          opener.jump  = lastJump;
           opener.close = false;
           newMinOpenerIdx = -1;
+          // treat next token as start of run,
+          // it optimizes skips in **<...>**a**<...>** pathological case
+          lastTokenIdx = -2;
           break;
         }
       }
@@ -23472,7 +23722,7 @@ function processDelimiters(state, delimiters) {
       // See details here:
       // https://github.com/commonmark/cmark/issues/178#issuecomment-270417442
       //
-      openersBottom[closer.marker][(closer.length || 0) % 3] = newMinOpenerIdx;
+      openersBottom[closer.marker][(closer.open ? 3 : 0) + ((closer.length || 0) % 3)] = newMinOpenerIdx;
     }
   }
 }
@@ -23494,7 +23744,7 @@ module.exports = function link_pairs(state) {
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23513,43 +23763,50 @@ var NAMED_RE   = /^&([a-z][a-z0-9]{1,31});/i;
 
 
 module.exports = function entity(state, silent) {
-  var ch, code, match, pos = state.pos, max = state.posMax;
+  var ch, code, match, token, pos = state.pos, max = state.posMax;
 
-  if (state.src.charCodeAt(pos) !== 0x26/* & */) { return false; }
+  if (state.src.charCodeAt(pos) !== 0x26/* & */) return false;
 
-  if (pos + 1 < max) {
-    ch = state.src.charCodeAt(pos + 1);
+  if (pos + 1 >= max) return false;
 
-    if (ch === 0x23 /* # */) {
-      match = state.src.slice(pos).match(DIGITAL_RE);
-      if (match) {
+  ch = state.src.charCodeAt(pos + 1);
+
+  if (ch === 0x23 /* # */) {
+    match = state.src.slice(pos).match(DIGITAL_RE);
+    if (match) {
+      if (!silent) {
+        code = match[1][0].toLowerCase() === 'x' ? parseInt(match[1].slice(1), 16) : parseInt(match[1], 10);
+
+        token         = state.push('text_special', '', 0);
+        token.content = isValidEntityCode(code) ? fromCodePoint(code) : fromCodePoint(0xFFFD);
+        token.markup  = match[0];
+        token.info    = 'entity';
+      }
+      state.pos += match[0].length;
+      return true;
+    }
+  } else {
+    match = state.src.slice(pos).match(NAMED_RE);
+    if (match) {
+      if (has(entities, match[1])) {
         if (!silent) {
-          code = match[1][0].toLowerCase() === 'x' ? parseInt(match[1].slice(1), 16) : parseInt(match[1], 10);
-          state.pending += isValidEntityCode(code) ? fromCodePoint(code) : fromCodePoint(0xFFFD);
+          token         = state.push('text_special', '', 0);
+          token.content = entities[match[1]];
+          token.markup  = match[0];
+          token.info    = 'entity';
         }
         state.pos += match[0].length;
         return true;
       }
-    } else {
-      match = state.src.slice(pos).match(NAMED_RE);
-      if (match) {
-        if (has(entities, match[1])) {
-          if (!silent) { state.pending += entities[match[1]]; }
-          state.pos += match[0].length;
-          return true;
-        }
-      }
     }
   }
 
-  if (!silent) { state.pending += '&'; }
-  state.pos++;
-  return true;
+  return false;
 };
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23568,47 +23825,114 @@ for (var i = 0; i < 256; i++) { ESCAPED.push(0); }
 
 
 module.exports = function escape(state, silent) {
-  var ch, pos = state.pos, max = state.posMax;
+  var ch1, ch2, origStr, escapedStr, token, pos = state.pos, max = state.posMax;
 
-  if (state.src.charCodeAt(pos) !== 0x5C/* \ */) { return false; }
-
+  if (state.src.charCodeAt(pos) !== 0x5C/* \ */) return false;
   pos++;
 
-  if (pos < max) {
-    ch = state.src.charCodeAt(pos);
+  // '\' at the end of the inline block
+  if (pos >= max) return false;
 
-    if (ch < 256 && ESCAPED[ch] !== 0) {
-      if (!silent) { state.pending += state.src[pos]; }
-      state.pos += 2;
-      return true;
+  ch1 = state.src.charCodeAt(pos);
+
+  if (ch1 === 0x0A) {
+    if (!silent) {
+      state.push('hardbreak', 'br', 0);
     }
 
-    if (ch === 0x0A) {
-      if (!silent) {
-        state.push('hardbreak', 'br', 0);
-      }
-
+    pos++;
+    // skip leading whitespaces from next line
+    while (pos < max) {
+      ch1 = state.src.charCodeAt(pos);
+      if (!isSpace(ch1)) break;
       pos++;
-      // skip leading whitespaces from next line
-      while (pos < max) {
-        ch = state.src.charCodeAt(pos);
-        if (!isSpace(ch)) { break; }
-        pos++;
-      }
+    }
 
-      state.pos = pos;
-      return true;
+    state.pos = pos;
+    return true;
+  }
+
+  escapedStr = state.src[pos];
+
+  if (ch1 >= 0xD800 && ch1 <= 0xDBFF && pos + 1 < max) {
+    ch2 = state.src.charCodeAt(pos + 1);
+
+    if (ch2 >= 0xDC00 && ch2 <= 0xDFFF) {
+      escapedStr += state.src[pos + 1];
+      pos++;
     }
   }
 
-  if (!silent) { state.pending += '\\'; }
-  state.pos++;
+  origStr = '\\' + escapedStr;
+
+  if (!silent) {
+    token = state.push('text_special', '', 0);
+
+    if (ch1 < 256 && ESCAPED[ch1] !== 0) {
+      token.content = escapedStr;
+    } else {
+      token.content = origStr;
+    }
+
+    token.markup = origStr;
+    token.info   = 'escape';
+  }
+
+  state.pos = pos + 1;
   return true;
 };
 
 
 /***/ }),
-/* 198 */
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Clean up tokens after emphasis and strikethrough postprocessing:
+// merge adjacent text nodes into one and re-calculate all token levels
+//
+// This is necessary because initially emphasis delimiter markers (*, _, ~)
+// are treated as their own separate text tokens. Then emphasis rule either
+// leaves them as text (needed to merge with adjacent text) or turns them
+// into opening/closing tags (which messes up levels inside).
+//
+
+
+
+module.exports = function fragments_join(state) {
+  var curr, last,
+      level = 0,
+      tokens = state.tokens,
+      max = state.tokens.length;
+
+  for (curr = last = 0; curr < max; curr++) {
+    // re-calculate levels after emphasis/strikethrough turns some text nodes
+    // into opening/closing tags
+    if (tokens[curr].nesting < 0) level--; // closing tag
+    tokens[curr].level = level;
+    if (tokens[curr].nesting > 0) level++; // opening tag
+
+    if (tokens[curr].type === 'text' &&
+        curr + 1 < max &&
+        tokens[curr + 1].type === 'text') {
+
+      // collapse two adjacent text nodes
+      tokens[curr + 1].content = tokens[curr].content + tokens[curr + 1].content;
+    } else {
+      if (curr !== last) { tokens[last] = tokens[curr]; }
+
+      last++;
+    }
+  }
+
+  if (curr !== last) {
+    tokens.length = last;
+  }
+};
+
+
+/***/ }),
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23618,6 +23942,14 @@ module.exports = function escape(state, silent) {
 
 
 var HTML_TAG_RE = __webpack_require__(62).HTML_TAG_RE;
+
+
+function isLinkOpen(str) {
+  return /^<a[>\s]/i.test(str);
+}
+function isLinkClose(str) {
+  return /^<\/a\s*>/i.test(str);
+}
 
 
 function isLetter(ch) {
@@ -23655,6 +23987,9 @@ module.exports = function html_inline(state, silent) {
   if (!silent) {
     token         = state.push('html_inline', '', 0);
     token.content = state.src.slice(pos, pos + match[0].length);
+
+    if (isLinkOpen(token.content))  state.linkLevel++;
+    if (isLinkClose(token.content)) state.linkLevel--;
   }
   state.pos += match[0].length;
   return true;
@@ -23662,7 +23997,7 @@ module.exports = function html_inline(state, silent) {
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23821,7 +24156,7 @@ module.exports = function image(state, silent) {
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23842,9 +24177,9 @@ module.exports = function link(state, silent) {
       pos,
       res,
       ref,
-      title,
       token,
       href = '',
+      title = '',
       oldPos = state.pos,
       max = state.posMax,
       start = state.pos,
@@ -23887,31 +24222,29 @@ module.exports = function link(state, silent) {
       } else {
         href = '';
       }
-    }
-
-    // [link](  <href>  "title"  )
-    //                ^^ skipping these spaces
-    start = pos;
-    for (; pos < max; pos++) {
-      code = state.src.charCodeAt(pos);
-      if (!isSpace(code) && code !== 0x0A) { break; }
-    }
-
-    // [link](  <href>  "title"  )
-    //                  ^^^^^^^ parsing link title
-    res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
-    if (pos < max && start !== pos && res.ok) {
-      title = res.str;
-      pos = res.pos;
 
       // [link](  <href>  "title"  )
-      //                         ^^ skipping these spaces
+      //                ^^ skipping these spaces
+      start = pos;
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos);
         if (!isSpace(code) && code !== 0x0A) { break; }
       }
-    } else {
-      title = '';
+
+      // [link](  <href>  "title"  )
+      //                  ^^^^^^^ parsing link title
+      res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
+      if (pos < max && start !== pos && res.ok) {
+        title = res.str;
+        pos = res.pos;
+
+        // [link](  <href>  "title"  )
+        //                         ^^ skipping these spaces
+        for (; pos < max; pos++) {
+          code = state.src.charCodeAt(pos);
+          if (!isSpace(code) && code !== 0x0A) { break; }
+        }
+      }
     }
 
     if (pos >= max || state.src.charCodeAt(pos) !== 0x29/* ) */) {
@@ -23966,7 +24299,9 @@ module.exports = function link(state, silent) {
       attrs.push([ 'title', title ]);
     }
 
+    state.linkLevel++;
     state.md.inline.tokenize(state);
+    state.linkLevel--;
 
     token        = state.push('link_close', 'a', -1);
   }
@@ -23978,7 +24313,72 @@ module.exports = function link(state, silent) {
 
 
 /***/ }),
-/* 201 */
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Process links like https://example.org/
+
+
+
+
+// RFC3986: scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
+var SCHEME_RE = /(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$/i;
+
+
+module.exports = function linkify(state, silent) {
+  var pos, max, match, proto, link, url, fullUrl, token;
+
+  if (!state.md.options.linkify) return false;
+  if (state.linkLevel > 0) return false;
+
+  pos = state.pos;
+  max = state.posMax;
+
+  if (pos + 3 > max) return false;
+  if (state.src.charCodeAt(pos) !== 0x3A/* : */) return false;
+  if (state.src.charCodeAt(pos + 1) !== 0x2F/* / */) return false;
+  if (state.src.charCodeAt(pos + 2) !== 0x2F/* / */) return false;
+
+  match = state.pending.match(SCHEME_RE);
+  if (!match) return false;
+
+  proto = match[1];
+
+  link = state.md.linkify.matchAtStart(state.src.slice(pos - proto.length));
+  if (!link) return false;
+
+  url = link.url;
+
+  // disallow '*' at the end of the link (conflicts with emphasis)
+  url = url.replace(/\*+$/, '');
+
+  fullUrl = state.md.normalizeLink(url);
+  if (!state.md.validateLink(fullUrl)) return false;
+
+  if (!silent) {
+    state.pending = state.pending.slice(0, -proto.length);
+
+    token         = state.push('link_open', 'a', 1);
+    token.attrs   = [ [ 'href', fullUrl ] ];
+    token.markup  = 'linkify';
+    token.info    = 'auto';
+
+    token         = state.push('text', '', 0);
+    token.content = state.md.normalizeLinkText(url);
+
+    token         = state.push('link_close', 'a', -1);
+    token.markup  = 'linkify';
+    token.info    = 'auto';
+  }
+
+  state.pos += url.length - proto.length;
+  return true;
+};
+
+
+/***/ }),
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23990,7 +24390,7 @@ var isSpace = __webpack_require__(0).isSpace;
 
 
 module.exports = function newline(state, silent) {
-  var pmax, max, pos = state.pos;
+  var pmax, max, ws, pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x0A/* \n */) { return false; }
 
@@ -24004,7 +24404,11 @@ module.exports = function newline(state, silent) {
   if (!silent) {
     if (pmax >= 0 && state.pending.charCodeAt(pmax) === 0x20) {
       if (pmax >= 1 && state.pending.charCodeAt(pmax - 1) === 0x20) {
-        state.pending = state.pending.replace(/ +$/, '');
+        // Find whitespaces tail of pending chars.
+        ws = pmax - 1;
+        while (ws >= 1 && state.pending.charCodeAt(ws - 1) === 0x20) ws--;
+
+        state.pending = state.pending.slice(0, ws);
         state.push('hardbreak', 'br', 0);
       } else {
         state.pending = state.pending.slice(0, -1);
@@ -24027,7 +24431,7 @@ module.exports = function newline(state, silent) {
 
 
 /***/ }),
-/* 202 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24064,6 +24468,14 @@ function StateInline(src, md, env, outTokens) {
 
   // Stack of delimiter lists for upper level tags
   this._prev_delimiters = [];
+
+  // backtick length => last seen position
+  this.backticks = {};
+  this.backticksScanned = false;
+
+  // Counter used to disable inline linkify-it execution
+  // inside <a> and markdown links
+  this.linkLevel = 0;
 }
 
 
@@ -24184,7 +24596,7 @@ module.exports = StateInline;
 
 
 /***/ }),
-/* 203 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24280,55 +24692,13 @@ module.exports = function text(state, silent) {
 
 
 /***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 207 */
+/***/ (function(module, exports) {
 
-"use strict";
-// Clean up tokens after emphasis and strikethrough postprocessing:
-// merge adjacent text nodes into one and re-calculate all token levels
-//
-// This is necessary because initially emphasis delimiter markers (*, _, ~)
-// are treated as their own separate text tokens. Then emphasis rule either
-// leaves them as text (needed to merge with adjacent text) or turns them
-// into opening/closing tags (which messes up levels inside).
-//
-
-
-
-module.exports = function text_collapse(state) {
-  var curr, last,
-      level = 0,
-      tokens = state.tokens,
-      max = state.tokens.length;
-
-  for (curr = last = 0; curr < max; curr++) {
-    // re-calculate levels after emphasis/strikethrough turns some text nodes
-    // into opening/closing tags
-    if (tokens[curr].nesting < 0) level--; // closing tag
-    tokens[curr].level = level;
-    if (tokens[curr].nesting > 0) level++; // opening tag
-
-    if (tokens[curr].type === 'text' &&
-        curr + 1 < max &&
-        tokens[curr + 1].type === 'text') {
-
-      // collapse two adjacent text nodes
-      tokens[curr + 1].content = tokens[curr].content + tokens[curr + 1].content;
-    } else {
-      if (curr !== last) { tokens[last] = tokens[curr]; }
-
-      last++;
-    }
-  }
-
-  if (curr !== last) {
-    tokens.length = last;
-  }
-};
-
+module.exports = {"Aacute":"Á","aacute":"á","Abreve":"Ă","abreve":"ă","ac":"∾","acd":"∿","acE":"∾̳","Acirc":"Â","acirc":"â","acute":"´","Acy":"А","acy":"а","AElig":"Æ","aelig":"æ","af":"⁡","Afr":"𝔄","afr":"𝔞","Agrave":"À","agrave":"à","alefsym":"ℵ","aleph":"ℵ","Alpha":"Α","alpha":"α","Amacr":"Ā","amacr":"ā","amalg":"⨿","amp":"&","AMP":"&","andand":"⩕","And":"⩓","and":"∧","andd":"⩜","andslope":"⩘","andv":"⩚","ang":"∠","ange":"⦤","angle":"∠","angmsdaa":"⦨","angmsdab":"⦩","angmsdac":"⦪","angmsdad":"⦫","angmsdae":"⦬","angmsdaf":"⦭","angmsdag":"⦮","angmsdah":"⦯","angmsd":"∡","angrt":"∟","angrtvb":"⊾","angrtvbd":"⦝","angsph":"∢","angst":"Å","angzarr":"⍼","Aogon":"Ą","aogon":"ą","Aopf":"𝔸","aopf":"𝕒","apacir":"⩯","ap":"≈","apE":"⩰","ape":"≊","apid":"≋","apos":"'","ApplyFunction":"⁡","approx":"≈","approxeq":"≊","Aring":"Å","aring":"å","Ascr":"𝒜","ascr":"𝒶","Assign":"≔","ast":"*","asymp":"≈","asympeq":"≍","Atilde":"Ã","atilde":"ã","Auml":"Ä","auml":"ä","awconint":"∳","awint":"⨑","backcong":"≌","backepsilon":"϶","backprime":"‵","backsim":"∽","backsimeq":"⋍","Backslash":"∖","Barv":"⫧","barvee":"⊽","barwed":"⌅","Barwed":"⌆","barwedge":"⌅","bbrk":"⎵","bbrktbrk":"⎶","bcong":"≌","Bcy":"Б","bcy":"б","bdquo":"„","becaus":"∵","because":"∵","Because":"∵","bemptyv":"⦰","bepsi":"϶","bernou":"ℬ","Bernoullis":"ℬ","Beta":"Β","beta":"β","beth":"ℶ","between":"≬","Bfr":"𝔅","bfr":"𝔟","bigcap":"⋂","bigcirc":"◯","bigcup":"⋃","bigodot":"⨀","bigoplus":"⨁","bigotimes":"⨂","bigsqcup":"⨆","bigstar":"★","bigtriangledown":"▽","bigtriangleup":"△","biguplus":"⨄","bigvee":"⋁","bigwedge":"⋀","bkarow":"⤍","blacklozenge":"⧫","blacksquare":"▪","blacktriangle":"▴","blacktriangledown":"▾","blacktriangleleft":"◂","blacktriangleright":"▸","blank":"␣","blk12":"▒","blk14":"░","blk34":"▓","block":"█","bne":"=⃥","bnequiv":"≡⃥","bNot":"⫭","bnot":"⌐","Bopf":"𝔹","bopf":"𝕓","bot":"⊥","bottom":"⊥","bowtie":"⋈","boxbox":"⧉","boxdl":"┐","boxdL":"╕","boxDl":"╖","boxDL":"╗","boxdr":"┌","boxdR":"╒","boxDr":"╓","boxDR":"╔","boxh":"─","boxH":"═","boxhd":"┬","boxHd":"╤","boxhD":"╥","boxHD":"╦","boxhu":"┴","boxHu":"╧","boxhU":"╨","boxHU":"╩","boxminus":"⊟","boxplus":"⊞","boxtimes":"⊠","boxul":"┘","boxuL":"╛","boxUl":"╜","boxUL":"╝","boxur":"└","boxuR":"╘","boxUr":"╙","boxUR":"╚","boxv":"│","boxV":"║","boxvh":"┼","boxvH":"╪","boxVh":"╫","boxVH":"╬","boxvl":"┤","boxvL":"╡","boxVl":"╢","boxVL":"╣","boxvr":"├","boxvR":"╞","boxVr":"╟","boxVR":"╠","bprime":"‵","breve":"˘","Breve":"˘","brvbar":"¦","bscr":"𝒷","Bscr":"ℬ","bsemi":"⁏","bsim":"∽","bsime":"⋍","bsolb":"⧅","bsol":"\\","bsolhsub":"⟈","bull":"•","bullet":"•","bump":"≎","bumpE":"⪮","bumpe":"≏","Bumpeq":"≎","bumpeq":"≏","Cacute":"Ć","cacute":"ć","capand":"⩄","capbrcup":"⩉","capcap":"⩋","cap":"∩","Cap":"⋒","capcup":"⩇","capdot":"⩀","CapitalDifferentialD":"ⅅ","caps":"∩︀","caret":"⁁","caron":"ˇ","Cayleys":"ℭ","ccaps":"⩍","Ccaron":"Č","ccaron":"č","Ccedil":"Ç","ccedil":"ç","Ccirc":"Ĉ","ccirc":"ĉ","Cconint":"∰","ccups":"⩌","ccupssm":"⩐","Cdot":"Ċ","cdot":"ċ","cedil":"¸","Cedilla":"¸","cemptyv":"⦲","cent":"¢","centerdot":"·","CenterDot":"·","cfr":"𝔠","Cfr":"ℭ","CHcy":"Ч","chcy":"ч","check":"✓","checkmark":"✓","Chi":"Χ","chi":"χ","circ":"ˆ","circeq":"≗","circlearrowleft":"↺","circlearrowright":"↻","circledast":"⊛","circledcirc":"⊚","circleddash":"⊝","CircleDot":"⊙","circledR":"®","circledS":"Ⓢ","CircleMinus":"⊖","CirclePlus":"⊕","CircleTimes":"⊗","cir":"○","cirE":"⧃","cire":"≗","cirfnint":"⨐","cirmid":"⫯","cirscir":"⧂","ClockwiseContourIntegral":"∲","CloseCurlyDoubleQuote":"”","CloseCurlyQuote":"’","clubs":"♣","clubsuit":"♣","colon":":","Colon":"∷","Colone":"⩴","colone":"≔","coloneq":"≔","comma":",","commat":"@","comp":"∁","compfn":"∘","complement":"∁","complexes":"ℂ","cong":"≅","congdot":"⩭","Congruent":"≡","conint":"∮","Conint":"∯","ContourIntegral":"∮","copf":"𝕔","Copf":"ℂ","coprod":"∐","Coproduct":"∐","copy":"©","COPY":"©","copysr":"℗","CounterClockwiseContourIntegral":"∳","crarr":"↵","cross":"✗","Cross":"⨯","Cscr":"𝒞","cscr":"𝒸","csub":"⫏","csube":"⫑","csup":"⫐","csupe":"⫒","ctdot":"⋯","cudarrl":"⤸","cudarrr":"⤵","cuepr":"⋞","cuesc":"⋟","cularr":"↶","cularrp":"⤽","cupbrcap":"⩈","cupcap":"⩆","CupCap":"≍","cup":"∪","Cup":"⋓","cupcup":"⩊","cupdot":"⊍","cupor":"⩅","cups":"∪︀","curarr":"↷","curarrm":"⤼","curlyeqprec":"⋞","curlyeqsucc":"⋟","curlyvee":"⋎","curlywedge":"⋏","curren":"¤","curvearrowleft":"↶","curvearrowright":"↷","cuvee":"⋎","cuwed":"⋏","cwconint":"∲","cwint":"∱","cylcty":"⌭","dagger":"†","Dagger":"‡","daleth":"ℸ","darr":"↓","Darr":"↡","dArr":"⇓","dash":"‐","Dashv":"⫤","dashv":"⊣","dbkarow":"⤏","dblac":"˝","Dcaron":"Ď","dcaron":"ď","Dcy":"Д","dcy":"д","ddagger":"‡","ddarr":"⇊","DD":"ⅅ","dd":"ⅆ","DDotrahd":"⤑","ddotseq":"⩷","deg":"°","Del":"∇","Delta":"Δ","delta":"δ","demptyv":"⦱","dfisht":"⥿","Dfr":"𝔇","dfr":"𝔡","dHar":"⥥","dharl":"⇃","dharr":"⇂","DiacriticalAcute":"´","DiacriticalDot":"˙","DiacriticalDoubleAcute":"˝","DiacriticalGrave":"`","DiacriticalTilde":"˜","diam":"⋄","diamond":"⋄","Diamond":"⋄","diamondsuit":"♦","diams":"♦","die":"¨","DifferentialD":"ⅆ","digamma":"ϝ","disin":"⋲","div":"÷","divide":"÷","divideontimes":"⋇","divonx":"⋇","DJcy":"Ђ","djcy":"ђ","dlcorn":"⌞","dlcrop":"⌍","dollar":"$","Dopf":"𝔻","dopf":"𝕕","Dot":"¨","dot":"˙","DotDot":"⃜","doteq":"≐","doteqdot":"≑","DotEqual":"≐","dotminus":"∸","dotplus":"∔","dotsquare":"⊡","doublebarwedge":"⌆","DoubleContourIntegral":"∯","DoubleDot":"¨","DoubleDownArrow":"⇓","DoubleLeftArrow":"⇐","DoubleLeftRightArrow":"⇔","DoubleLeftTee":"⫤","DoubleLongLeftArrow":"⟸","DoubleLongLeftRightArrow":"⟺","DoubleLongRightArrow":"⟹","DoubleRightArrow":"⇒","DoubleRightTee":"⊨","DoubleUpArrow":"⇑","DoubleUpDownArrow":"⇕","DoubleVerticalBar":"∥","DownArrowBar":"⤓","downarrow":"↓","DownArrow":"↓","Downarrow":"⇓","DownArrowUpArrow":"⇵","DownBreve":"̑","downdownarrows":"⇊","downharpoonleft":"⇃","downharpoonright":"⇂","DownLeftRightVector":"⥐","DownLeftTeeVector":"⥞","DownLeftVectorBar":"⥖","DownLeftVector":"↽","DownRightTeeVector":"⥟","DownRightVectorBar":"⥗","DownRightVector":"⇁","DownTeeArrow":"↧","DownTee":"⊤","drbkarow":"⤐","drcorn":"⌟","drcrop":"⌌","Dscr":"𝒟","dscr":"𝒹","DScy":"Ѕ","dscy":"ѕ","dsol":"⧶","Dstrok":"Đ","dstrok":"đ","dtdot":"⋱","dtri":"▿","dtrif":"▾","duarr":"⇵","duhar":"⥯","dwangle":"⦦","DZcy":"Џ","dzcy":"џ","dzigrarr":"⟿","Eacute":"É","eacute":"é","easter":"⩮","Ecaron":"Ě","ecaron":"ě","Ecirc":"Ê","ecirc":"ê","ecir":"≖","ecolon":"≕","Ecy":"Э","ecy":"э","eDDot":"⩷","Edot":"Ė","edot":"ė","eDot":"≑","ee":"ⅇ","efDot":"≒","Efr":"𝔈","efr":"𝔢","eg":"⪚","Egrave":"È","egrave":"è","egs":"⪖","egsdot":"⪘","el":"⪙","Element":"∈","elinters":"⏧","ell":"ℓ","els":"⪕","elsdot":"⪗","Emacr":"Ē","emacr":"ē","empty":"∅","emptyset":"∅","EmptySmallSquare":"◻","emptyv":"∅","EmptyVerySmallSquare":"▫","emsp13":" ","emsp14":" ","emsp":" ","ENG":"Ŋ","eng":"ŋ","ensp":" ","Eogon":"Ę","eogon":"ę","Eopf":"𝔼","eopf":"𝕖","epar":"⋕","eparsl":"⧣","eplus":"⩱","epsi":"ε","Epsilon":"Ε","epsilon":"ε","epsiv":"ϵ","eqcirc":"≖","eqcolon":"≕","eqsim":"≂","eqslantgtr":"⪖","eqslantless":"⪕","Equal":"⩵","equals":"=","EqualTilde":"≂","equest":"≟","Equilibrium":"⇌","equiv":"≡","equivDD":"⩸","eqvparsl":"⧥","erarr":"⥱","erDot":"≓","escr":"ℯ","Escr":"ℰ","esdot":"≐","Esim":"⩳","esim":"≂","Eta":"Η","eta":"η","ETH":"Ð","eth":"ð","Euml":"Ë","euml":"ë","euro":"€","excl":"!","exist":"∃","Exists":"∃","expectation":"ℰ","exponentiale":"ⅇ","ExponentialE":"ⅇ","fallingdotseq":"≒","Fcy":"Ф","fcy":"ф","female":"♀","ffilig":"ﬃ","fflig":"ﬀ","ffllig":"ﬄ","Ffr":"𝔉","ffr":"𝔣","filig":"ﬁ","FilledSmallSquare":"◼","FilledVerySmallSquare":"▪","fjlig":"fj","flat":"♭","fllig":"ﬂ","fltns":"▱","fnof":"ƒ","Fopf":"𝔽","fopf":"𝕗","forall":"∀","ForAll":"∀","fork":"⋔","forkv":"⫙","Fouriertrf":"ℱ","fpartint":"⨍","frac12":"½","frac13":"⅓","frac14":"¼","frac15":"⅕","frac16":"⅙","frac18":"⅛","frac23":"⅔","frac25":"⅖","frac34":"¾","frac35":"⅗","frac38":"⅜","frac45":"⅘","frac56":"⅚","frac58":"⅝","frac78":"⅞","frasl":"⁄","frown":"⌢","fscr":"𝒻","Fscr":"ℱ","gacute":"ǵ","Gamma":"Γ","gamma":"γ","Gammad":"Ϝ","gammad":"ϝ","gap":"⪆","Gbreve":"Ğ","gbreve":"ğ","Gcedil":"Ģ","Gcirc":"Ĝ","gcirc":"ĝ","Gcy":"Г","gcy":"г","Gdot":"Ġ","gdot":"ġ","ge":"≥","gE":"≧","gEl":"⪌","gel":"⋛","geq":"≥","geqq":"≧","geqslant":"⩾","gescc":"⪩","ges":"⩾","gesdot":"⪀","gesdoto":"⪂","gesdotol":"⪄","gesl":"⋛︀","gesles":"⪔","Gfr":"𝔊","gfr":"𝔤","gg":"≫","Gg":"⋙","ggg":"⋙","gimel":"ℷ","GJcy":"Ѓ","gjcy":"ѓ","gla":"⪥","gl":"≷","glE":"⪒","glj":"⪤","gnap":"⪊","gnapprox":"⪊","gne":"⪈","gnE":"≩","gneq":"⪈","gneqq":"≩","gnsim":"⋧","Gopf":"𝔾","gopf":"𝕘","grave":"`","GreaterEqual":"≥","GreaterEqualLess":"⋛","GreaterFullEqual":"≧","GreaterGreater":"⪢","GreaterLess":"≷","GreaterSlantEqual":"⩾","GreaterTilde":"≳","Gscr":"𝒢","gscr":"ℊ","gsim":"≳","gsime":"⪎","gsiml":"⪐","gtcc":"⪧","gtcir":"⩺","gt":">","GT":">","Gt":"≫","gtdot":"⋗","gtlPar":"⦕","gtquest":"⩼","gtrapprox":"⪆","gtrarr":"⥸","gtrdot":"⋗","gtreqless":"⋛","gtreqqless":"⪌","gtrless":"≷","gtrsim":"≳","gvertneqq":"≩︀","gvnE":"≩︀","Hacek":"ˇ","hairsp":" ","half":"½","hamilt":"ℋ","HARDcy":"Ъ","hardcy":"ъ","harrcir":"⥈","harr":"↔","hArr":"⇔","harrw":"↭","Hat":"^","hbar":"ℏ","Hcirc":"Ĥ","hcirc":"ĥ","hearts":"♥","heartsuit":"♥","hellip":"…","hercon":"⊹","hfr":"𝔥","Hfr":"ℌ","HilbertSpace":"ℋ","hksearow":"⤥","hkswarow":"⤦","hoarr":"⇿","homtht":"∻","hookleftarrow":"↩","hookrightarrow":"↪","hopf":"𝕙","Hopf":"ℍ","horbar":"―","HorizontalLine":"─","hscr":"𝒽","Hscr":"ℋ","hslash":"ℏ","Hstrok":"Ħ","hstrok":"ħ","HumpDownHump":"≎","HumpEqual":"≏","hybull":"⁃","hyphen":"‐","Iacute":"Í","iacute":"í","ic":"⁣","Icirc":"Î","icirc":"î","Icy":"И","icy":"и","Idot":"İ","IEcy":"Е","iecy":"е","iexcl":"¡","iff":"⇔","ifr":"𝔦","Ifr":"ℑ","Igrave":"Ì","igrave":"ì","ii":"ⅈ","iiiint":"⨌","iiint":"∭","iinfin":"⧜","iiota":"℩","IJlig":"Ĳ","ijlig":"ĳ","Imacr":"Ī","imacr":"ī","image":"ℑ","ImaginaryI":"ⅈ","imagline":"ℐ","imagpart":"ℑ","imath":"ı","Im":"ℑ","imof":"⊷","imped":"Ƶ","Implies":"⇒","incare":"℅","in":"∈","infin":"∞","infintie":"⧝","inodot":"ı","intcal":"⊺","int":"∫","Int":"∬","integers":"ℤ","Integral":"∫","intercal":"⊺","Intersection":"⋂","intlarhk":"⨗","intprod":"⨼","InvisibleComma":"⁣","InvisibleTimes":"⁢","IOcy":"Ё","iocy":"ё","Iogon":"Į","iogon":"į","Iopf":"𝕀","iopf":"𝕚","Iota":"Ι","iota":"ι","iprod":"⨼","iquest":"¿","iscr":"𝒾","Iscr":"ℐ","isin":"∈","isindot":"⋵","isinE":"⋹","isins":"⋴","isinsv":"⋳","isinv":"∈","it":"⁢","Itilde":"Ĩ","itilde":"ĩ","Iukcy":"І","iukcy":"і","Iuml":"Ï","iuml":"ï","Jcirc":"Ĵ","jcirc":"ĵ","Jcy":"Й","jcy":"й","Jfr":"𝔍","jfr":"𝔧","jmath":"ȷ","Jopf":"𝕁","jopf":"𝕛","Jscr":"𝒥","jscr":"𝒿","Jsercy":"Ј","jsercy":"ј","Jukcy":"Є","jukcy":"є","Kappa":"Κ","kappa":"κ","kappav":"ϰ","Kcedil":"Ķ","kcedil":"ķ","Kcy":"К","kcy":"к","Kfr":"𝔎","kfr":"𝔨","kgreen":"ĸ","KHcy":"Х","khcy":"х","KJcy":"Ќ","kjcy":"ќ","Kopf":"𝕂","kopf":"𝕜","Kscr":"𝒦","kscr":"𝓀","lAarr":"⇚","Lacute":"Ĺ","lacute":"ĺ","laemptyv":"⦴","lagran":"ℒ","Lambda":"Λ","lambda":"λ","lang":"⟨","Lang":"⟪","langd":"⦑","langle":"⟨","lap":"⪅","Laplacetrf":"ℒ","laquo":"«","larrb":"⇤","larrbfs":"⤟","larr":"←","Larr":"↞","lArr":"⇐","larrfs":"⤝","larrhk":"↩","larrlp":"↫","larrpl":"⤹","larrsim":"⥳","larrtl":"↢","latail":"⤙","lAtail":"⤛","lat":"⪫","late":"⪭","lates":"⪭︀","lbarr":"⤌","lBarr":"⤎","lbbrk":"❲","lbrace":"{","lbrack":"[","lbrke":"⦋","lbrksld":"⦏","lbrkslu":"⦍","Lcaron":"Ľ","lcaron":"ľ","Lcedil":"Ļ","lcedil":"ļ","lceil":"⌈","lcub":"{","Lcy":"Л","lcy":"л","ldca":"⤶","ldquo":"“","ldquor":"„","ldrdhar":"⥧","ldrushar":"⥋","ldsh":"↲","le":"≤","lE":"≦","LeftAngleBracket":"⟨","LeftArrowBar":"⇤","leftarrow":"←","LeftArrow":"←","Leftarrow":"⇐","LeftArrowRightArrow":"⇆","leftarrowtail":"↢","LeftCeiling":"⌈","LeftDoubleBracket":"⟦","LeftDownTeeVector":"⥡","LeftDownVectorBar":"⥙","LeftDownVector":"⇃","LeftFloor":"⌊","leftharpoondown":"↽","leftharpoonup":"↼","leftleftarrows":"⇇","leftrightarrow":"↔","LeftRightArrow":"↔","Leftrightarrow":"⇔","leftrightarrows":"⇆","leftrightharpoons":"⇋","leftrightsquigarrow":"↭","LeftRightVector":"⥎","LeftTeeArrow":"↤","LeftTee":"⊣","LeftTeeVector":"⥚","leftthreetimes":"⋋","LeftTriangleBar":"⧏","LeftTriangle":"⊲","LeftTriangleEqual":"⊴","LeftUpDownVector":"⥑","LeftUpTeeVector":"⥠","LeftUpVectorBar":"⥘","LeftUpVector":"↿","LeftVectorBar":"⥒","LeftVector":"↼","lEg":"⪋","leg":"⋚","leq":"≤","leqq":"≦","leqslant":"⩽","lescc":"⪨","les":"⩽","lesdot":"⩿","lesdoto":"⪁","lesdotor":"⪃","lesg":"⋚︀","lesges":"⪓","lessapprox":"⪅","lessdot":"⋖","lesseqgtr":"⋚","lesseqqgtr":"⪋","LessEqualGreater":"⋚","LessFullEqual":"≦","LessGreater":"≶","lessgtr":"≶","LessLess":"⪡","lesssim":"≲","LessSlantEqual":"⩽","LessTilde":"≲","lfisht":"⥼","lfloor":"⌊","Lfr":"𝔏","lfr":"𝔩","lg":"≶","lgE":"⪑","lHar":"⥢","lhard":"↽","lharu":"↼","lharul":"⥪","lhblk":"▄","LJcy":"Љ","ljcy":"љ","llarr":"⇇","ll":"≪","Ll":"⋘","llcorner":"⌞","Lleftarrow":"⇚","llhard":"⥫","lltri":"◺","Lmidot":"Ŀ","lmidot":"ŀ","lmoustache":"⎰","lmoust":"⎰","lnap":"⪉","lnapprox":"⪉","lne":"⪇","lnE":"≨","lneq":"⪇","lneqq":"≨","lnsim":"⋦","loang":"⟬","loarr":"⇽","lobrk":"⟦","longleftarrow":"⟵","LongLeftArrow":"⟵","Longleftarrow":"⟸","longleftrightarrow":"⟷","LongLeftRightArrow":"⟷","Longleftrightarrow":"⟺","longmapsto":"⟼","longrightarrow":"⟶","LongRightArrow":"⟶","Longrightarrow":"⟹","looparrowleft":"↫","looparrowright":"↬","lopar":"⦅","Lopf":"𝕃","lopf":"𝕝","loplus":"⨭","lotimes":"⨴","lowast":"∗","lowbar":"_","LowerLeftArrow":"↙","LowerRightArrow":"↘","loz":"◊","lozenge":"◊","lozf":"⧫","lpar":"(","lparlt":"⦓","lrarr":"⇆","lrcorner":"⌟","lrhar":"⇋","lrhard":"⥭","lrm":"‎","lrtri":"⊿","lsaquo":"‹","lscr":"𝓁","Lscr":"ℒ","lsh":"↰","Lsh":"↰","lsim":"≲","lsime":"⪍","lsimg":"⪏","lsqb":"[","lsquo":"‘","lsquor":"‚","Lstrok":"Ł","lstrok":"ł","ltcc":"⪦","ltcir":"⩹","lt":"<","LT":"<","Lt":"≪","ltdot":"⋖","lthree":"⋋","ltimes":"⋉","ltlarr":"⥶","ltquest":"⩻","ltri":"◃","ltrie":"⊴","ltrif":"◂","ltrPar":"⦖","lurdshar":"⥊","luruhar":"⥦","lvertneqq":"≨︀","lvnE":"≨︀","macr":"¯","male":"♂","malt":"✠","maltese":"✠","Map":"⤅","map":"↦","mapsto":"↦","mapstodown":"↧","mapstoleft":"↤","mapstoup":"↥","marker":"▮","mcomma":"⨩","Mcy":"М","mcy":"м","mdash":"—","mDDot":"∺","measuredangle":"∡","MediumSpace":" ","Mellintrf":"ℳ","Mfr":"𝔐","mfr":"𝔪","mho":"℧","micro":"µ","midast":"*","midcir":"⫰","mid":"∣","middot":"·","minusb":"⊟","minus":"−","minusd":"∸","minusdu":"⨪","MinusPlus":"∓","mlcp":"⫛","mldr":"…","mnplus":"∓","models":"⊧","Mopf":"𝕄","mopf":"𝕞","mp":"∓","mscr":"𝓂","Mscr":"ℳ","mstpos":"∾","Mu":"Μ","mu":"μ","multimap":"⊸","mumap":"⊸","nabla":"∇","Nacute":"Ń","nacute":"ń","nang":"∠⃒","nap":"≉","napE":"⩰̸","napid":"≋̸","napos":"ŉ","napprox":"≉","natural":"♮","naturals":"ℕ","natur":"♮","nbsp":" ","nbump":"≎̸","nbumpe":"≏̸","ncap":"⩃","Ncaron":"Ň","ncaron":"ň","Ncedil":"Ņ","ncedil":"ņ","ncong":"≇","ncongdot":"⩭̸","ncup":"⩂","Ncy":"Н","ncy":"н","ndash":"–","nearhk":"⤤","nearr":"↗","neArr":"⇗","nearrow":"↗","ne":"≠","nedot":"≐̸","NegativeMediumSpace":"​","NegativeThickSpace":"​","NegativeThinSpace":"​","NegativeVeryThinSpace":"​","nequiv":"≢","nesear":"⤨","nesim":"≂̸","NestedGreaterGreater":"≫","NestedLessLess":"≪","NewLine":"\n","nexist":"∄","nexists":"∄","Nfr":"𝔑","nfr":"𝔫","ngE":"≧̸","nge":"≱","ngeq":"≱","ngeqq":"≧̸","ngeqslant":"⩾̸","nges":"⩾̸","nGg":"⋙̸","ngsim":"≵","nGt":"≫⃒","ngt":"≯","ngtr":"≯","nGtv":"≫̸","nharr":"↮","nhArr":"⇎","nhpar":"⫲","ni":"∋","nis":"⋼","nisd":"⋺","niv":"∋","NJcy":"Њ","njcy":"њ","nlarr":"↚","nlArr":"⇍","nldr":"‥","nlE":"≦̸","nle":"≰","nleftarrow":"↚","nLeftarrow":"⇍","nleftrightarrow":"↮","nLeftrightarrow":"⇎","nleq":"≰","nleqq":"≦̸","nleqslant":"⩽̸","nles":"⩽̸","nless":"≮","nLl":"⋘̸","nlsim":"≴","nLt":"≪⃒","nlt":"≮","nltri":"⋪","nltrie":"⋬","nLtv":"≪̸","nmid":"∤","NoBreak":"⁠","NonBreakingSpace":" ","nopf":"𝕟","Nopf":"ℕ","Not":"⫬","not":"¬","NotCongruent":"≢","NotCupCap":"≭","NotDoubleVerticalBar":"∦","NotElement":"∉","NotEqual":"≠","NotEqualTilde":"≂̸","NotExists":"∄","NotGreater":"≯","NotGreaterEqual":"≱","NotGreaterFullEqual":"≧̸","NotGreaterGreater":"≫̸","NotGreaterLess":"≹","NotGreaterSlantEqual":"⩾̸","NotGreaterTilde":"≵","NotHumpDownHump":"≎̸","NotHumpEqual":"≏̸","notin":"∉","notindot":"⋵̸","notinE":"⋹̸","notinva":"∉","notinvb":"⋷","notinvc":"⋶","NotLeftTriangleBar":"⧏̸","NotLeftTriangle":"⋪","NotLeftTriangleEqual":"⋬","NotLess":"≮","NotLessEqual":"≰","NotLessGreater":"≸","NotLessLess":"≪̸","NotLessSlantEqual":"⩽̸","NotLessTilde":"≴","NotNestedGreaterGreater":"⪢̸","NotNestedLessLess":"⪡̸","notni":"∌","notniva":"∌","notnivb":"⋾","notnivc":"⋽","NotPrecedes":"⊀","NotPrecedesEqual":"⪯̸","NotPrecedesSlantEqual":"⋠","NotReverseElement":"∌","NotRightTriangleBar":"⧐̸","NotRightTriangle":"⋫","NotRightTriangleEqual":"⋭","NotSquareSubset":"⊏̸","NotSquareSubsetEqual":"⋢","NotSquareSuperset":"⊐̸","NotSquareSupersetEqual":"⋣","NotSubset":"⊂⃒","NotSubsetEqual":"⊈","NotSucceeds":"⊁","NotSucceedsEqual":"⪰̸","NotSucceedsSlantEqual":"⋡","NotSucceedsTilde":"≿̸","NotSuperset":"⊃⃒","NotSupersetEqual":"⊉","NotTilde":"≁","NotTildeEqual":"≄","NotTildeFullEqual":"≇","NotTildeTilde":"≉","NotVerticalBar":"∤","nparallel":"∦","npar":"∦","nparsl":"⫽⃥","npart":"∂̸","npolint":"⨔","npr":"⊀","nprcue":"⋠","nprec":"⊀","npreceq":"⪯̸","npre":"⪯̸","nrarrc":"⤳̸","nrarr":"↛","nrArr":"⇏","nrarrw":"↝̸","nrightarrow":"↛","nRightarrow":"⇏","nrtri":"⋫","nrtrie":"⋭","nsc":"⊁","nsccue":"⋡","nsce":"⪰̸","Nscr":"𝒩","nscr":"𝓃","nshortmid":"∤","nshortparallel":"∦","nsim":"≁","nsime":"≄","nsimeq":"≄","nsmid":"∤","nspar":"∦","nsqsube":"⋢","nsqsupe":"⋣","nsub":"⊄","nsubE":"⫅̸","nsube":"⊈","nsubset":"⊂⃒","nsubseteq":"⊈","nsubseteqq":"⫅̸","nsucc":"⊁","nsucceq":"⪰̸","nsup":"⊅","nsupE":"⫆̸","nsupe":"⊉","nsupset":"⊃⃒","nsupseteq":"⊉","nsupseteqq":"⫆̸","ntgl":"≹","Ntilde":"Ñ","ntilde":"ñ","ntlg":"≸","ntriangleleft":"⋪","ntrianglelefteq":"⋬","ntriangleright":"⋫","ntrianglerighteq":"⋭","Nu":"Ν","nu":"ν","num":"#","numero":"№","numsp":" ","nvap":"≍⃒","nvdash":"⊬","nvDash":"⊭","nVdash":"⊮","nVDash":"⊯","nvge":"≥⃒","nvgt":">⃒","nvHarr":"⤄","nvinfin":"⧞","nvlArr":"⤂","nvle":"≤⃒","nvlt":"<⃒","nvltrie":"⊴⃒","nvrArr":"⤃","nvrtrie":"⊵⃒","nvsim":"∼⃒","nwarhk":"⤣","nwarr":"↖","nwArr":"⇖","nwarrow":"↖","nwnear":"⤧","Oacute":"Ó","oacute":"ó","oast":"⊛","Ocirc":"Ô","ocirc":"ô","ocir":"⊚","Ocy":"О","ocy":"о","odash":"⊝","Odblac":"Ő","odblac":"ő","odiv":"⨸","odot":"⊙","odsold":"⦼","OElig":"Œ","oelig":"œ","ofcir":"⦿","Ofr":"𝔒","ofr":"𝔬","ogon":"˛","Ograve":"Ò","ograve":"ò","ogt":"⧁","ohbar":"⦵","ohm":"Ω","oint":"∮","olarr":"↺","olcir":"⦾","olcross":"⦻","oline":"‾","olt":"⧀","Omacr":"Ō","omacr":"ō","Omega":"Ω","omega":"ω","Omicron":"Ο","omicron":"ο","omid":"⦶","ominus":"⊖","Oopf":"𝕆","oopf":"𝕠","opar":"⦷","OpenCurlyDoubleQuote":"“","OpenCurlyQuote":"‘","operp":"⦹","oplus":"⊕","orarr":"↻","Or":"⩔","or":"∨","ord":"⩝","order":"ℴ","orderof":"ℴ","ordf":"ª","ordm":"º","origof":"⊶","oror":"⩖","orslope":"⩗","orv":"⩛","oS":"Ⓢ","Oscr":"𝒪","oscr":"ℴ","Oslash":"Ø","oslash":"ø","osol":"⊘","Otilde":"Õ","otilde":"õ","otimesas":"⨶","Otimes":"⨷","otimes":"⊗","Ouml":"Ö","ouml":"ö","ovbar":"⌽","OverBar":"‾","OverBrace":"⏞","OverBracket":"⎴","OverParenthesis":"⏜","para":"¶","parallel":"∥","par":"∥","parsim":"⫳","parsl":"⫽","part":"∂","PartialD":"∂","Pcy":"П","pcy":"п","percnt":"%","period":".","permil":"‰","perp":"⊥","pertenk":"‱","Pfr":"𝔓","pfr":"𝔭","Phi":"Φ","phi":"φ","phiv":"ϕ","phmmat":"ℳ","phone":"☎","Pi":"Π","pi":"π","pitchfork":"⋔","piv":"ϖ","planck":"ℏ","planckh":"ℎ","plankv":"ℏ","plusacir":"⨣","plusb":"⊞","pluscir":"⨢","plus":"+","plusdo":"∔","plusdu":"⨥","pluse":"⩲","PlusMinus":"±","plusmn":"±","plussim":"⨦","plustwo":"⨧","pm":"±","Poincareplane":"ℌ","pointint":"⨕","popf":"𝕡","Popf":"ℙ","pound":"£","prap":"⪷","Pr":"⪻","pr":"≺","prcue":"≼","precapprox":"⪷","prec":"≺","preccurlyeq":"≼","Precedes":"≺","PrecedesEqual":"⪯","PrecedesSlantEqual":"≼","PrecedesTilde":"≾","preceq":"⪯","precnapprox":"⪹","precneqq":"⪵","precnsim":"⋨","pre":"⪯","prE":"⪳","precsim":"≾","prime":"′","Prime":"″","primes":"ℙ","prnap":"⪹","prnE":"⪵","prnsim":"⋨","prod":"∏","Product":"∏","profalar":"⌮","profline":"⌒","profsurf":"⌓","prop":"∝","Proportional":"∝","Proportion":"∷","propto":"∝","prsim":"≾","prurel":"⊰","Pscr":"𝒫","pscr":"𝓅","Psi":"Ψ","psi":"ψ","puncsp":" ","Qfr":"𝔔","qfr":"𝔮","qint":"⨌","qopf":"𝕢","Qopf":"ℚ","qprime":"⁗","Qscr":"𝒬","qscr":"𝓆","quaternions":"ℍ","quatint":"⨖","quest":"?","questeq":"≟","quot":"\"","QUOT":"\"","rAarr":"⇛","race":"∽̱","Racute":"Ŕ","racute":"ŕ","radic":"√","raemptyv":"⦳","rang":"⟩","Rang":"⟫","rangd":"⦒","range":"⦥","rangle":"⟩","raquo":"»","rarrap":"⥵","rarrb":"⇥","rarrbfs":"⤠","rarrc":"⤳","rarr":"→","Rarr":"↠","rArr":"⇒","rarrfs":"⤞","rarrhk":"↪","rarrlp":"↬","rarrpl":"⥅","rarrsim":"⥴","Rarrtl":"⤖","rarrtl":"↣","rarrw":"↝","ratail":"⤚","rAtail":"⤜","ratio":"∶","rationals":"ℚ","rbarr":"⤍","rBarr":"⤏","RBarr":"⤐","rbbrk":"❳","rbrace":"}","rbrack":"]","rbrke":"⦌","rbrksld":"⦎","rbrkslu":"⦐","Rcaron":"Ř","rcaron":"ř","Rcedil":"Ŗ","rcedil":"ŗ","rceil":"⌉","rcub":"}","Rcy":"Р","rcy":"р","rdca":"⤷","rdldhar":"⥩","rdquo":"”","rdquor":"”","rdsh":"↳","real":"ℜ","realine":"ℛ","realpart":"ℜ","reals":"ℝ","Re":"ℜ","rect":"▭","reg":"®","REG":"®","ReverseElement":"∋","ReverseEquilibrium":"⇋","ReverseUpEquilibrium":"⥯","rfisht":"⥽","rfloor":"⌋","rfr":"𝔯","Rfr":"ℜ","rHar":"⥤","rhard":"⇁","rharu":"⇀","rharul":"⥬","Rho":"Ρ","rho":"ρ","rhov":"ϱ","RightAngleBracket":"⟩","RightArrowBar":"⇥","rightarrow":"→","RightArrow":"→","Rightarrow":"⇒","RightArrowLeftArrow":"⇄","rightarrowtail":"↣","RightCeiling":"⌉","RightDoubleBracket":"⟧","RightDownTeeVector":"⥝","RightDownVectorBar":"⥕","RightDownVector":"⇂","RightFloor":"⌋","rightharpoondown":"⇁","rightharpoonup":"⇀","rightleftarrows":"⇄","rightleftharpoons":"⇌","rightrightarrows":"⇉","rightsquigarrow":"↝","RightTeeArrow":"↦","RightTee":"⊢","RightTeeVector":"⥛","rightthreetimes":"⋌","RightTriangleBar":"⧐","RightTriangle":"⊳","RightTriangleEqual":"⊵","RightUpDownVector":"⥏","RightUpTeeVector":"⥜","RightUpVectorBar":"⥔","RightUpVector":"↾","RightVectorBar":"⥓","RightVector":"⇀","ring":"˚","risingdotseq":"≓","rlarr":"⇄","rlhar":"⇌","rlm":"‏","rmoustache":"⎱","rmoust":"⎱","rnmid":"⫮","roang":"⟭","roarr":"⇾","robrk":"⟧","ropar":"⦆","ropf":"𝕣","Ropf":"ℝ","roplus":"⨮","rotimes":"⨵","RoundImplies":"⥰","rpar":")","rpargt":"⦔","rppolint":"⨒","rrarr":"⇉","Rrightarrow":"⇛","rsaquo":"›","rscr":"𝓇","Rscr":"ℛ","rsh":"↱","Rsh":"↱","rsqb":"]","rsquo":"’","rsquor":"’","rthree":"⋌","rtimes":"⋊","rtri":"▹","rtrie":"⊵","rtrif":"▸","rtriltri":"⧎","RuleDelayed":"⧴","ruluhar":"⥨","rx":"℞","Sacute":"Ś","sacute":"ś","sbquo":"‚","scap":"⪸","Scaron":"Š","scaron":"š","Sc":"⪼","sc":"≻","sccue":"≽","sce":"⪰","scE":"⪴","Scedil":"Ş","scedil":"ş","Scirc":"Ŝ","scirc":"ŝ","scnap":"⪺","scnE":"⪶","scnsim":"⋩","scpolint":"⨓","scsim":"≿","Scy":"С","scy":"с","sdotb":"⊡","sdot":"⋅","sdote":"⩦","searhk":"⤥","searr":"↘","seArr":"⇘","searrow":"↘","sect":"§","semi":";","seswar":"⤩","setminus":"∖","setmn":"∖","sext":"✶","Sfr":"𝔖","sfr":"𝔰","sfrown":"⌢","sharp":"♯","SHCHcy":"Щ","shchcy":"щ","SHcy":"Ш","shcy":"ш","ShortDownArrow":"↓","ShortLeftArrow":"←","shortmid":"∣","shortparallel":"∥","ShortRightArrow":"→","ShortUpArrow":"↑","shy":"­","Sigma":"Σ","sigma":"σ","sigmaf":"ς","sigmav":"ς","sim":"∼","simdot":"⩪","sime":"≃","simeq":"≃","simg":"⪞","simgE":"⪠","siml":"⪝","simlE":"⪟","simne":"≆","simplus":"⨤","simrarr":"⥲","slarr":"←","SmallCircle":"∘","smallsetminus":"∖","smashp":"⨳","smeparsl":"⧤","smid":"∣","smile":"⌣","smt":"⪪","smte":"⪬","smtes":"⪬︀","SOFTcy":"Ь","softcy":"ь","solbar":"⌿","solb":"⧄","sol":"/","Sopf":"𝕊","sopf":"𝕤","spades":"♠","spadesuit":"♠","spar":"∥","sqcap":"⊓","sqcaps":"⊓︀","sqcup":"⊔","sqcups":"⊔︀","Sqrt":"√","sqsub":"⊏","sqsube":"⊑","sqsubset":"⊏","sqsubseteq":"⊑","sqsup":"⊐","sqsupe":"⊒","sqsupset":"⊐","sqsupseteq":"⊒","square":"□","Square":"□","SquareIntersection":"⊓","SquareSubset":"⊏","SquareSubsetEqual":"⊑","SquareSuperset":"⊐","SquareSupersetEqual":"⊒","SquareUnion":"⊔","squarf":"▪","squ":"□","squf":"▪","srarr":"→","Sscr":"𝒮","sscr":"𝓈","ssetmn":"∖","ssmile":"⌣","sstarf":"⋆","Star":"⋆","star":"☆","starf":"★","straightepsilon":"ϵ","straightphi":"ϕ","strns":"¯","sub":"⊂","Sub":"⋐","subdot":"⪽","subE":"⫅","sube":"⊆","subedot":"⫃","submult":"⫁","subnE":"⫋","subne":"⊊","subplus":"⪿","subrarr":"⥹","subset":"⊂","Subset":"⋐","subseteq":"⊆","subseteqq":"⫅","SubsetEqual":"⊆","subsetneq":"⊊","subsetneqq":"⫋","subsim":"⫇","subsub":"⫕","subsup":"⫓","succapprox":"⪸","succ":"≻","succcurlyeq":"≽","Succeeds":"≻","SucceedsEqual":"⪰","SucceedsSlantEqual":"≽","SucceedsTilde":"≿","succeq":"⪰","succnapprox":"⪺","succneqq":"⪶","succnsim":"⋩","succsim":"≿","SuchThat":"∋","sum":"∑","Sum":"∑","sung":"♪","sup1":"¹","sup2":"²","sup3":"³","sup":"⊃","Sup":"⋑","supdot":"⪾","supdsub":"⫘","supE":"⫆","supe":"⊇","supedot":"⫄","Superset":"⊃","SupersetEqual":"⊇","suphsol":"⟉","suphsub":"⫗","suplarr":"⥻","supmult":"⫂","supnE":"⫌","supne":"⊋","supplus":"⫀","supset":"⊃","Supset":"⋑","supseteq":"⊇","supseteqq":"⫆","supsetneq":"⊋","supsetneqq":"⫌","supsim":"⫈","supsub":"⫔","supsup":"⫖","swarhk":"⤦","swarr":"↙","swArr":"⇙","swarrow":"↙","swnwar":"⤪","szlig":"ß","Tab":"\t","target":"⌖","Tau":"Τ","tau":"τ","tbrk":"⎴","Tcaron":"Ť","tcaron":"ť","Tcedil":"Ţ","tcedil":"ţ","Tcy":"Т","tcy":"т","tdot":"⃛","telrec":"⌕","Tfr":"𝔗","tfr":"𝔱","there4":"∴","therefore":"∴","Therefore":"∴","Theta":"Θ","theta":"θ","thetasym":"ϑ","thetav":"ϑ","thickapprox":"≈","thicksim":"∼","ThickSpace":"  ","ThinSpace":" ","thinsp":" ","thkap":"≈","thksim":"∼","THORN":"Þ","thorn":"þ","tilde":"˜","Tilde":"∼","TildeEqual":"≃","TildeFullEqual":"≅","TildeTilde":"≈","timesbar":"⨱","timesb":"⊠","times":"×","timesd":"⨰","tint":"∭","toea":"⤨","topbot":"⌶","topcir":"⫱","top":"⊤","Topf":"𝕋","topf":"𝕥","topfork":"⫚","tosa":"⤩","tprime":"‴","trade":"™","TRADE":"™","triangle":"▵","triangledown":"▿","triangleleft":"◃","trianglelefteq":"⊴","triangleq":"≜","triangleright":"▹","trianglerighteq":"⊵","tridot":"◬","trie":"≜","triminus":"⨺","TripleDot":"⃛","triplus":"⨹","trisb":"⧍","tritime":"⨻","trpezium":"⏢","Tscr":"𝒯","tscr":"𝓉","TScy":"Ц","tscy":"ц","TSHcy":"Ћ","tshcy":"ћ","Tstrok":"Ŧ","tstrok":"ŧ","twixt":"≬","twoheadleftarrow":"↞","twoheadrightarrow":"↠","Uacute":"Ú","uacute":"ú","uarr":"↑","Uarr":"↟","uArr":"⇑","Uarrocir":"⥉","Ubrcy":"Ў","ubrcy":"ў","Ubreve":"Ŭ","ubreve":"ŭ","Ucirc":"Û","ucirc":"û","Ucy":"У","ucy":"у","udarr":"⇅","Udblac":"Ű","udblac":"ű","udhar":"⥮","ufisht":"⥾","Ufr":"𝔘","ufr":"𝔲","Ugrave":"Ù","ugrave":"ù","uHar":"⥣","uharl":"↿","uharr":"↾","uhblk":"▀","ulcorn":"⌜","ulcorner":"⌜","ulcrop":"⌏","ultri":"◸","Umacr":"Ū","umacr":"ū","uml":"¨","UnderBar":"_","UnderBrace":"⏟","UnderBracket":"⎵","UnderParenthesis":"⏝","Union":"⋃","UnionPlus":"⊎","Uogon":"Ų","uogon":"ų","Uopf":"𝕌","uopf":"𝕦","UpArrowBar":"⤒","uparrow":"↑","UpArrow":"↑","Uparrow":"⇑","UpArrowDownArrow":"⇅","updownarrow":"↕","UpDownArrow":"↕","Updownarrow":"⇕","UpEquilibrium":"⥮","upharpoonleft":"↿","upharpoonright":"↾","uplus":"⊎","UpperLeftArrow":"↖","UpperRightArrow":"↗","upsi":"υ","Upsi":"ϒ","upsih":"ϒ","Upsilon":"Υ","upsilon":"υ","UpTeeArrow":"↥","UpTee":"⊥","upuparrows":"⇈","urcorn":"⌝","urcorner":"⌝","urcrop":"⌎","Uring":"Ů","uring":"ů","urtri":"◹","Uscr":"𝒰","uscr":"𝓊","utdot":"⋰","Utilde":"Ũ","utilde":"ũ","utri":"▵","utrif":"▴","uuarr":"⇈","Uuml":"Ü","uuml":"ü","uwangle":"⦧","vangrt":"⦜","varepsilon":"ϵ","varkappa":"ϰ","varnothing":"∅","varphi":"ϕ","varpi":"ϖ","varpropto":"∝","varr":"↕","vArr":"⇕","varrho":"ϱ","varsigma":"ς","varsubsetneq":"⊊︀","varsubsetneqq":"⫋︀","varsupsetneq":"⊋︀","varsupsetneqq":"⫌︀","vartheta":"ϑ","vartriangleleft":"⊲","vartriangleright":"⊳","vBar":"⫨","Vbar":"⫫","vBarv":"⫩","Vcy":"В","vcy":"в","vdash":"⊢","vDash":"⊨","Vdash":"⊩","VDash":"⊫","Vdashl":"⫦","veebar":"⊻","vee":"∨","Vee":"⋁","veeeq":"≚","vellip":"⋮","verbar":"|","Verbar":"‖","vert":"|","Vert":"‖","VerticalBar":"∣","VerticalLine":"|","VerticalSeparator":"❘","VerticalTilde":"≀","VeryThinSpace":" ","Vfr":"𝔙","vfr":"𝔳","vltri":"⊲","vnsub":"⊂⃒","vnsup":"⊃⃒","Vopf":"𝕍","vopf":"𝕧","vprop":"∝","vrtri":"⊳","Vscr":"𝒱","vscr":"𝓋","vsubnE":"⫋︀","vsubne":"⊊︀","vsupnE":"⫌︀","vsupne":"⊋︀","Vvdash":"⊪","vzigzag":"⦚","Wcirc":"Ŵ","wcirc":"ŵ","wedbar":"⩟","wedge":"∧","Wedge":"⋀","wedgeq":"≙","weierp":"℘","Wfr":"𝔚","wfr":"𝔴","Wopf":"𝕎","wopf":"𝕨","wp":"℘","wr":"≀","wreath":"≀","Wscr":"𝒲","wscr":"𝓌","xcap":"⋂","xcirc":"◯","xcup":"⋃","xdtri":"▽","Xfr":"𝔛","xfr":"𝔵","xharr":"⟷","xhArr":"⟺","Xi":"Ξ","xi":"ξ","xlarr":"⟵","xlArr":"⟸","xmap":"⟼","xnis":"⋻","xodot":"⨀","Xopf":"𝕏","xopf":"𝕩","xoplus":"⨁","xotime":"⨂","xrarr":"⟶","xrArr":"⟹","Xscr":"𝒳","xscr":"𝓍","xsqcup":"⨆","xuplus":"⨄","xutri":"△","xvee":"⋁","xwedge":"⋀","Yacute":"Ý","yacute":"ý","YAcy":"Я","yacy":"я","Ycirc":"Ŷ","ycirc":"ŷ","Ycy":"Ы","ycy":"ы","yen":"¥","Yfr":"𝔜","yfr":"𝔶","YIcy":"Ї","yicy":"ї","Yopf":"𝕐","yopf":"𝕪","Yscr":"𝒴","yscr":"𝓎","YUcy":"Ю","yucy":"ю","yuml":"ÿ","Yuml":"Ÿ","Zacute":"Ź","zacute":"ź","Zcaron":"Ž","zcaron":"ž","Zcy":"З","zcy":"з","Zdot":"Ż","zdot":"ż","zeetrf":"ℨ","ZeroWidthSpace":"​","Zeta":"Ζ","zeta":"ζ","zfr":"𝔷","Zfr":"ℨ","ZHcy":"Ж","zhcy":"ж","zigrarr":"⇝","zopf":"𝕫","Zopf":"ℤ","Zscr":"𝒵","zscr":"𝓏","zwj":"‍","zwnj":"‌"}
 
 /***/ }),
-/* 205 */
+/* 208 */
 /***/ (function(module, exports) {
 
 function getRelocatable(re) {
@@ -24371,7 +24741,7 @@ function matchAt(re, str, pos) {
 module.exports = matchAt;
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24500,7 +24870,7 @@ module.exports = decode;
 
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24605,7 +24975,7 @@ module.exports = encode;
 
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24637,7 +25007,7 @@ module.exports = function format(url) {
 
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24956,7 +25326,7 @@ module.exports = urlParse;
 
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -25492,64 +25862,64 @@ module.exports = urlParse;
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(232)(module), __webpack_require__(231)))
-
-/***/ }),
-/* 211 */
-/***/ (function(module, exports) {
-
-module.exports = "@[toc](Catalog)\r\n\r\nMarkdown Handbuch\r\n===\r\n> Details: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Fett**\r\n```\r\n**fett**\r\n__fett__\r\n```\r\n## *Kursiv*\r\n```\r\n*kursiv*\r\n_kursiv_\r\n```\r\n## Überschriften\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Trennlinien\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Hoch^gestellt & ~Tief~gestellt\r\n```\r\nhochgestellt x^2^\r\ntiefgestellt H~2~0\r\n```\r\n## ++Unterstrichen++ & ~~Durchgestrichen~~\r\n```\r\n++unterstrichen++\r\n~~durchgestrichen~~\r\n```\r\n## ==Markiert==\r\n```\r\n==markiert==\r\n```\r\n## Zitat\r\n\r\n```\r\n> zitat 1\r\n>> zitat 2\r\n>>> zitat 3\r\n...\r\n```\r\n\r\n## Liste\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo Liste\r\n\r\n- [x] aufgabe 1\r\n- [ ] aufgabe 2\r\n\r\n```\r\n- [x] aufgabe 1\r\n- [ ] aufgabe 2\r\n```\r\n\r\n## Link\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nLink mit Bild\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` Typ\r\n\r\nCodeblock\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Tabelle\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| links | mitte | rechts |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| links | mitte | rechts |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Fußnote\r\n```\r\nhallo[^hallo]\r\n```\r\n\r\nSchau zum unteren Rand[^hallo]\r\n\r\n[^hallo]: fussnote\r\n\r\n## Emojis\r\nDetails: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematik\r\n\r\nFormeln lassen sich darstellen z.b. ：$x_i + y_i = z_i$ und $\\sum_{i=1}^n a_i=0$\r\nFormeln können auf einer eigenen Zeile gerendert werden\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetails: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`links`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`mitte`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`rechts`\r\n`:::`\r\n:::\r\n\r\n## Liste von Definitionen\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 mit *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { ein wenig code, teil von Definition 2 }\r\n\r\n    Dritter Absatz von Definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 mit *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { ein wenig code, teil von Definition 2 }\r\n\r\n    Dritter Absatz von Definition 2.\r\n\r\n```\r\n\r\n## Abkürzungen\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nDie HTML Spezifikation\r\nwird gepflegt vom W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nDie HTML Spezifikation\r\nwird gepflegt vom W3C.\r\n```\r\n"
-
-/***/ }),
-/* 212 */
-/***/ (function(module, exports) {
-
-module.exports = "@[toc](Catalog)\r\n\r\nMarkdown Guide\r\n===\r\n> Detailed: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Bold**\r\n```\r\n**bold**\r\n__bold__\r\n```\r\n## *Italic*\r\n```\r\n*italic*\r\n_italic_\r\n```\r\n## Header\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Dividing line\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Super^script & ~Sub~script\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++Underline++ & ~~Strikethrough~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==Mark==\r\n```\r\n==mark==\r\n```\r\n## Quote\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## List\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo List\r\n\r\n- [x] task 1\r\n- [ ] task 2\r\n\r\n```\r\n- [x] task 1\r\n- [ ] task 2\r\n```\r\n\r\n## Link\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Table\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Footnote\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## Emojis\r\nDetailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetailed: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## deflist\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
-
-/***/ }),
-/* 213 */
-/***/ (function(module, exports) {
-
-module.exports = "@[toc](Catalogue)\r\n\r\nGuide Markdown\r\n==============\r\n> Détail : [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Bold**\r\n```\r\n**bold**\r\n__bold__\r\n```\r\n## *Italic*\r\n```\r\n*italic*\r\n_italic_\r\n```\r\n## Header\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Dividing line\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Super^script & ~Sub~script\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++Underline++ & ~~Strikethrough~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==Mark==\r\n```\r\n==mark==\r\n```\r\n## Quote\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## List\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n## Link\r\n\r\n## Todo List\r\n\r\n- [x] Équipe 1\r\n- [ ] Équipe 2\r\n\r\n```\r\n- [x] Équipe 1\r\n- [ ] Équipe 2\r\n```\r\n\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Table\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Footnote\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## Emojis\r\nDetailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetailed: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## deflist\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(235)(module), __webpack_require__(234)))
 
 /***/ }),
 /* 214 */
 /***/ (function(module, exports) {
 
-module.exports = "@[toc](目次)\r\n\r\nMarkdown 文法ガイド\r\n===\r\n> Detailed: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **太字**\r\n```\r\n**太字**\r\n__太字__\r\n```\r\n## *斜体*\r\n```\r\n*斜体*\r\n_斜体_\r\n```\r\n## 見出し\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## 横線\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上付き^文字 & ~下付き~文字\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++下線++ & ~~取り消し線~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==蛍光ペン==\r\n```\r\n==mark==\r\n```\r\n## 引用\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## リスト\r\n```\r\n番号付きリスト\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\n箇条書きリスト\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todoリスト\r\n\r\n- [x] task 1\r\n- [ ] task 2\r\n\r\n```\r\n- [x] task 1\r\n- [ ] task 2\r\n```\r\n\r\n## リンク\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## コード\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## 表\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n\r\n## 脚注\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## 絵文字\r\n> Detailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ 数式\r\n> Detailed: [KaTeXマニュアル](http://www.intmath.com/cg5/katex-mathjax-comparison.php)、[KaTeX function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)、[LaTeXマニュアル](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$  \r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\n\r\n## レイアウト\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## 定義リスト\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
+module.exports = "@[toc](Catalog)\r\n\r\nMarkdown Handbuch\r\n===\r\n> Details: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Fett**\r\n```\r\n**fett**\r\n__fett__\r\n```\r\n## *Kursiv*\r\n```\r\n*kursiv*\r\n_kursiv_\r\n```\r\n## Überschriften\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Trennlinien\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Hoch^gestellt & ~Tief~gestellt\r\n```\r\nhochgestellt x^2^\r\ntiefgestellt H~2~0\r\n```\r\n## ++Unterstrichen++ & ~~Durchgestrichen~~\r\n```\r\n++unterstrichen++\r\n~~durchgestrichen~~\r\n```\r\n## ==Markiert==\r\n```\r\n==markiert==\r\n```\r\n## Zitat\r\n\r\n```\r\n> zitat 1\r\n>> zitat 2\r\n>>> zitat 3\r\n...\r\n```\r\n\r\n## Liste\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo Liste\r\n\r\n- [x] aufgabe 1\r\n- [ ] aufgabe 2\r\n\r\n```\r\n- [x] aufgabe 1\r\n- [ ] aufgabe 2\r\n```\r\n\r\n## Link\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nLink mit Bild\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` Typ\r\n\r\nCodeblock\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Tabelle\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| links | mitte | rechts |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| links | mitte | rechts |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Fußnote\r\n```\r\nhallo[^hallo]\r\n```\r\n\r\nSchau zum unteren Rand[^hallo]\r\n\r\n[^hallo]: fussnote\r\n\r\n## Emojis\r\nDetails: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematik\r\n\r\nFormeln lassen sich darstellen z.b. ：$x_i + y_i = z_i$ und $\\sum_{i=1}^n a_i=0$\r\nFormeln können auf einer eigenen Zeile gerendert werden\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetails: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`links`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`mitte`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`rechts`\r\n`:::`\r\n:::\r\n\r\n## Liste von Definitionen\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 mit *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { ein wenig code, teil von Definition 2 }\r\n\r\n    Dritter Absatz von Definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 mit *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { ein wenig code, teil von Definition 2 }\r\n\r\n    Dritter Absatz von Definition 2.\r\n\r\n```\r\n\r\n## Abkürzungen\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nDie HTML Spezifikation\r\nwird gepflegt vom W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nDie HTML Spezifikation\r\nwird gepflegt vom W3C.\r\n```\r\n"
 
 /***/ }),
 /* 215 */
 /***/ (function(module, exports) {
 
-module.exports = "@[toc](Directory)\r\n\r\nGuia Markdown\r\n===\r\n> Detalhes: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Negrito**\r\n```\r\n**negrito**\r\n__negrito__\r\n```\r\n## *Itálico*\r\n```\r\n*itálico*\r\n_itálico_\r\n```\r\n## Cabeçalho\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Linha Divisora\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Sobre^scrito & ~Sub~scrito\r\n```\r\nsobre x^2^\r\nsub H~2~0\r\n```\r\n## ++Sublinhar++ & ~~Tachar~~\r\n```\r\n++sublinhar++\r\n~~tachar~~\r\n```\r\n## ==Marcador==\r\n```\r\n==marcador==\r\n```\r\n## Citação\r\n\r\n```\r\n> citação 1\r\n>> citação 2\r\n>>> citação 3\r\n...\r\n```\r\n\r\n## Listas\r\n```\r\nlista Numerada\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nlista com marcadores\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo Listas\r\n\r\n- [x] Tarefa 1\r\n- [ ] Tarefa 2\r\n\r\n```\r\n- [x] Tarefa 1\r\n- [ ] Tarefa 2\r\n```\r\n\r\n## Link\r\n```\r\nLink Texto\r\n[Text](www.baidu.com)\r\n\r\nLink Imagem\r\n![Text](http://www.image.com)\r\n```\r\n## Código\r\n\\``` tipo\r\n\r\nbloco de código\r\n\r\n\\```\r\n\r\n\\` código \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Tabela\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| esquerda | centro | direita |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| esquerda | centro | direita |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Rodapé\r\n```\r\nolá[^olá]\r\n```\r\n\r\nOlhe para baixo[^olá]\r\n\r\n[^olá]: rodapé\r\n\r\n## Emojis\r\nDetalhes: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nPodemos mostrar fórmulas por exemplo：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nPodemos também mostrar em uma única linha:\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetalhes: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`esquerda`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`centro`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`direita`\r\n`:::`\r\n:::\r\n\r\n## Definições\r\n\r\nTermo 1\r\n\r\n:   Definição 1\r\n\r\nTermo 2 com *markup inline*\r\n\r\n:   Definição 2\r\n\r\n        { um pouco de código, parte da Definição 2 }\r\n\r\n    Terceiro parágrafo da definição 2.\r\n\r\n```\r\nTermo 1\r\n\r\n:   Definição 1\r\n\r\nTermo 2 com *markup inline*\r\n\r\n:   Definição 2\r\n\r\n        { um pouco de código, parte da Definição 2 }\r\n\r\n    Terceiro parágrafo da definição 2.\r\n\r\n```\r\n\r\n## Abreviações\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nA especificação HTML\r\né mantida pela W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\né mantida pela W3C.\r\n```\r\n"
+module.exports = "@[toc](Catalog)\r\n\r\nMarkdown Guide\r\n===\r\n> Detailed: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Bold**\r\n```\r\n**bold**\r\n__bold__\r\n```\r\n## *Italic*\r\n```\r\n*italic*\r\n_italic_\r\n```\r\n## Header\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Dividing line\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Super^script & ~Sub~script\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++Underline++ & ~~Strikethrough~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==Mark==\r\n```\r\n==mark==\r\n```\r\n## Quote\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## List\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo List\r\n\r\n- [x] task 1\r\n- [ ] task 2\r\n\r\n```\r\n- [x] task 1\r\n- [ ] task 2\r\n```\r\n\r\n## Link\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Table\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Footnote\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## Emojis\r\nDetailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetailed: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## deflist\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
 
 /***/ }),
 /* 216 */
 /***/ (function(module, exports) {
 
-module.exports = "@[toc](Catalog)  \r\n  \r\nMarkdown помощь  \r\n===  \r\n> Подробнее: [http://commonmark.org/help/](http://commonmark.org/help/)  \r\n  \r\n## **Полужирный**  \r\n```  \r\n**Полужирный**  \r\n__Полужирный__  \r\n```  \r\n## *Курсив*  \r\n```  \r\n*Курсив*  \r\n_Курсив_  \r\n```  \r\n## Заголовок  \r\n```  \r\n# h1 #  \r\nh1  \r\n====  \r\n## h2 ##  \r\nh2  \r\n----  \r\n### h3 ###  \r\n#### h4 ####  \r\n##### h5 #####  \r\n###### h6 ######  \r\n```  \r\n## Разделительная линия  \r\n```  \r\n***  \r\n---  \r\n```  \r\n****  \r\n## ^Верхний^индекс & ~Нижний~индекс  \r\n```  \r\nверхний x^2^  \r\nнижний H~2~0  \r\n```  \r\n## ++Подчеркнутый++ & ~~Зачеркнутый~~  \r\n```  \r\n++Подчеркнутый++  \r\n~~Зачеркнутый~~  \r\n```  \r\n## ==Отметка==  \r\n```  \r\n==Отметка==  \r\n```  \r\n## Цитата  \r\n  \r\n```  \r\n> Цитата  \r\n>> Цитата 2  \r\n>>> Цитата 3  \r\n...  \r\n```  \r\n  \r\n## Список  \r\n```  \r\nol  \r\n1.  \r\n2.  \r\n3.  \r\n...  \r\n  \r\nul  \r\n-  \r\n-  \r\n...  \r\n```  \r\n  \r\n## Список задач  \r\n  \r\n- [x] Задача 1  \r\n- [ ] Задача 2  \r\n  \r\n```  \r\n- [x] Задача 1  \r\n- [ ] Задача 2  \r\n```  \r\n  \r\n## Ссылка  \r\n```  \r\nСсылка  \r\n[Текст](www.baidu.com)  \r\n  \r\nСсылка изображения  \r\n![Текст](http://www.image.com)  \r\n```  \r\n## Код  \r\n\\``` type  \r\n  \r\ncode block  \r\n  \r\n\\```  \r\n  \r\n\\` code \\`  \r\n  \r\n```c++  \r\nint main()  \r\n{  \r\n printf(\"hello world!\");}  \r\n```  \r\n`code`  \r\n  \r\n## Таблица  \r\n```  \r\n| th1 | th2 | th3 |  \r\n| :--  | :--: | ----: |  \r\n| left | center | right |  \r\n```  \r\n| th1 | th2 | th3 |  \r\n| :--  | :--: | ----: |  \r\n| left | center | right |  \r\n| ---------------------- | ------------- | ----------------- |  \r\n## Сноска  \r\n```  \r\nПривет[^Привет]  \r\n```  \r\n  \r\nТут что-то непонятное[^Привет]  \r\n  \r\n[^Привет]: А тут объяснение  \r\n  \r\n## Emojis  \r\nПодробнее: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)  \r\n```  \r\n:laughing:  \r\n:blush:  \r\n:smiley:  \r\n:)  \r\n...  \r\n```  \r\n:laughing::blush::smiley::)  \r\n  \r\n## $\\KaTeX$ Mathematics  \r\n  \r\nМожно выводить такие формулы：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$  \r\nА также в одну строку:\r\n$$\\sum_{i=1}^n a_i=0$$  \r\nПодробнее: \r\n- [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)\r\n- [katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)\r\n- [latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)  \r\n  \r\n## Разметка\r\n  \r\n::: hljs-left  \r\n`::: hljs-left`  \r\n`left`  \r\n`:::`  \r\n:::  \r\n  \r\n::: hljs-center  \r\n`::: hljs-center`  \r\n`center`  \r\n`:::`  \r\n:::  \r\n  \r\n::: hljs-right  \r\n`::: hljs-right`  \r\n`right`  \r\n`:::`  \r\n:::  \r\n  \r\n## Список определений\r\n  \r\nТермин 1  \r\n  \r\n:   Определение 1  \r\n  \r\nТермин  2 с использованием *разметки*\r\n  \r\n:   Определение 2  \r\n  \r\n { Какой-нибудь код, часть определения 2 }  \r\n Третий параграф определения 2.  \r\n```  \r\nТермин 1  \r\n  \r\n:   Определение 1  \r\n  \r\nТермин  2 с использованием *разметки*\r\n  \r\n:   Определение 2  \r\n  \r\n { Какой-нибудь код, часть определения 2 }  \r\n Третий параграф определения 2.  \r\n```  \r\n  \r\n## Сокращения\r\n*[HTML]: Hyper Text Markup Language  \r\n*[W3C]:  World Wide Web Consortium  \r\nThe HTML specification  \r\nis maintained by the W3C.  \r\n```  \r\n*[HTML]: Hyper Text Markup Language  \r\n*[W3C]:  World Wide Web Consortium  \r\nThe HTML specification  \r\nis maintained by the W3C.  \r\n```\r\n"
+module.exports = "@[toc](Catalogue)\r\n\r\nGuide Markdown\r\n==============\r\n> Détail : [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Bold**\r\n```\r\n**bold**\r\n__bold__\r\n```\r\n## *Italic*\r\n```\r\n*italic*\r\n_italic_\r\n```\r\n## Header\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Dividing line\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Super^script & ~Sub~script\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++Underline++ & ~~Strikethrough~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==Mark==\r\n```\r\n==mark==\r\n```\r\n## Quote\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## List\r\n```\r\nol\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nul\r\n-\r\n-\r\n...\r\n```\r\n## Link\r\n\r\n## Todo List\r\n\r\n- [x] Équipe 1\r\n- [ ] Équipe 2\r\n\r\n```\r\n- [x] Équipe 1\r\n- [ ] Équipe 2\r\n```\r\n\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## Code\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Table\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Footnote\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## Emojis\r\nDetailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetailed: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## deflist\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
 
 /***/ }),
 /* 217 */
 /***/ (function(module, exports) {
 
-module.exports = "@[toc](目录)\r\n\r\nMarkdown 语法简介\r\n=============\r\n> [语法详解](http://commonmark.org/help/)\r\n\r\n## **目录**\r\n```\r\n@[toc](目录)\r\n```\r\n\r\n## **粗体**\r\n```\r\n**粗体**\r\n__粗体__\r\n```\r\n## *斜体*\r\n```\r\n*斜体*\r\n_斜体_\r\n```\r\n## 标题\r\n```\r\n# 一级标题 #\r\n一级标题\r\n====\r\n## 二级标题 ##\r\n二级标题\r\n----\r\n### 三级标题 ###\r\n#### 四级标题 ####\r\n##### 五级标题 #####\r\n###### 六级标题 ######\r\n```\r\n## 分割线\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上^角~下~标\r\n```\r\n上角标 x^2^\r\n下角标 H~2~0\r\n```\r\n## ++下划线++ ~~中划线~~\r\n```\r\n++下划线++\r\n~~中划线~~\r\n```\r\n## ==标记==\r\n```\r\n==标记==\r\n```\r\n## 段落引用\r\n```\r\n> 一级\r\n>> 二级\r\n>>> 三级\r\n...\r\n```\r\n\r\n## 列表\r\n```\r\n有序列表\r\n1.\r\n2.\r\n3.\r\n...\r\n无序列表\r\n-\r\n-\r\n...\r\n```\r\n\r\n## 任务列表\r\n\r\n- [x] 已完成任务\r\n- [ ] 未完成任务\r\n\r\n```\r\n- [x] 已完成任务\r\n- [ ] 未完成任务\r\n```\r\n\r\n## 链接\r\n```\r\n[链接](www.baidu.com)\r\n![图片描述](http://www.image.com)\r\n```\r\n## 代码段落\r\n\\``` type\r\n\r\n代码段落\r\n\r\n\\```\r\n\r\n\\` 代码块 \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n## 表格(table)\r\n```\r\n| 标题1 | 标题2 | 标题3 |\r\n| :--  | :--: | ----: |\r\n| 左对齐 | 居中 | 右对齐 |\r\n| ---------------------- | ------------- | ----------------- |\r\n```\r\n| 标题1 | 标题2 | 标题3 |\r\n| :--  | :--: | ----: |\r\n| 左对齐 | 居中 | 右对齐 |\r\n| ---------------------- | ------------- | ----------------- |\r\n## 脚注(footnote)\r\n```\r\nhello[^hello]\r\n```\r\n\r\n见底部脚注[^hello]\r\n\r\n[^hello]: 一个注脚\r\n\r\n## 表情(emoji)\r\n[参考网站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$公式\r\n\r\n我们可以渲染公式例如：$x_i + y_i = z_i$和$\\sum_{i=1}^n a_i=0$\r\n我们也可以单行渲染\r\n$$\\sum_{i=1}^n a_i=0$$\r\n具体可参照[katex文档](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函数](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文档](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## 布局\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`居左`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`居中`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`居右`\r\n`:::`\r\n:::\r\n\r\n## 定义\r\n\r\n术语一\r\n\r\n:   定义一\r\n\r\n包含有*行内标记*的术语二\r\n\r\n:   定义二\r\n\r\n        {一些定义二的文字或代码}\r\n\r\n    定义二的第三段\r\n\r\n```\r\n术语一\r\n\r\n:   定义一\r\n\r\n包含有*行内标记*的术语二\r\n\r\n:   定义二\r\n\r\n        {一些定义二的文字或代码}\r\n\r\n    定义二的第三段\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 规范由 W3C 维护\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 规范由 W3C 维护\r\n```\r\n\r\n"
+module.exports = "@[toc](目次)\r\n\r\nMarkdown 文法ガイド\r\n===\r\n> Detailed: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **太字**\r\n```\r\n**太字**\r\n__太字__\r\n```\r\n## *斜体*\r\n```\r\n*斜体*\r\n_斜体_\r\n```\r\n## 見出し\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## 横線\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上付き^文字 & ~下付き~文字\r\n```\r\nsuper x^2^\r\nsub H~2~0\r\n```\r\n## ++下線++ & ~~取り消し線~~\r\n```\r\n++underline++\r\n~~strikethrough~~\r\n```\r\n## ==蛍光ペン==\r\n```\r\n==mark==\r\n```\r\n## 引用\r\n\r\n```\r\n> quote 1\r\n>> quote 2\r\n>>> quote 3\r\n...\r\n```\r\n\r\n## リスト\r\n```\r\n番号付きリスト\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\n箇条書きリスト\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todoリスト\r\n\r\n- [x] task 1\r\n- [ ] task 2\r\n\r\n```\r\n- [x] task 1\r\n- [ ] task 2\r\n```\r\n\r\n## リンク\r\n```\r\nText Link\r\n[Text](www.baidu.com)\r\n\r\nImage Link\r\n![Text](http://www.image.com)\r\n```\r\n## コード\r\n\\``` type\r\n\r\ncode block\r\n\r\n\\```\r\n\r\n\\` code \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## 表\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| left | center | right |\r\n| ---------------------- | ------------- | ----------------- |\r\n\r\n## 脚注\r\n```\r\nhello[^hello]\r\n```\r\n\r\nLook at the bottom[^hello]\r\n\r\n[^hello]: footnote\r\n\r\n## 絵文字\r\n> Detailed: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ 数式\r\n> Detailed: [KaTeXマニュアル](http://www.intmath.com/cg5/katex-mathjax-comparison.php)、[KaTeX function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)、[LaTeXマニュアル](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\nWe can render formulas for example：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$  \r\nWe can also single-line rendering\r\n$$\\sum_{i=1}^n a_i=0$$\r\n\r\n## レイアウト\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`left`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`center`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`right`\r\n`:::`\r\n:::\r\n\r\n## 定義リスト\r\n\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\nTerm 1\r\n\r\n:   Definition 1\r\n\r\nTerm 2 with *inline markup*\r\n\r\n:   Definition 2\r\n\r\n        { some code, part of Definition 2 }\r\n\r\n    Third paragraph of definition 2.\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\nis maintained by the W3C.\r\n```\r\n"
 
 /***/ }),
 /* 218 */
 /***/ (function(module, exports) {
 
-module.exports = "@[toc](目錄)\r\n\r\nMarkdown 語法簡介\r\n=============\r\n> [語法詳解](http://commonmark.org/help/)\r\n\r\n## **粗體**\r\n```\r\n**粗體**\r\n__粗體__\r\n```\r\n## *斜體*\r\n```\r\n*斜體*\r\n_斜體_\r\n```\r\n## 標題\r\n```\r\n# 一級標題 #\r\n一級標題\r\n====\r\n## 二級標題 ##\r\n二級標題\r\n----\r\n### 三級標題 ###\r\n#### 四級標題 ####\r\n##### 五級標題 #####\r\n###### 六級標題 ######\r\n```\r\n## 分割線\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上^角~下~標\r\n```\r\n上角標 x^2^\r\n下角標 H~2~0\r\n```\r\n## ++下劃線++ ~~中劃線~~\r\n```\r\n++下劃線++\r\n~~中劃線~~\r\n```\r\n## ==標記==\r\n```\r\n==標記==\r\n```\r\n## 段落引用\r\n```\r\n> 一級\r\n>> 二級\r\n>>> 三級\r\n...\r\n```\r\n\r\n## 列表\r\n```\r\n有序列表\r\n1.\r\n2.\r\n3.\r\n...\r\n無序列表\r\n-\r\n-\r\n...\r\n```\r\n\r\n## 任務列表\r\n\r\n- [x] 已完成任務\r\n- [ ] 未完成任務\r\n\r\n```\r\n- [x] 已完成任務\r\n- [ ] 未完成任務\r\n```\r\n\r\n## 鏈接\r\n```\r\n[鏈接](www.baidu.com)\r\n![圖片描述](http://www.image.com)\r\n```\r\n## 代碼段落\r\n\\``` type\r\n\r\n代碼段落\r\n\r\n\\```\r\n\r\n\\` 代碼塊 \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n## 表格(table)\r\n```\r\n| 標題1 | 標題2 | 標題3 |\r\n| :--  | :--: | ----: |\r\n| 左對齊 | 居中 | 右對齊 |\r\n| ---------------------- | ------------- | ----------------- |\r\n```\r\n| 標題1 | 標題2 | 標題3 |\r\n| :--  | :--: | ----: |\r\n| 左對齊 | 居中 | 右對齊 |\r\n| ---------------------- | ------------- | ----------------- |\r\n## 腳註(footnote)\r\n```\r\nhello[^hello]\r\n```\r\n\r\n見底部腳註[^hello]\r\n\r\n[^hello]: 一個註腳\r\n\r\n## 表情(emoji)\r\n[參考網站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$公式\r\n\r\n我們可以渲染公式例如：$x_i + y_i = z_i$和$\\sum_{i=1}^n a_i=0$\r\n我們也可以單行渲染\r\n$$\\sum_{i=1}^n a_i=0$$\r\n具體可參照[katex文檔](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函數](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文檔](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## 布局\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`居左`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`居中`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`居右`\r\n`:::`\r\n:::\r\n\r\n## 定義\r\n\r\n術語一\r\n\r\n:   定義一\r\n\r\n包含有*行內標記*的術語二\r\n\r\n:   定義二\r\n\r\n        {一些定義二的文字或代碼}\r\n\r\n    定義二的第三段\r\n\r\n```\r\n術語一\r\n\r\n:   定義一\r\n\r\n包含有*行內標記*的術語二\r\n\r\n:   定義二\r\n\r\n        {一些定義二的文字或代碼}\r\n\r\n    定義二的第三段\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 規範由 W3C 維護\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 規範由 W3C 維護\r\n```\r\n\r\n"
+module.exports = "@[toc](Directory)\r\n\r\nGuia Markdown\r\n===\r\n> Detalhes: [http://commonmark.org/help/](http://commonmark.org/help/)\r\n\r\n## **Negrito**\r\n```\r\n**negrito**\r\n__negrito__\r\n```\r\n## *Itálico*\r\n```\r\n*itálico*\r\n_itálico_\r\n```\r\n## Cabeçalho\r\n```\r\n# h1 #\r\nh1\r\n====\r\n## h2 ##\r\nh2\r\n----\r\n### h3 ###\r\n#### h4 ####\r\n##### h5 #####\r\n###### h6 ######\r\n```\r\n## Linha Divisora\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^Sobre^scrito & ~Sub~scrito\r\n```\r\nsobre x^2^\r\nsub H~2~0\r\n```\r\n## ++Sublinhar++ & ~~Tachar~~\r\n```\r\n++sublinhar++\r\n~~tachar~~\r\n```\r\n## ==Marcador==\r\n```\r\n==marcador==\r\n```\r\n## Citação\r\n\r\n```\r\n> citação 1\r\n>> citação 2\r\n>>> citação 3\r\n...\r\n```\r\n\r\n## Listas\r\n```\r\nlista Numerada\r\n1.\r\n2.\r\n3.\r\n...\r\n\r\nlista com marcadores\r\n-\r\n-\r\n...\r\n```\r\n\r\n## Todo Listas\r\n\r\n- [x] Tarefa 1\r\n- [ ] Tarefa 2\r\n\r\n```\r\n- [x] Tarefa 1\r\n- [ ] Tarefa 2\r\n```\r\n\r\n## Link\r\n```\r\nLink Texto\r\n[Text](www.baidu.com)\r\n\r\nLink Imagem\r\n![Text](http://www.image.com)\r\n```\r\n## Código\r\n\\``` tipo\r\n\r\nbloco de código\r\n\r\n\\```\r\n\r\n\\` código \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n\r\n## Tabela\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| esquerda | centro | direita |\r\n```\r\n| th1 | th2 | th3 |\r\n| :--  | :--: | ----: |\r\n| esquerda | centro | direita |\r\n| ---------------------- | ------------- | ----------------- |\r\n## Rodapé\r\n```\r\nolá[^olá]\r\n```\r\n\r\nOlhe para baixo[^olá]\r\n\r\n[^olá]: rodapé\r\n\r\n## Emojis\r\nDetalhes: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$ Mathematics\r\n\r\nPodemos mostrar fórmulas por exemplo：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$\r\nPodemos também mostrar em uma única linha:\r\n$$\\sum_{i=1}^n a_i=0$$\r\nDetalhes: [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## Layout\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`esquerda`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`centro`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`direita`\r\n`:::`\r\n:::\r\n\r\n## Definições\r\n\r\nTermo 1\r\n\r\n:   Definição 1\r\n\r\nTermo 2 com *markup inline*\r\n\r\n:   Definição 2\r\n\r\n        { um pouco de código, parte da Definição 2 }\r\n\r\n    Terceiro parágrafo da definição 2.\r\n\r\n```\r\nTermo 1\r\n\r\n:   Definição 1\r\n\r\nTermo 2 com *markup inline*\r\n\r\n:   Definição 2\r\n\r\n        { um pouco de código, parte da Definição 2 }\r\n\r\n    Terceiro parágrafo da definição 2.\r\n\r\n```\r\n\r\n## Abreviações\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nA especificação HTML\r\né mantida pela W3C.\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nThe HTML specification\r\né mantida pela W3C.\r\n```\r\n"
 
 /***/ }),
 /* 219 */
 /***/ (function(module, exports) {
 
-module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804[\uDCBD\uDCCD]|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/
+module.exports = "@[toc](Catalog)  \r\n  \r\nMarkdown помощь  \r\n===  \r\n> Подробнее: [http://commonmark.org/help/](http://commonmark.org/help/)  \r\n  \r\n## **Полужирный**  \r\n```  \r\n**Полужирный**  \r\n__Полужирный__  \r\n```  \r\n## *Курсив*  \r\n```  \r\n*Курсив*  \r\n_Курсив_  \r\n```  \r\n## Заголовок  \r\n```  \r\n# h1 #  \r\nh1  \r\n====  \r\n## h2 ##  \r\nh2  \r\n----  \r\n### h3 ###  \r\n#### h4 ####  \r\n##### h5 #####  \r\n###### h6 ######  \r\n```  \r\n## Разделительная линия  \r\n```  \r\n***  \r\n---  \r\n```  \r\n****  \r\n## ^Верхний^индекс & ~Нижний~индекс  \r\n```  \r\nверхний x^2^  \r\nнижний H~2~0  \r\n```  \r\n## ++Подчеркнутый++ & ~~Зачеркнутый~~  \r\n```  \r\n++Подчеркнутый++  \r\n~~Зачеркнутый~~  \r\n```  \r\n## ==Отметка==  \r\n```  \r\n==Отметка==  \r\n```  \r\n## Цитата  \r\n  \r\n```  \r\n> Цитата  \r\n>> Цитата 2  \r\n>>> Цитата 3  \r\n...  \r\n```  \r\n  \r\n## Список  \r\n```  \r\nol  \r\n1.  \r\n2.  \r\n3.  \r\n...  \r\n  \r\nul  \r\n-  \r\n-  \r\n...  \r\n```  \r\n  \r\n## Список задач  \r\n  \r\n- [x] Задача 1  \r\n- [ ] Задача 2  \r\n  \r\n```  \r\n- [x] Задача 1  \r\n- [ ] Задача 2  \r\n```  \r\n  \r\n## Ссылка  \r\n```  \r\nСсылка  \r\n[Текст](www.baidu.com)  \r\n  \r\nСсылка изображения  \r\n![Текст](http://www.image.com)  \r\n```  \r\n## Код  \r\n\\``` type  \r\n  \r\ncode block  \r\n  \r\n\\```  \r\n  \r\n\\` code \\`  \r\n  \r\n```c++  \r\nint main()  \r\n{  \r\n printf(\"hello world!\");}  \r\n```  \r\n`code`  \r\n  \r\n## Таблица  \r\n```  \r\n| th1 | th2 | th3 |  \r\n| :--  | :--: | ----: |  \r\n| left | center | right |  \r\n```  \r\n| th1 | th2 | th3 |  \r\n| :--  | :--: | ----: |  \r\n| left | center | right |  \r\n| ---------------------- | ------------- | ----------------- |  \r\n## Сноска  \r\n```  \r\nПривет[^Привет]  \r\n```  \r\n  \r\nТут что-то непонятное[^Привет]  \r\n  \r\n[^Привет]: А тут объяснение  \r\n  \r\n## Emojis  \r\nПодробнее: [https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)  \r\n```  \r\n:laughing:  \r\n:blush:  \r\n:smiley:  \r\n:)  \r\n...  \r\n```  \r\n:laughing::blush::smiley::)  \r\n  \r\n## $\\KaTeX$ Mathematics  \r\n  \r\nМожно выводить такие формулы：$x_i + y_i = z_i$ and $\\sum_{i=1}^n a_i=0$  \r\nА также в одну строку:\r\n$$\\sum_{i=1}^n a_i=0$$  \r\nПодробнее: \r\n- [katex](http://www.intmath.com/cg5/katex-mathjax-comparison.php)\r\n- [katex function](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)\r\n- [latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)  \r\n  \r\n## Разметка\r\n  \r\n::: hljs-left  \r\n`::: hljs-left`  \r\n`left`  \r\n`:::`  \r\n:::  \r\n  \r\n::: hljs-center  \r\n`::: hljs-center`  \r\n`center`  \r\n`:::`  \r\n:::  \r\n  \r\n::: hljs-right  \r\n`::: hljs-right`  \r\n`right`  \r\n`:::`  \r\n:::  \r\n  \r\n## Список определений\r\n  \r\nТермин 1  \r\n  \r\n:   Определение 1  \r\n  \r\nТермин  2 с использованием *разметки*\r\n  \r\n:   Определение 2  \r\n  \r\n { Какой-нибудь код, часть определения 2 }  \r\n Третий параграф определения 2.  \r\n```  \r\nТермин 1  \r\n  \r\n:   Определение 1  \r\n  \r\nТермин  2 с использованием *разметки*\r\n  \r\n:   Определение 2  \r\n  \r\n { Какой-нибудь код, часть определения 2 }  \r\n Третий параграф определения 2.  \r\n```  \r\n  \r\n## Сокращения\r\n*[HTML]: Hyper Text Markup Language  \r\n*[W3C]:  World Wide Web Consortium  \r\nThe HTML specification  \r\nis maintained by the W3C.  \r\n```  \r\n*[HTML]: Hyper Text Markup Language  \r\n*[W3C]:  World Wide Web Consortium  \r\nThe HTML specification  \r\nis maintained by the W3C.  \r\n```\r\n"
 
 /***/ }),
 /* 220 */
+/***/ (function(module, exports) {
+
+module.exports = "@[toc](目录)\r\n\r\nMarkdown 语法简介\r\n=============\r\n> [语法详解](http://commonmark.org/help/)\r\n\r\n## **目录**\r\n```\r\n@[toc](目录)\r\n```\r\n\r\n## **粗体**\r\n```\r\n**粗体**\r\n__粗体__\r\n```\r\n## *斜体*\r\n```\r\n*斜体*\r\n_斜体_\r\n```\r\n## 标题\r\n```\r\n# 一级标题 #\r\n一级标题\r\n====\r\n## 二级标题 ##\r\n二级标题\r\n----\r\n### 三级标题 ###\r\n#### 四级标题 ####\r\n##### 五级标题 #####\r\n###### 六级标题 ######\r\n```\r\n## 分割线\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上^角~下~标\r\n```\r\n上角标 x^2^\r\n下角标 H~2~0\r\n```\r\n## ++下划线++ ~~中划线~~\r\n```\r\n++下划线++\r\n~~中划线~~\r\n```\r\n## ==标记==\r\n```\r\n==标记==\r\n```\r\n## 段落引用\r\n```\r\n> 一级\r\n>> 二级\r\n>>> 三级\r\n...\r\n```\r\n\r\n## 列表\r\n```\r\n有序列表\r\n1.\r\n2.\r\n3.\r\n...\r\n无序列表\r\n-\r\n-\r\n...\r\n```\r\n\r\n## 任务列表\r\n\r\n- [x] 已完成任务\r\n- [ ] 未完成任务\r\n\r\n```\r\n- [x] 已完成任务\r\n- [ ] 未完成任务\r\n```\r\n\r\n## 链接\r\n```\r\n[链接](www.baidu.com)\r\n![图片描述](http://www.image.com)\r\n```\r\n## 代码段落\r\n\\``` type\r\n\r\n代码段落\r\n\r\n\\```\r\n\r\n\\` 代码块 \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n## 表格(table)\r\n```\r\n| 标题1 | 标题2 | 标题3 |\r\n| :--  | :--: | ----: |\r\n| 左对齐 | 居中 | 右对齐 |\r\n| ---------------------- | ------------- | ----------------- |\r\n```\r\n| 标题1 | 标题2 | 标题3 |\r\n| :--  | :--: | ----: |\r\n| 左对齐 | 居中 | 右对齐 |\r\n| ---------------------- | ------------- | ----------------- |\r\n## 脚注(footnote)\r\n```\r\nhello[^hello]\r\n```\r\n\r\n见底部脚注[^hello]\r\n\r\n[^hello]: 一个注脚\r\n\r\n## 表情(emoji)\r\n[参考网站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$公式\r\n\r\n我们可以渲染公式例如：$x_i + y_i = z_i$和$\\sum_{i=1}^n a_i=0$\r\n我们也可以单行渲染\r\n$$\\sum_{i=1}^n a_i=0$$\r\n具体可参照[katex文档](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函数](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文档](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## 布局\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`居左`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`居中`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`居右`\r\n`:::`\r\n:::\r\n\r\n## 定义\r\n\r\n术语一\r\n\r\n:   定义一\r\n\r\n包含有*行内标记*的术语二\r\n\r\n:   定义二\r\n\r\n        {一些定义二的文字或代码}\r\n\r\n    定义二的第三段\r\n\r\n```\r\n术语一\r\n\r\n:   定义一\r\n\r\n包含有*行内标记*的术语二\r\n\r\n:   定义二\r\n\r\n        {一些定义二的文字或代码}\r\n\r\n    定义二的第三段\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 规范由 W3C 维护\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 规范由 W3C 维护\r\n```\r\n\r\n"
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports) {
+
+module.exports = "@[toc](目錄)\r\n\r\nMarkdown 語法簡介\r\n=============\r\n> [語法詳解](http://commonmark.org/help/)\r\n\r\n## **粗體**\r\n```\r\n**粗體**\r\n__粗體__\r\n```\r\n## *斜體*\r\n```\r\n*斜體*\r\n_斜體_\r\n```\r\n## 標題\r\n```\r\n# 一級標題 #\r\n一級標題\r\n====\r\n## 二級標題 ##\r\n二級標題\r\n----\r\n### 三級標題 ###\r\n#### 四級標題 ####\r\n##### 五級標題 #####\r\n###### 六級標題 ######\r\n```\r\n## 分割線\r\n```\r\n***\r\n---\r\n```\r\n****\r\n## ^上^角~下~標\r\n```\r\n上角標 x^2^\r\n下角標 H~2~0\r\n```\r\n## ++下劃線++ ~~中劃線~~\r\n```\r\n++下劃線++\r\n~~中劃線~~\r\n```\r\n## ==標記==\r\n```\r\n==標記==\r\n```\r\n## 段落引用\r\n```\r\n> 一級\r\n>> 二級\r\n>>> 三級\r\n...\r\n```\r\n\r\n## 列表\r\n```\r\n有序列表\r\n1.\r\n2.\r\n3.\r\n...\r\n無序列表\r\n-\r\n-\r\n...\r\n```\r\n\r\n## 任務列表\r\n\r\n- [x] 已完成任務\r\n- [ ] 未完成任務\r\n\r\n```\r\n- [x] 已完成任務\r\n- [ ] 未完成任務\r\n```\r\n\r\n## 鏈接\r\n```\r\n[鏈接](www.baidu.com)\r\n![圖片描述](http://www.image.com)\r\n```\r\n## 代碼段落\r\n\\``` type\r\n\r\n代碼段落\r\n\r\n\\```\r\n\r\n\\` 代碼塊 \\`\r\n\r\n```c++\r\nint main()\r\n{\r\n    printf(\"hello world!\");\r\n}\r\n```\r\n`code`\r\n## 表格(table)\r\n```\r\n| 標題1 | 標題2 | 標題3 |\r\n| :--  | :--: | ----: |\r\n| 左對齊 | 居中 | 右對齊 |\r\n| ---------------------- | ------------- | ----------------- |\r\n```\r\n| 標題1 | 標題2 | 標題3 |\r\n| :--  | :--: | ----: |\r\n| 左對齊 | 居中 | 右對齊 |\r\n| ---------------------- | ------------- | ----------------- |\r\n## 腳註(footnote)\r\n```\r\nhello[^hello]\r\n```\r\n\r\n見底部腳註[^hello]\r\n\r\n[^hello]: 一個註腳\r\n\r\n## 表情(emoji)\r\n[參考網站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)\r\n```\r\n:laughing:\r\n:blush:\r\n:smiley:\r\n:)\r\n...\r\n```\r\n:laughing::blush::smiley::)\r\n\r\n## $\\KaTeX$公式\r\n\r\n我們可以渲染公式例如：$x_i + y_i = z_i$和$\\sum_{i=1}^n a_i=0$\r\n我們也可以單行渲染\r\n$$\\sum_{i=1}^n a_i=0$$\r\n具體可參照[katex文檔](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函數](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文檔](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)\r\n\r\n## 布局\r\n\r\n::: hljs-left\r\n`::: hljs-left`\r\n`居左`\r\n`:::`\r\n:::\r\n\r\n::: hljs-center\r\n`::: hljs-center`\r\n`居中`\r\n`:::`\r\n:::\r\n\r\n::: hljs-right\r\n`::: hljs-right`\r\n`居右`\r\n`:::`\r\n:::\r\n\r\n## 定義\r\n\r\n術語一\r\n\r\n:   定義一\r\n\r\n包含有*行內標記*的術語二\r\n\r\n:   定義二\r\n\r\n        {一些定義二的文字或代碼}\r\n\r\n    定義二的第三段\r\n\r\n```\r\n術語一\r\n\r\n:   定義一\r\n\r\n包含有*行內標記*的術語二\r\n\r\n:   定義二\r\n\r\n        {一些定義二的文字或代碼}\r\n\r\n    定義二的第三段\r\n\r\n```\r\n\r\n## abbr\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 規範由 W3C 維護\r\n```\r\n*[HTML]: Hyper Text Markup Language\r\n*[W3C]:  World Wide Web Consortium\r\nHTML 規範由 W3C 維護\r\n```\r\n\r\n"
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports) {
+
+module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804[\uDCBD\uDCCD]|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/
+
+/***/ }),
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25557,25 +25927,25 @@ module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u2
 
 exports.Any = __webpack_require__(68);
 exports.Cc  = __webpack_require__(66);
-exports.Cf  = __webpack_require__(219);
+exports.Cf  = __webpack_require__(222);
 exports.P   = __webpack_require__(40);
 exports.Z   = __webpack_require__(67);
 
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(228)
+  __webpack_require__(231)
 }
 var normalizeComponent = __webpack_require__(22)
 /* script */
 var __vue_script__ = __webpack_require__(73)
 /* template */
-var __vue_template__ = __webpack_require__(224)
+var __vue_template__ = __webpack_require__(227)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25614,7 +25984,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -25897,7 +26267,7 @@ if (false) {
 }
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -26251,7 +26621,7 @@ if (false) {
 }
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -26325,7 +26695,7 @@ if (false) {
 }
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -27102,7 +27472,7 @@ if (false) {
 }
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -27128,7 +27498,7 @@ if(false) {
 }
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -27154,7 +27524,7 @@ if(false) {
 }
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -27180,7 +27550,7 @@ if(false) {
 }
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -27206,7 +27576,7 @@ if(false) {
 }
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports) {
 
 /**
@@ -27239,7 +27609,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports) {
 
 var g;
@@ -27266,7 +27636,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -27294,7 +27664,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -27305,7 +27675,7 @@ module.exports = function(module) {
 
 var DEFAULT = __webpack_require__(69);
 var parser = __webpack_require__(70);
-var FilterXSS = __webpack_require__(234);
+var FilterXSS = __webpack_require__(237);
 
 /**
  * filter xss function
@@ -27351,7 +27721,7 @@ if (isWorkerEnv()) {
 
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -27586,49 +27956,49 @@ module.exports = FilterXSS;
 
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"Bearbeitung beginnen...","navigation_title":"Navigation","tl_bold":"Fett","tl_italic":"Kursiv","tl_header":"Überschrift","tl_header_one":"Überschrift 1","tl_header_two":"Überschrift 2","tl_header_three":"Überschrift 3","tl_header_four":"Überschrift 4","tl_header_five":"Überschrift 5","tl_header_six":"Überschrift 6","tl_underline":"Unterstrichen","tl_strikethrough":"Durchgestrichen","tl_mark":"Markiert","tl_superscript":"Hochgestellt","tl_subscript":"Tiefgestellt","tl_quote":"Zitat","tl_ol":"Ol","tl_ul":"Ul","tl_link":"Link","tl_image":"Link mit Bild","tl_code":"Code","tl_table":"Tabelle","tl_undo":"Rückgängig","tl_redo":"Wiederherstellen","tl_trash":"Mülleimer","tl_save":"Speichern","tl_navigation_on":"Navigation AN","tl_navigation_off":"Navigation AUS","tl_preview":"Vorschau","tl_aligncenter":"Text zentrieren","tl_alignleft":"Nach links ausrichten","tl_alignright":"Nach rechts ausrichten","tl_edit":"Bearbeiten","tl_single_column":"Einspaltig","tl_double_column":"Zweispaltig","tl_fullscreen_on":"Vollbild AN","tl_fullscreen_off":"Vollbild AUS","tl_read":"Lesemodus","tl_html_on":"HTML AN","tl_html_off":"HTML AUS","tl_help":"Markdown Handbuch","tl_upload":"Bilder-Upload","tl_upload_remove":"Entfernen","tl_popup_link_title":"Link hinzufügen","tl_popup_link_text":"Text des Links","tl_popup_link_addr":"Linkziel","tl_popup_img_link_title":"Bild hinzufügen","tl_popup_img_link_text":"Text des Bildes","tl_popup_img_link_addr":"Link auf Bild","tl_popup_link_sure":"Ja","tl_popup_link_cancel":"Abbruch"}
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"Begin editing...","navigation_title":"Navigation","tl_bold":"Bold","tl_italic":"Italic","tl_header":"Header","tl_header_one":"Header 1","tl_header_two":"Header 2","tl_header_three":"Header 3","tl_header_four":"Header 4","tl_header_five":"Header 5","tl_header_six":"Header 6","tl_underline":"Underline","tl_strikethrough":"Strikethrough","tl_mark":"Mark","tl_superscript":"Superscript","tl_subscript":"Subscript","tl_quote":"Quote","tl_ol":"Ol","tl_ul":"Ul","tl_link":"Link","tl_image":"Image Link","tl_code":"Code","tl_table":"Table","tl_undo":"Undo","tl_redo":"Redo","tl_trash":"Trash","tl_save":"Save","tl_navigation_on":"Navigation ON","tl_navigation_off":"Navigation OFF","tl_preview":"Preview","tl_aligncenter":"Center text","tl_alignleft":"Clamp text to the left","tl_alignright":"Clamp text to the right","tl_edit":"Edit","tl_single_column":"Single Column","tl_double_column":"Double Columns","tl_fullscreen_on":"FullScreen ON","tl_fullscreen_off":"FullScreen OFF","tl_read":"Read Model","tl_html_on":"HTML ON","tl_html_off":"HTML OFF","tl_help":"Markdown Guide","tl_upload":"Upload Images","tl_upload_remove":"Remove","tl_popup_link_title":"Add Link","tl_popup_link_text":"Link text","tl_popup_link_addr":"Link address","tl_popup_img_link_title":"Add Image","tl_popup_img_link_text":"Image Text","tl_popup_img_link_addr":"Image Link","tl_popup_link_sure":"Sure","tl_popup_link_cancel":"Cancel"}
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"Début d'édition...","navigation_title":"Navigation","tl_bold":"Gras","tl_italic":"Italique","tl_header":"Entête","tl_header_one":"Entête 1","tl_header_two":"Entête 2","tl_header_three":"Entête 3","tl_header_four":"Entête 4","tl_header_five":"Entête 5","tl_header_six":"Entête 6","tl_underline":"Souligné","tl_strikethrough":"Barré","tl_mark":"Mark","tl_superscript":"Exposant","tl_subscript":"Sous-exposant","tl_quote":"Quote","tl_ol":"Liste ","tl_ul":"Puce","tl_link":"Lien","tl_image":"Image Lien","tl_code":"Code","tl_table":"Table","tl_undo":"Annuler","tl_redo":"Refaire","tl_trash":"Supprimer","tl_save":"Sauver","tl_navigation_on":"Activer la navigation","tl_navigation_off":"Désactiver le navigation","tl_preview":"Previsualisé","tl_aligncenter":"Center le texte","tl_alignleft":"Férer le texte à gauche","tl_alignright":"Férer le texte à droite","tl_edit":"Editer","tl_single_column":"Seule Colonne","tl_double_column":"Colonnes Doubles","tl_fullscreen_on":"Activer le mode plein écran","tl_fullscreen_off":"Désactiver le mode plein écran","tl_read":"Lire le modèle","tl_html_on":"Activer le mode HTML","tl_html_off":"Désactiver le mode HTML","tl_help":"Guide Markdown","tl_upload":"Télécharger les images","tl_upload_remove":"Supprimer","tl_popup_link_title":"Ajouter un lien","tl_popup_link_text":"Description","tl_popup_link_addr":"Link","tl_popup_img_link_title":"Ajouter une image","tl_popup_img_link_text":"Description","tl_popup_img_link_addr":"Link","tl_popup_link_sure":"sûr","tl_popup_link_cancel":"Annuler"}
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"編集を始めてね！","navigation_title":"ナビゲーション","tl_bold":"太字","tl_italic":"斜体","tl_header":"見出し","tl_header_one":"見出し1","tl_header_two":"見出し2","tl_header_three":"見出し3","tl_header_four":"見出し4","tl_header_five":"見出し5","tl_header_six":"見出し6","tl_underline":"下線","tl_strikethrough":"取り消し線","tl_mark":"蛍光ペン","tl_superscript":"上付き文字","tl_subscript":"下付き文字","tl_quote":"引用","tl_ol":"番号付きリスト","tl_ul":"箇条書きリスト","tl_link":"ハイパーリンク","tl_image":"画像のリンク","tl_code":"コードの挿入","tl_table":"表の挿入","tl_undo":"戻る","tl_redo":"進む","tl_trash":"削除","tl_save":"保存","tl_navigation_on":"ナビゲーションを表示","tl_navigation_off":"ナビゲーションを非表示","tl_preview":"プレビュー","tl_aligncenter":"中央揃え","tl_alignleft":"左揃え","tl_alignright":"右揃え","tl_edit":"編集","tl_single_column":"一列","tl_double_column":"二列","tl_fullscreen_on":"全画面表示","tl_fullscreen_off":"全画面表示の終了","tl_read":"モデルの読み込み","tl_html_on":"HTMLで表示","tl_html_off":"HTML表示の終了","tl_help":"ヘルプ","tl_upload":"画像をアップロード","tl_upload_remove":"画像の削除","tl_popup_link_title":"リンクの追加","tl_popup_link_text":"リンクテキスト","tl_popup_link_addr":"リンク先のURL","tl_popup_img_link_title":"画像の追加","tl_popup_img_link_text":"画像タイトル","tl_popup_img_link_addr":"画像URL","tl_popup_link_sure":"OK","tl_popup_link_cancel":"戻る"}
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"Começar edição...","navigation_title":"Navegação","tl_bold":"Negrito","tl_italic":"Itálico","tl_header":"Cabeçalho","tl_header_one":"Cabeçalho 1","tl_header_two":"Cabeçalho 2","tl_header_three":"Cabeçalho 3","tl_header_four":"Cabeçalho 4","tl_header_five":"Cabeçalho 5","tl_header_six":"Cabeçalho 6","tl_underline":"Sublinhar","tl_strikethrough":"Tachar","tl_mark":"Marcação","tl_superscript":"Sobrescrito","tl_subscript":"Subscrito","tl_quote":"Citação","tl_ol":"Lista Numerada","tl_ul":"Lista com marcadores","tl_link":"Link","tl_image":"Link de imagem","tl_code":"Código","tl_table":"Tabela","tl_undo":"Desfazer","tl_redo":"Refazer","tl_trash":"Lixo","tl_save":"Salvar","tl_navigation_on":"Mostrar Navegação","tl_navigation_off":"Esconder Navegação","tl_preview":"Preview","tl_aligncenter":"Alinhar no centro","tl_alignleft":"Alinhar à esquerda","tl_alignright":"Alinhar à direita","tl_edit":"Editar","tl_single_column":"Coluna Única","tl_double_column":"Duas Colunas","tl_fullscreen_on":"Ligar Tela Cheia","tl_fullscreen_off":"Desligar Tela Cheia","tl_read":"Modo de Leitura","tl_html_on":"Ligar HTML","tl_html_off":"Desligar HTML","tl_help":"Guia Markdown","tl_upload":"Upload de Imagens","tl_upload_remove":"Remover","tl_popup_link_title":"Adicionar Link","tl_popup_link_text":"Descrição","tl_popup_link_addr":"Link","tl_popup_img_link_title":"Adicionar fotos","tl_popup_img_link_text":"Descrição","tl_popup_img_link_addr":"Link","tl_popup_link_sure":"Confirmar","tl_popup_link_cancel":"Cancelar"}
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"Начните редактирование...","navigation_title":"Навигация","tl_bold":"Полужирный","tl_italic":"Курсив","tl_header":"Заголовки","tl_header_one":"Заголовок 1","tl_header_two":"Заголовок 2","tl_header_three":"Заголовок 3","tl_header_four":"Заголовок 4","tl_header_five":"Заголовок 5","tl_header_six":"Заголовок 6","tl_underline":"Подчеркнутый","tl_strikethrough":"Зачеркнутый","tl_mark":"Отметка","tl_superscript":"Верхний индекс","tl_subscript":"Нижний индекс","tl_quote":"Цитата","tl_ol":"Нумерованный список","tl_ul":"Список","tl_link":"Ссылка","tl_image":"Ссылка изображения","tl_code":"Код","tl_table":"Таблица","tl_undo":"Отменить","tl_redo":"Вернуть","tl_trash":"Удалить","tl_save":"Сохранить","tl_navigation_on":"Показать навигацию","tl_navigation_off":"Скрыть навигацию","tl_preview":"Предпросмотр","tl_aligncenter":"Выровнять по центру","tl_alignleft":"Выровнять по левому краю","tl_alignright":"Выровнять по правому краю","tl_edit":"Редактор","tl_single_column":"Одно поле","tl_double_column":"Два поля","tl_fullscreen_on":"Полноэкранный режим","tl_fullscreen_off":"Выключить полноэкранный режим","tl_read":"Режим чтения","tl_html_on":"Показать HTML","tl_html_off":"Убрать HTML","tl_help":"Markdown помощь","tl_upload":"Загрузить изображение","tl_upload_remove":"Удалить","tl_popup_link_title":"Добавить ссылку","tl_popup_link_text":"Текст ссылки","tl_popup_link_addr":"Адрес ссылки","tl_popup_img_link_title":"Локальное изображение","tl_popup_img_link_text":"Текст изображения","tl_popup_img_link_addr":"Ссылка изображения","tl_popup_link_sure":"Добавить","tl_popup_link_cancel":"Отменить"}
 
 /***/ }),
-/* 241 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"开始编辑...","navigation_title":"导航目录","tl_bold":"粗体","tl_italic":"斜体","tl_header":"标题","tl_header_one":"一级标题","tl_header_two":"二级标题","tl_header_three":"三级标题","tl_header_four":"四级标题","tl_header_five":"五级标题","tl_header_six":"六级标题","tl_underline":"下划线","tl_strikethrough":"中划线","tl_mark":"标记","tl_superscript":"上角标","tl_subscript":"下角标","tl_quote":"段落引用","tl_ol":"有序列表","tl_ul":"无序列表","tl_link":"链接","tl_image":"添加图片链接","tl_code":"代码块","tl_table":"表格","tl_undo":"上一步","tl_redo":"下一步","tl_trash":"清空","tl_save":"保存","tl_navigation_on":"开启标题导航","tl_navigation_off":"关闭标题导航","tl_preview":"预览","tl_aligncenter":"居中","tl_alignleft":"居左","tl_alignright":"居右","tl_edit":"编辑","tl_single_column":"单栏","tl_double_column":"双栏","tl_fullscreen_on":"全屏编辑","tl_fullscreen_off":"退出全屏","tl_read":"沉浸式阅读","tl_html_on":"查看html文本","tl_html_off":"返回markdown文本","tl_help":"markdown语法帮助","tl_upload":"上传图片","tl_upload_remove":"删除","tl_popup_link_title":"添加链接","tl_popup_link_text":"链接描述","tl_popup_link_addr":"链接地址","tl_popup_img_link_title":"添加图片","tl_popup_img_link_text":"图片描述","tl_popup_img_link_addr":"图片链接","tl_popup_link_sure":"确定","tl_popup_link_cancel":"取消"}
 
 /***/ }),
-/* 242 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = {"start_editor":"開始編輯...","navigation_title":"導航目錄","tl_bold":"粗體","tl_italic":"斜體","tl_header":"標題","tl_header_one":"一級標題","tl_header_two":"二級標題","tl_header_three":"三級標題","tl_header_four":"四級標題","tl_header_five":"五級標題","tl_header_six":"六級標題","tl_underline":"下劃線","tl_strikethrough":"中劃線","tl_mark":"標記","tl_superscript":"上角標","tl_subscript":"下角標","tl_quote":"段落引用","tl_ol":"有序列表","tl_ul":"無序列表","tl_link":"鏈接","tl_image":"添加圖片鏈接","tl_code":"代碼塊","tl_table":"表格","tl_undo":"上一步","tl_redo":"下一步","tl_trash":"清空","tl_save":"保存","tl_navigation_on":"開啟標題導航","tl_navigation_off":"關閉標題導航","tl_preview":"預覽","tl_aligncenter":"居中","tl_alignleft":"居左","tl_alignright":"居右","tl_edit":"編輯","tl_single_column":"單欄","tl_double_column":"雙欄","tl_fullscreen_on":"全屏編輯","tl_fullscreen_off":"退出全屏","tl_read":"沈浸式閱讀","tl_html_on":"查看html文本","tl_html_off":"返回markdown文本","tl_help":"markdown語法幫助","tl_upload":"上傳圖片","tl_upload_remove":"刪除","tl_popup_link_title":"添加鏈接","tl_popup_link_text":"鏈接描述","tl_popup_link_addr":"鏈接地址","tl_popup_img_link_title":"添加圖片","tl_popup_img_link_text":"圖片描述","tl_popup_img_link_addr":"圖片鏈接","tl_popup_link_sure":"確定","tl_popup_link_cancel":"取消"}
