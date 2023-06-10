@@ -1,18 +1,28 @@
 <template>
   <div id="app">
-          <mavon-viewer ref=md :subfield="subfield"  
+          <mavon-viewer ref=md 
                         language="en" 
                         :ishljs="true" 
                         class="item-editor" 
                         v-model="help1"
+                        :externalLink="external_link"
                         :boxShadow="false"
                         :scrollStyle="true"
                         :transition="true"
                         codeStyle="agate"
+                        style="line-height': 1.5; font-size: 14px;"
                         background="#ffffff">
           </mavon-viewer>
   </div>
 </template>
+
+<style>
+.katex-display {
+    display: inline-block;
+    margin: 1em 0;
+    text-align: center;
+}
+</style>
 
 <script type="text/ecmascript-6">
   import styles from '../lib/core/hljs/lang.hljs.css.js'
@@ -24,7 +34,38 @@
               d_language: 'en',
               help1: '',
               screen_phone: false,
-              styles
+              styles,
+              external_link: {
+                    markdown_css: function() {
+                        return '/markdown/github-markdown.min.css';
+                    },
+                    hljs_js: function() {
+                        return '/highlightjs/highlight.min.js';
+                    },
+                    hljs_css: function(css) {
+                        return '/highlightjs/styles/' + css + '.min.css';
+                    },
+                    hljs_lang: function(lang) {
+                        return '/highlightjs/languages/' + lang + '.min.js';
+                    },
+                    /*
+                    katex_css: function() {
+                        return '/katex/katex.min.css';
+                    },
+                    katex_js: function() {
+                        return '/katex/katex.min.js';
+                    },
+                    */
+                    katex_js: function() {
+                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
+                         return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js';
+                    },
+                    katex_css: function() {
+                      // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
+                      // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css';
+                      return 'http://app.repeach.net/katex.css';
+                    }
+                }
           }
       },
       created () {
@@ -60,7 +101,18 @@
               // return
               this.help1 = `
 
+              ### 문제 18
+두 수열 $\\left\\{a_{n}\\right\\},\\left\\{b_{n}\\right\\}$ 에 대하여
+$\\sum_{k=1}^{5}\\left(3 a_{k}+5\\right)=55, \\quad \\sum_{k=1}^{5}\\left(a_{k}+b_{k}\\right)=32$ 일 때, $\\sum_{k=1}^{5} b_{k}$ 의 값을 구하시오. [3점]
 
+
+### 문제 18
+두 수열 $\\left\\{a_{n}\\right\\},\\left\\{b_{n}\\right\\}$ 에 대하여
+$$
+\\sum_{k=1}^{5}\\left(3 a_{k}+5\\right)=55, \\quad \\sum_{k=1}^{5}\\left(a_{k}+b_{k}\\right)=32
+$$
+
+일 때, $\\sum_{k=1}^{5} b_{k}$ 의 값을 구하시오. [3점]
 
 ### 문제 15
 ==모든 항이 자연수==이고 다음 조건을 만족시키는 모든 수열 $\\left\\{a_{n}\\right\\}$ 에 대하여 $a_{9}$ 의 최댓값과 최솟값을 각각 $M, m$ 이라 할 때, $M+m$ 의 값은? [4점]

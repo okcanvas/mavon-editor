@@ -130,7 +130,7 @@
                     },
                     hljs_lang: function(lang) {
                         return '/highlightjs/languages/' + lang + '.min.js';
-                    }
+                    },
                     /*
                     katex_css: function() {
                         return '/katex/katex.min.css';
@@ -139,16 +139,15 @@
                         return '/katex/katex.min.js';
                     },
                     */
-                   /*
                     katex_js: function() {
-                        return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
-                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js;'
+                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
+                         return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js;'
                     },
                     katex_css: function() {
-                        return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
-                        // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css';
+                      // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
+                      // return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css';
+                      return 'http://app.repeach.net/katex.css';
                     }
-                    */
                 },
                 toolbar_settings: {
                     undo: true, // 上一步

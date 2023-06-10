@@ -152,9 +152,9 @@ export default {
       this.d_value = this.value || "";
       this.loadExternalLink('markdown_css', 'css');
       this.loadExternalLink('katex_css', 'css')
-      // this.loadExternalLink('katex_js', 'js', function() {
-      //    $vm.iRender(true);
-      // })
+      this.loadExternalLink('katex_js', 'js', function() {
+         $vm.iRender(true);
+      })
       this.loadExternalLink('hljs_js', 'js', function() {
           $vm.iRender(true);
       })

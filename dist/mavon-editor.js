@@ -5746,7 +5746,9 @@ exports.default = {
         document.body.appendChild(this.$refs.help);
         this.loadExternalLink('markdown_css', 'css');
         this.loadExternalLink('katex_css', 'css');
-
+        this.loadExternalLink('katex_js', 'js', function () {
+            $vm.iRender(true);
+        });
         this.loadExternalLink('hljs_js', 'js', function () {
             $vm.iRender(true);
         });
@@ -6261,7 +6263,9 @@ exports.default = {
         this.d_value = this.value || "";
         this.loadExternalLink('markdown_css', 'css');
         this.loadExternalLink('katex_css', 'css');
-
+        this.loadExternalLink('katex_js', 'js', function () {
+            $vm.iRender(true);
+        });
         this.loadExternalLink('hljs_js', 'js', function () {
             $vm.iRender(true);
         });
@@ -6965,7 +6969,7 @@ module.exports = function math_plugin(md, options) {
     }
 
     var katexInline = function katexInline(latex) {
-        options.displayMode = false;
+        options.displayMode = true;
         try {
             return katex.renderToString(latex, options);
         } catch (error) {
@@ -6983,7 +6987,7 @@ module.exports = function math_plugin(md, options) {
     var katexBlock = function katexBlock(latex) {
         options.displayMode = true;
         try {
-            return '<p class="katex-block ' + options.blockClass + '">' + katex.renderToString(latex, options) + "</p>";
+            return '<span class="katex-block ' + options.blockClass + '">' + katex.renderToString(latex, options) + "</span>";
         } catch (error) {
             if (options.throwOnError) {
                 console.log(error);
