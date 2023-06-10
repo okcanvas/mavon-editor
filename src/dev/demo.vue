@@ -6,7 +6,7 @@
     </div>
     <div>
       <App v-if="viewIndex == 1"></App>
-      <Editor v-else-if="viewIndex == 2"></Editor>
+      <Viewer v-else-if="viewIndex == 2"></Viewer>
     </div>
   </div>
 </template>
@@ -14,16 +14,18 @@
 <script>
 import app from './app.vue';
 import editor from './editor.vue';
+import viewer from './viewer.vue';
 
 export default {
   name: 'demo',
   components: {
     App: app,
-    Editor: editor
+    Editor: editor,
+    Viewer: viewer
   },
   data() {
     return {
-      viewIndex: 1
+      viewIndex: 2
     };
   }
 };

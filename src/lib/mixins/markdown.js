@@ -16,11 +16,8 @@ var markdown_config = {
 }
 
 var MarkdownIt = require('markdown-it')
-// 表情
 var emoji = require('markdown-it-emoji')
-// 下标
 var sub = require('markdown-it-sub')
-// 上标
 var sup = require('markdown-it-sup')
 // <dl/>
 var deflist = require('markdown-it-deflist')
@@ -40,10 +37,13 @@ var container = require('markdown-it-container')
 var color = require('markdown-it-color')
 //
 var toc = require('markdown-it-toc')
-
+//  markdown-it-multimd-table
+var multimd = require('markdown-it-multimd-table')
+//
 var mihe = require('markdown-it-highlightjs-external');
 // math katex
-var katex = require('markdown-it-katex-external');
+//var katex = require('markdown-it-katex-external');
+var katex = require('./markdown-it-katex');
 var miip = require('markdown-it-images-preview');
 var missLangs = {};
 var needLangs = [];
@@ -97,6 +97,13 @@ export function initMarkdown() {
         .use(katex)
         .use(taskLists)
         .use(toc)
+        .use(multimd,{
+          multiline:  true,
+          rowspan:    true,
+          headerless: true,
+          multibody:  true,
+          aotolabel:  true,
+        })
         .use(color.default, {
           inline: true
         })

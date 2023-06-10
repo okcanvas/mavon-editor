@@ -1,4 +1,26 @@
-@[toc](Catalog)
+@ [toc](Catalog)
+
+
+## 문제 15
+::: view 1234 5678 9012
+==모든 항이 자연수==이고 다음 조건을 만족시키는 모든 수열 $\left\{a_{n}\right\}$ 에 대하여 $a_{9}$ 의 최댓값과 최솟값을 각각 $M, m$ 이라 할 때, $M+m$ 의 값은? [4점]
+:::
+
+$$
+\begin{aligned}
+& \text { (가) } a_{7}=40 \\
+& \text { (나) 모든 자연수 } n \text { 에 대하여 }
+\end{aligned}
+$$
+
+$a_{n+2}= \begin{cases}a_{n+1}+a_{n} & \left(a_{n+1} \text { 이 } 3 \text { 의 배수가 아닌 경우 }\right) \\ \frac{1}{3} a_{n+1} & \left(a_{n+1} \text { 이 } 3 \text { 의 배수인 경우 }\right)\end{cases}$
+
+이다.
+(1) 216
+(2) 218
+(3) 220
+(4) 222
+(5) 224
 
 Markdown Guide
 ===

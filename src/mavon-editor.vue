@@ -299,11 +299,11 @@ export default {
                     }
                     return '';
                 },
-                katex_js: function() {
-                    return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
-                },
+                // katex_js: function() {
+                //    return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js';
+                // },
                 katex_css: function() {
-                    return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
+                   return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css';
                 }
             },
             p_external_link: {},
@@ -346,9 +346,9 @@ export default {
         document.body.appendChild(this.$refs.help);
         this.loadExternalLink('markdown_css', 'css');
         this.loadExternalLink('katex_css', 'css')
-        this.loadExternalLink('katex_js', 'js', function() {
-            $vm.iRender(true);
-        })
+        // this.loadExternalLink('katex_js', 'js', function() {
+        //    $vm.iRender(true);
+        // })
         this.loadExternalLink('hljs_js', 'js', function() {
             $vm.iRender(true);
         })

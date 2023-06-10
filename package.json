@@ -36,7 +36,10 @@
   },
   "homepage": "https://github.com/okcanvas/mavon-editor#readme",
   "dependencies": {
+    "@traptitech/markdown-it-katex": "^3.6.0",
     "markdown-it-color": "^2.1.1",
+    "markdown-it-multimd-table": "^4.2.2",
+    "mathjax-full": "^3.2.2",
     "xss": "^1.0.10"
   },
   "devDependencies": {

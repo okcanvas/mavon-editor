@@ -1,6 +1,3 @@
-/**
- * Created by zhy on 2017/4/1.
- */
 'use strict';
 
 /**
@@ -22,4 +19,20 @@ const VueMavonEditor = {
     }
 };
 
-module.exports = VueMavonEditor;
+const mavonViewer = require('./mavon-viewer.vue');
+const VueMavonViewer = {
+    /**
+     * @deprecated
+     * @see mavonEditor.getMarkdownIt()
+     */
+    markdownIt: mavonViewer.mixins[0].data().markdownIt,
+    mavonViewer: mavonViewer,
+    install: function(Vue) {
+        Vue.component('mavon-viewer', mavonViewer);
+    }
+};
+
+module.exports = {
+    VueMavonEditor,
+    VueMavonViewer
+}
